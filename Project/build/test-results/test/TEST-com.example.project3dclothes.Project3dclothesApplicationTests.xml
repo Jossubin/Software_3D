@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.example.project3dclothes.Project3dclothesApplicationTests" tests="1" skipped="0" failures="0" errors="0" timestamp="2024-10-29T15:23:16" hostname="DESKTOP-KF2USHI" time="0.467">
+  <properties/>
+  <testcase name="contextLoads()" classname="com.example.project3dclothes.Project3dclothesApplicationTests" time="0.467"/>
+  <system-out><![CDATA[00:23:11.534 [Test worker] INFO org.springframework.test.context.support.AnnotationConfigContextLoaderUtils -- Could not detect default configuration classes for test class [com.example.project3dclothes.Project3dclothesApplicationTests]: Project3dclothesApplicationTests does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+00:23:11.657 [Test worker] INFO org.springframework.boot.test.context.SpringBootTestContextBootstrapper -- Found @SpringBootConfiguration com.example.Project3dclothesApplication for test class com.example.project3dclothes.Project3dclothesApplicationTests
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+
+ :: Spring Boot ::                (v3.3.5)
+
+2024-10-30T00:23:12.122+09:00  INFO 195136 --- [project3dclothes] [    Test worker] c.e.p.Project3dclothesApplicationTests   : Starting Project3dclothesApplicationTests using Java 20.0.2 with PID 195136 (started by cjdeh in C:\Users\cjdeh\Documents\GitHub\project3dclothes)
+2024-10-30T00:23:12.123+09:00  INFO 195136 --- [project3dclothes] [    Test worker] c.e.p.Project3dclothesApplicationTests   : No active profile set, falling back to 1 default profile: "default"
+2024-10-30T00:23:12.864+09:00  INFO 195136 --- [project3dclothes] [    Test worker] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2024-10-30T00:23:12.937+09:00  INFO 195136 --- [project3dclothes] [    Test worker] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 60 ms. Found 1 JPA repository interface.
+2024-10-30T00:23:13.445+09:00  INFO 195136 --- [project3dclothes] [    Test worker] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2024-10-30T00:23:13.511+09:00  INFO 195136 --- [project3dclothes] [    Test worker] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 6.5.3.Final
+2024-10-30T00:23:13.555+09:00  INFO 195136 --- [project3dclothes] [    Test worker] o.h.c.internal.RegionFactoryInitiator    : HHH000026: Second-level cache disabled
+2024-10-30T00:23:13.947+09:00  INFO 195136 --- [project3dclothes] [    Test worker] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2024-10-30T00:23:13.997+09:00  INFO 195136 --- [project3dclothes] [    Test worker] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2024-10-30T00:23:14.357+09:00  INFO 195136 --- [project3dclothes] [    Test worker] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@69c33ea2
+2024-10-30T00:23:14.360+09:00  INFO 195136 --- [project3dclothes] [    Test worker] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2024-10-30T00:23:14.412+09:00  WARN 195136 --- [project3dclothes] [    Test worker] org.hibernate.orm.deprecation            : HHH90000025: MySQL8Dialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2024-10-30T00:23:14.414+09:00  WARN 195136 --- [project3dclothes] [    Test worker] org.hibernate.orm.deprecation            : HHH90000026: MySQL8Dialect has been deprecated; use org.hibernate.dialect.MySQLDialect instead
+2024-10-30T00:23:15.339+09:00  INFO 195136 --- [project3dclothes] [    Test worker] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2024-10-30T00:23:15.404+09:00  INFO 195136 --- [project3dclothes] [    Test worker] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2024-10-30T00:23:16.027+09:00  WARN 195136 --- [project3dclothes] [    Test worker] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2024-10-30T00:23:16.506+09:00  INFO 195136 --- [project3dclothes] [    Test worker] c.e.p.Project3dclothesApplicationTests   : Started Project3dclothesApplicationTests in 4.656 seconds (process running for 6.004)
+]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>
