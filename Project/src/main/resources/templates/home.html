@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>홈페이지</title>
+</head>
+<body>
+<h1>환영합니다!</h1>
+
+<div th:if="${member != null}">
+    <p th:text="${member.name + '님 환영합니다!'}"></p>
+    <a href="/logout">로그아웃</a>
+</div>
+
+<div th:unless="${member != null}">
+    <a href="/login">로그인</a>
+    <a href="/register">회원가입</a>
+</div>
+</body>
+</html>

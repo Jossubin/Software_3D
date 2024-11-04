@@ -27,6 +27,18 @@ public class MemberService {
         memberRepository.save(member);
     }
 
+    public Member login(String email, String password) {
+        Member member = memberRepository.findByEmail(email)
+                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 이메일입니다."));
+
+        if (!member.getPassword().equals(password)) {
+            throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
+        }
+
+        return member;
+    }
+
+
 
     /////////////////////////////////////////
 

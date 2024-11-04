@@ -1,5 +1,7 @@
 package com.example;
 
+
+//
 public class AdminForm {
     private Long id; // 'mid'를 'id'로 변경
     private String invoice;

@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>마이 페이지</title>
+</head>
+<body>
+<h2>마이 페이지</h2>
+
+<!-- 성공 메시지 표시 -->
+<div th:if="${successMessage}" style="color: green;">
+  <p th:text="${successMessage}"></p>
+</div>
+
+<!-- 오류 메시지 표시 -->
+<div th:if="${errorMessage}" style="color: red;">
+  <p th:text="${errorMessage}"></p>
+</div>
+
+<div th:if="${member != null}">
+  <p th:text="${member.name} + '님의 송장은 ' + ${member.invoice} + '입니다.'"></p>
+</div>
+
+<a href="/">홈으로</a>
+</body>
+</html>
