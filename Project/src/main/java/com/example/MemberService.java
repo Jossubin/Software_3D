@@ -3,23 +3,26 @@ package com.example;
 import com.example.Member;
 import com.example.MemberRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
-@RequiredArgsConstructor
+@Transactional
 public class MemberService {
     
     private final MemberRepository memberRepository;
     
-    @Transactional
+    @Autowired
+    public MemberService(MemberRepository memberRepository) {
+        this.memberRepository = memberRepository;
+    }
+
     public void register(Member member) {
-        // 이메일 중복 체크
+        // 이메일 중복 체크 (필요한 경우)
         if (memberRepository.existsByEmail(member.getEmail())) {
-            throw new IllegalStateException("이미 존재하는 이메일입니다.");
+            throw new RuntimeException("이미 등록된 이메일입니다.");
         }
-        
-        // 비밀번호 암호화 로직은 나중에 추가 가능
         
         memberRepository.save(member);
     }
