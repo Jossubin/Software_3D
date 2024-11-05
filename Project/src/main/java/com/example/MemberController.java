@@ -63,4 +63,19 @@ public class MemberController {
         }
         return "home";  // home.html 템플릿을 반환
     }
+    
+    @GetMapping("/mypage")
+    public String mypage(Model model, HttpSession session) {
+        // 세션에서 로그인된 회원 정보 가져오기
+        Member loginMember = (Member) session.getAttribute("loginMember");
+        
+        // 로그인 체크
+        if (loginMember == null) {
+            return "redirect:/login";
+        }
+        
+        // 모델에 회원 정보 추가
+        model.addAttribute("member", loginMember);
+        return "mypage";
+    }
 }
