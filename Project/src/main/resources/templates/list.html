@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>배송지 관리</title>
+    <!-- 다음 우편번호 서비스 스크립트 추가 -->
+    <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+    <style>
+        .container {
+            width: 80%;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .address-list {
+            margin-bottom: 30px;
+        }
+        .address-item {
+            border: 1px solid #ddd;
+            padding: 15px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+        }
+        .add-form {
+            background-color: #f9f9f9;
+            padding: 20px;
+            border-radius: 5px;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+        }
+        .form-group input {
+            width: calc(100% - 120px); /* 버튼 공간 확보 */
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        .submit-btn, .address-search-btn {
+            background-color: #4CAF50;
+            color: white;
+            padding: 8px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        .address-search-btn {
+            margin-left: 10px;
+            background-color: #5c6bc0;
+        }
+        .submit-btn:hover, .address-search-btn:hover {
+            opacity: 0.9;
+        }
+        .delete-btn {
+            background-color: #ff4444;
+            color: white;
+            padding: 8px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+        
+        .delete-btn:hover {
+            background-color: #cc0000;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>배송지 관리</h2>
+        
+        <!-- 주소 목록 -->
+        <div class="address-list">
+            <h3>등록된 배송지</h3>
+            <div th:each="address : ${addresses}" class="address-item">
+                <p><strong th:text="${address.addressName}">배송지명</strong></p>
+                <p th:text="${address.recipient}">수령인</p>
+                <p th:text="|${address.zipCode} ${address.mainAddress}|">주소</p>
+                <p th:text="${address.detailAddress}">상세주소</p>
+                <p th:text="${address.phone}">연락처</p>
+                <button type="button" class="delete-btn" th:onclick="'deleteAddress(' + ${address.id} + ')'">삭제</button>
+            </div>
+        </div>
+        
+        <!-- 새 주소 추가 폼 -->
+        <div class="add-form">
+            <h3>새 배송지 추가</h3>
+            <form th:action="@{/address/add}" method="post" th:object="${newAddress}">
+                <div class="form-group">
+                    <label for="addressName">배송지명</label>
+                    <input type="text" id="addressName" th:field="*{addressName}" required>
+                </div>
+                <div class="form-group">
+                    <label for="recipient">수령인</label>
+                    <input type="text" id="recipient" th:field="*{recipient}" required>
+                </div>
+                <div class="form-group">
+                    <label for="zipCode">우편번호</label>
+                    <input type="text" id="zipCode" th:field="*{zipCode}" readonly required>
+                    <button type="button" class="address-search-btn" onclick="searchAddress()">주소 검색</button>
+                </div>
+                <div class="form-group">
+                    <label for="mainAddress">기본주소</label>
+                    <input type="text" id="mainAddress" th:field="*{mainAddress}" readonly required>
+                </div>
+                <div class="form-group">
+                    <label for="detailAddress">상세주소</label>
+                    <input type="text" id="detailAddress" th:field="*{detailAddress}" required>
+                </div>
+                <div class="form-group">
+                    <label for="phone">연락처</label>
+                    <input type="text" id="phone" th:field="*{phone}" required>
+                </div>
+                <button type="submit" class="submit-btn">배송지 추가</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        function searchAddress() {
+            new daum.Postcode({
+                oncomplete: function(data) {
+                    // 우편번호와 주소 정보를 해당 필드에 넣는다.
+                    document.getElementById('zipCode').value = data.zonecode;
+                    document.getElementById('mainAddress').value = data.address;
+                    
+                    // 상세주소 필드로 포커스 이동
+                    document.getElementById('detailAddress').focus();
+                }
+            }).open();
+        }
+
+        function deleteAddress(id) {
+            if (!confirm('정말 이 배송지를 삭제하시겠습니까?')) {
+                return;
+            }
+
+            fetch(`/address/${id}`, {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+            .then(response => response.text())
+            .then(result => {
+                alert(result);
+                if (result === '삭제되었습니다.') {
+                    location.reload(); // 페이지 새로고침
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('삭제 중 오류가 발생했습니다.');
+            });
+        }
+    </script>
+</body>
+</html>

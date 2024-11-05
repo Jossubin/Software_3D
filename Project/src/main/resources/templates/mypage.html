@@ -1,26 +1,63 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-  <meta charset="UTF-8">
-  <title>마이 페이지</title>
+    <meta charset="UTF-8">
+    <title>마이페이지</title>
+    <style>
+        .container {
+            width: 80%;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .welcome-message {
+            font-size: 1.2em;
+            margin-bottom: 20px;
+        }
+        .menu-section {
+            margin-top: 30px;
+        }
+        .menu-list {
+            list-style: none;
+            padding: 0;
+        }
+        .menu-item {
+            margin: 10px 0;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        .menu-item a {
+            text-decoration: none;
+            color: #333;
+        }
+        .menu-item:hover {
+            background-color: #f5f5f5;
+        }
+    </style>
 </head>
 <body>
-<h2>마이 페이지</h2>
+    <div class="container">
+        <div class="welcome-message">
+            <span th:if="${member != null}" th:text="${member.name + '님 환영합니다'}"></span>
+        </div>
 
-<!-- 성공 메시지 표시 -->
-<div th:if="${successMessage}" style="color: green;">
-  <p th:text="${successMessage}"></p>
-</div>
-
-<!-- 오류 메시지 표시 -->
-<div th:if="${errorMessage}" style="color: red;">
-  <p th:text="${errorMessage}"></p>
-</div>
-
-<div th:if="${member != null}">
-  <p th:text="${member.name} + '님의 송장은 ' + ${member.invoice} + '입니다.'"></p>
-</div>
-
-<a href="/">홈으로</a>
+        <div class="menu-section">
+            <h2>마이페이지 메뉴</h2>
+            <ul class="menu-list">
+                <li class="menu-item">
+                    <a href="/member/info">회원 정보</a>
+                </li>
+                <li class="menu-item">
+                    <a href="/orders">주문 내역</a>
+                </li>
+                <li class="menu-item">
+                    <a href="/address">배송지 관리</a>
+                </li>
+                <li class="menu-item">
+                    <a href="/password/change">비밀번호 변경</a>
+                </li>
+            </ul>
+        </div>
+    </div>
 </body>
-</html>
+</html> 

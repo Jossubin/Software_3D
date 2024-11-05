@@ -35,3 +35,6 @@ out/
 
 ### VS Code ###
 .vscode/
+# IntelliJ IDEA 설정 파일 무시
+.idea/
+*.iml

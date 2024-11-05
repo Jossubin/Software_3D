@@ -15,7 +15,7 @@ public class Member {
     @Column(nullable = false)
     private String name;
 
-    @Column(nullable = false, unique = true)
+    @Column(nullable = false)
     private String email;
 
     @Column(nullable = false)
@@ -24,6 +24,10 @@ public class Member {
     @Column(nullable = false)
     private String phone;
 
-    @Column(nullable = false)
-    private String Invoice;
+    @Column(nullable = true)
+    private String invoice;
+
+    public Member() {
+        this.id = null;
+    }
 }
