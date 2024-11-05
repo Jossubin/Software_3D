@@ -14,16 +14,16 @@ import jakarta.servlet.http.HttpSession;
 @Controller
 @RequiredArgsConstructor
 public class MemberController {
-    
+
     private final MemberService memberService;
     private final HttpSession session;
-    
+
     @GetMapping("/register")
     public String registerForm(Model model) {
         model.addAttribute("member", new Member());
         return "register";
     }
-    
+
     @PostMapping("/register")
     public String register(@ModelAttribute Member member, RedirectAttributes redirectAttributes) {
         try {
@@ -35,12 +35,12 @@ public class MemberController {
             return "redirect:/register";
         }
     }
-    
+
     @GetMapping("/login")
     public String loginForm() {
         return "login";  // login.html 템플릿을 반환
     }
-    
+
     @PostMapping("/login")
     public String login(@ModelAttribute Member member, RedirectAttributes redirectAttributes) {
         try {
@@ -53,7 +53,7 @@ public class MemberController {
             return "redirect:/login";
         }
     }
-    
+
     @GetMapping("/")
     public String home(Model model) {
         // 로그인된 회원 정보를 가져옴
@@ -63,26 +63,76 @@ public class MemberController {
         }
         return "home";  // home.html 템플릿을 반환
     }
-    
+
     @GetMapping("/mypage")
     public String mypage(Model model, HttpSession session) {
         // 세션에서 로그인된 회원 정보 가져오기
         Member loginMember = (Member) session.getAttribute("loginMember");
-        
+
         // 로그인 체크
         if (loginMember == null) {
             return "redirect:/login";
         }
-        
+
         // 모델에 회원 정보 추가
         model.addAttribute("member", loginMember);
         return "mypage";
     }
 
-    /////////
+    @GetMapping("/member/update")
+    public String editProfileForm(Model model) {
+        Member loginMember = (Member) session.getAttribute("loginMember");
 
+        if (loginMember == null) {
+            return "redirect:/login";
+        }
 
+        model.addAttribute("member", loginMember);
+        return "edit-profile";
+    }
 
+    @PostMapping("/member/update")
+    public String editProfile(@ModelAttribute Member member, RedirectAttributes redirectAttributes) {
+        Member loginMember = (Member) session.getAttribute("loginMember");
 
+        if (loginMember == null) {
+            return "redirect:/login";
+        }
 
+        try {
+            member.setId(loginMember.getId()); // 기존 회원의 ID 설정
+            memberService.updateMember(member);
+            session.setAttribute("loginMember", member); // 세션 정보 업데이트
+            redirectAttributes.addFlashAttribute("message", "회원정보가 수정되었습니다.");
+            return "redirect:/mypage";
+        } catch (IllegalStateException e) {
+            redirectAttributes.addFlashAttribute("error", e.getMessage());
+            return "redirect:/member/update";
+        }
+    }
+
+    @PostMapping("/member/delete")
+    public String deleteMember(HttpSession session, RedirectAttributes redirectAttributes) {
+        Member loginMember = (Member) session.getAttribute("loginMember");
+
+        if (loginMember == null) {
+            return "redirect:/login";
+        }
+
+        try {
+            System.out.println("회원 탈퇴 요청: " + loginMember.getEmail());
+            memberService.deleteMember(loginMember.getId());
+
+            // 세션 무효화
+            session.invalidate();
+
+            redirectAttributes.addFlashAttribute("message", "회원탈퇴가 완료되었습니다.");
+            return "redirect:/";
+
+        } catch (Exception e) {
+            System.out.println("회원 탈퇴 실패: " + e.getMessage());
+            redirectAttributes.addFlashAttribute("error", "회원탈퇴 처리 중 오류가 발생했습니다.");
+            return "redirect:/member/update";
+        }
+    }
 }
