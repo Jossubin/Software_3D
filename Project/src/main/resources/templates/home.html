@@ -3,18 +3,44 @@
 <head>
     <meta charset="UTF-8">
     <title>홈페이지</title>
+    <style>
+        .nav-buttons {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+        }
+        .nav-button {
+            padding: 8px 15px;
+            margin-left: 10px;
+            border: none;
+            border-radius: 5px;
+            background-color: #4CAF50;
+            color: white;
+            cursor: pointer;
+            text-decoration: none;
+        }
+        .nav-button:hover {
+            background-color: #45a049;
+        }
+    </style>
 </head>
 <body>
-    <h1>환영합니다!</h1>
-    
-    <div th:if="${member != null}">
-        <p th:text="${member.name + '님 환영합니다!'}"></p>
-        <a href="/logout">로그아웃</a>
+    <div class="nav-buttons">
+        <!-- 로그인하지 않은 경우 -->
+        <th:block th:if="${session.loginMember == null}">
+            <a href="/login" class="nav-button">로그인</a>
+            <a href="/signup" class="nav-button">회원가입</a>
+        </th:block>
+        
+        <!-- 로그인한 경우 -->
+        <th:block th:if="${session.loginMember != null}">
+            <a href="/mypage" class="nav-button">마이페이지</a>
+            <a href="/logout" class="nav-button">로그아웃</a>
+        </th:block>
     </div>
+
+    <!-- 기존 홈페이지 내용 -->
+    <h1>홈페이지에 오신 것을 환영합니다!</h1>
     
-    <div th:unless="${member != null}">
-        <a href="/login">로그인</a>
-        <a href="/register">회원가입</a>
-    </div>
 </body>
 </html> 
