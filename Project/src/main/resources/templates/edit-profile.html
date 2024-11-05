@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>회원정보 수정</title>
+    <style>
+        .container {
+            width: 80%;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+        }
+        .form-group input {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        .submit-btn {
+            background-color: #007bff;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        .delete-btn {
+            background-color: #dc3545;
+            color: white;
+            padding: 8px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+        .error-message {
+            color: red;
+            margin-top: 10px;
+        }
+        .success-message {
+            color: green;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>회원정보 수정</h2>
+        
+        <div th:if="${error}" class="error-message" th:text="${error}"></div>
+        <div th:if="${message}" class="success-message" th:text="${message}"></div>
+        
+        <form action="/member/update" method="post">
+            <div class="form-group">
+                <label for="email">이메일</label>
+                <input type="email" id="email" name="email" th:value="${member.email}" readonly />
+            </div>
+
+            <div class="form-group">
+                <label for="name">이름</label>
+                <input type="text" id="name" name="name" th:value="${member.name}" required />
+            </div>
+
+            <div class="form-group">
+                <label for="password">새 비밀번호</label>
+                <input type="password" id="password" name="password" placeholder="변경하려면 입력하세요" />
+            </div>
+
+            <div class="form-group">
+                <label for="phone">전화번호</label>
+                <input type="tel" id="phone" name="phone" th:value="${member.phone}" />
+            </div>
+
+            <button type="submit" class="submit-btn">수정하기</button>
+        </form>
+        
+        <form action="/member/delete" method="post" 
+              onsubmit="return confirm('정말 탈퇴하시겠습니까? 이 작업은 되돌릴 수 없습니다.');">
+            <button type="submit" class="delete-btn">회원탈퇴</button>
+        </form>
+
+        <div style="margin-top: 20px;">
+            <a href="/mypage" style="text-decoration: none; color: #666;">마이페이지로 돌아가기</a>
+        </div>
+    </div>
+</body>
+</html> 
