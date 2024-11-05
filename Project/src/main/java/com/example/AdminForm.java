@@ -1,23 +1,17 @@
 package com.example;
 
 
+import lombok.Getter;
+
 //
+@Getter
 public class AdminForm {
-    private Long id; // 'mid'를 'id'로 변경
+    //lombok사요 ㅇ 해서 간결
+    private Long id;
     private String invoice;
-
-    // Getters and Setters
-
-    public Long getId() {
-        return id;
-    }
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public String getInvoice() {
-        return invoice;
     }
 
     public void setInvoice(String invoice) {
