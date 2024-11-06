@@ -123,14 +123,26 @@
         function searchAddress() {
             new daum.Postcode({
                 oncomplete: function(data) {
+                    console.log('주소 검색 완료:', data);  // 디버깅용 로그
+                    
                     // 우편번호와 주소 정보를 해당 필드에 넣는다.
                     document.getElementById('zipCode').value = data.zonecode;
                     document.getElementById('mainAddress').value = data.address;
                     
-                    // 상세주소 필드로 포커스 이동
+                    // 커서를 상세주소 필드로 이동한다.
                     document.getElementById('detailAddress').focus();
+                },
+                onclose: function(state) {
+                    // 팝업이 닫힐 때 호출
+                    if(state === 'FORCE_CLOSE') {
+                        console.log('사용자가 강제로 팝업을 닫았습니다.');
+                    } else if(state === 'COMPLETE_CLOSE') {
+                        console.log('주소 검색이 완료되었습니다.');
+                    }
                 }
-            }).open();
+            }).open({
+                popupName: 'postcodePopup'
+            });
         }
 
         function deleteAddress(id) {
