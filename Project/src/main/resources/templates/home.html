@@ -25,6 +25,11 @@
     </style>
 </head>
 <body>
+    <!-- 메시지 표시 영역 추가 -->
+    <div th:if="${message}" style="text-align: center; color: green; margin-top: 20px;">
+        <p th:text="${message}"></p>
+    </div>
+    
     <div class="nav-buttons">
         <!-- 로그인하지 않은 경우 -->
         <th:block th:if="${session.loginMember == null}">

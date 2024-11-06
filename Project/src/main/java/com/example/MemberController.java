@@ -25,11 +25,17 @@ public class MemberController {
     }
 
     @PostMapping("/register")
-    public String register(@ModelAttribute Member member, RedirectAttributes redirectAttributes) {
+    public String register(@ModelAttribute Member member, Model model, RedirectAttributes redirectAttributes) {
+        // 이메일 중복 체크
+        if (memberService.isEmailExists(member.getEmail())) {
+            model.addAttribute("emailError", true);
+            return "register";
+        }
+
         try {
             memberService.register(member);
             redirectAttributes.addFlashAttribute("message", "회원가입이 완료되었습니다.");
-            return "redirect:/login"; // 로그인 페이지로 리다이렉트
+            return "redirect:/login";
         } catch (IllegalStateException e) {
             redirectAttributes.addFlashAttribute("error", e.getMessage());
             return "redirect:/register";
@@ -134,5 +140,14 @@ public class MemberController {
             redirectAttributes.addFlashAttribute("error", "회원탈퇴 처리 중 오류가 발생했습니다.");
             return "redirect:/member/update";
         }
+    }
+
+    @GetMapping("/logout")
+    public String logout(HttpSession session, RedirectAttributes redirectAttributes) {
+        // 세션 무효화
+        session.invalidate();
+        
+        redirectAttributes.addFlashAttribute("message", "로그아웃 되었습니다.");
+        return "redirect:/";
     }
 }
