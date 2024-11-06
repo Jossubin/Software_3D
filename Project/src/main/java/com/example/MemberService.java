@@ -76,4 +76,8 @@ public class MemberService {
             throw new IllegalStateException("회원 삭제 중 오류가 발생했습니다.", e);
         }
     }
+
+    public boolean isEmailExists(String email) {
+        return memberRepository.existsByEmail(email);
+    }
 }
