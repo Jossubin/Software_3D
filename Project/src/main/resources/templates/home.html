@@ -1,51 +1,77 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" lang="ko">
 <head>
     <meta charset="UTF-8">
-    <title>홈페이지</title>
-    <style>
-        .nav-buttons {
-            position: absolute;
-            top: 20px;
-            right: 20px;
-        }
-        .nav-button {
-            padding: 8px 15px;
-            margin-left: 10px;
-            border: none;
-            border-radius: 5px;
-            background-color: #4CAF50;
-            color: white;
-            cursor: pointer;
-            text-decoration: none;
-        }
-        .nav-button:hover {
-            background-color: #45a049;
-        }
-    </style>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modaz - New Collection</title>
+    <link href='https://fonts.googleapis.com/css?family=Montserrat' rel='stylesheet'>
+    <link rel="stylesheet" href="/css/main.css">
+    <link rel="stylesheet" href="/css/nav.css">
 </head>
 <body>
-    <!-- 메시지 표시 영역 추가 -->
+    <!-- 네비게이션 바 -->
+    <header>
+        <div class="navbar">
+            <div class="logo"><a href="/"><img src="/images/logo.png" alt="Modaz Logo"></a></div>
+            <ul class="nav-links">
+                <li><a href="#">HOME</a></li>
+                <li><a href="#">SHOP</a></li>
+                <li><a href="#">PAGE</a></li>
+                <li><a href="#">BLOG</a></li>
+                <li><a href="#">CONTACT</a></li>
+            </ul>
+            <div class="icons">
+                <a href="#" class="icon-container"><img src="/images/search.svg" alt="Search Icon" class="icon"></a>
+                <th:block th:if="${session.loginMember == null}">
+                    <a href="/login" class="icon-container"><img src="/images/profile.svg" alt="Login Icon" class="icon"></a>
+                </th:block>
+                <th:block th:if="${session.loginMember != null}">
+                    <a href="/mypage" class="icon-container"><img src="/images/profile.svg" alt="Profile Icon" class="icon"></a>
+                    <a href="/logout" class="icon-container">로그아웃</a>
+                </th:block>
+                <a href="#" class="icon-container"><img src="/images/cart.svg" alt="Cart Icon" class="icon"></a>
+            </div>            
+        </div>
+    </header>
+
+    <!-- 메시지 표시 영역 -->
     <div th:if="${message}" style="text-align: center; color: green; margin-top: 20px;">
         <p th:text="${message}"></p>
     </div>
-    
-    <div class="nav-buttons">
-        <!-- 로그인하지 않은 경우 -->
-        <th:block th:if="${session.loginMember == null}">
-            <a href="/login" class="nav-button">로그인</a>
-            <a href="/register" class="nav-button">회원가입</a>
-        </th:block>
-        
-        <!-- 로그인한 경우 -->
-        <th:block th:if="${session.loginMember != null}">
-            <a href="/mypage" class="nav-button">마이페이지</a>
-            <a href="/logout" class="nav-button">로그아웃</a>
-        </th:block>
-    </div>
 
-    <!-- 기존 홈페이지 내용 -->
-    <h1>홈페이지에 오신 것을 환영합니다!</h1>
+    <!-- 슬라이더 섹션 -->
+    <section class="slider">
+        <div class="slide active" style="background-image: url('/images/model.jpg');"></div>
+        <div class="slide" style="background-image: url('/images/model2.jpg');"></div>
+    </section>
+
+    <div class="hero-text">
+        <p class="trend">NEW TREND 2018</p>
+        <h1 class="collection-title">New Collection</h1>
+        <p class="description">BIG SALE OF THIS WEEK UP TO 30%</p>
+        <a href="#" class="shop-btn">SHOP NOW</a>
+    </div>
     
+    <!-- 베스트 상품 섹션 -->
+    <section class="best-products">
+        <h2>New Product</h2>
+        <div class="underline"></div>
+        <div class="product-grid">
+            <div class="product-card">
+                <span class="label new">New</span>
+                <a href="/product-detail"><img src="/images/sell1.jpg" alt="Product 1"></a>
+                <h3>Cotton White Underwear Block Out Edition</h3>
+                <p class="price">$100.00</p>
+                <div class="color-options">
+                    <span class="color red"></span>
+                    <span class="color green"></span>
+                    <span class="color black"></span>
+                </div>
+            </div>
+            <!-- ... 나머지 product-card들 ... -->
+        </div>
+    </section>
+
+    <script src="/js/main.js"></script>
 </body>
 </html> 
