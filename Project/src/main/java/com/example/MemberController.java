@@ -152,7 +152,15 @@ public class MemberController {
     }
     @GetMapping("/index")
     public String homepage() {
-
         return "index";
     }
+
+
+    @GetMapping("/product-detail")
+    public String productDetail(Model model) {
+        model.addAttribute("message", "제품 상세 페이지");
+        return "product-detail";
+    }
+
+
 }
