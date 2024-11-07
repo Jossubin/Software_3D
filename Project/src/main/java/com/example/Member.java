@@ -29,6 +29,8 @@ public class Member {
 
     private String profileImagePath;
 
+    private boolean isAdmin;
+
     public Member() {
         this.id = null;
     }
@@ -39,5 +41,13 @@ public class Member {
 
     public String getProfileImagePath() {
         return profileImagePath;
+    }
+
+    public boolean isAdmin() {
+        return isAdmin;
+    }
+
+    public void setAdmin(boolean admin) {
+        isAdmin = admin;
     }
 }
