@@ -8,6 +8,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import java.util.Optional;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import org.springframework.web.multipart.MultipartFile;
 
 @Service
 @Transactional
@@ -79,5 +84,50 @@ public class MemberService {
 
     public boolean isEmailExists(String email) {
         return memberRepository.existsByEmail(email);
+    }
+
+    public String saveProfileImage(MultipartFile file, Long memberId) throws IOException {
+        Member member = memberRepository.findById(memberId)
+                .orElseThrow(() -> new IllegalStateException("존재하지 않는 회원입니다."));
+
+        // 기존 이미지 경로 가져오기
+        String existingImagePath = member.getProfileImagePath();
+
+        // 파일 확장자 추출
+        String originalFilename = file.getOriginalFilename();
+        String fileExtension = originalFilename.substring(originalFilename.lastIndexOf("."));
+
+        // 새 이미지 저장 경로 설정 (회원 ID로 파일 이름 설정)
+        String fileName = memberId + fileExtension;
+        Path directoryPath = Paths.get("Project/src/main/resources/static/memberimg");
+        
+        // 디렉토리가 존재하지 않으면 생성
+        if (!Files.exists(directoryPath)) {
+            Files.createDirectories(directoryPath);
+        }
+        
+        Path path = directoryPath.resolve(fileName);
+
+        // 기존 파일 삭제
+        if (existingImagePath != null) {
+            Files.deleteIfExists(Paths.get(existingImagePath));
+        }
+
+        // 새 파일 저장
+        Files.write(path, file.getBytes());
+
+        // 새로운 이미지 경로 반환
+        return "/memberimg/" + fileName; // 웹 경로로 반환
+    }
+
+    public void updateMemberProfileImage(Long memberId, MultipartFile profileImage) throws IOException {
+        Member member = memberRepository.findById(memberId)
+                .orElseThrow(() -> new IllegalStateException("존재하지 않는 회원입니다."));
+
+        if (!profileImage.isEmpty()) {
+            String imagePath = saveProfileImage(profileImage, memberId);
+            member.setProfileImagePath(imagePath);
+            memberRepository.save(member);
+        }
     }
 }
