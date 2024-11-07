@@ -27,7 +27,17 @@ public class Member {
     @Column(nullable = true)
     private String invoice;
 
+    private String profileImagePath;
+
     public Member() {
         this.id = null;
+    }
+
+    public void setProfileImagePath(String profileImagePath) {
+        this.profileImagePath = profileImagePath;
+    }
+
+    public String getProfileImagePath() {
+        return profileImagePath;
     }
 }

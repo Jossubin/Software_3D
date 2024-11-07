@@ -8,8 +8,11 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import jakarta.servlet.http.HttpSession;
+import java.io.IOException;
 
 @Controller
 @RequiredArgsConstructor
@@ -98,7 +101,9 @@ public class MemberController {
     }
 
     @PostMapping("/member/update")
-    public String editProfile(@ModelAttribute Member member, RedirectAttributes redirectAttributes) {
+    public String editProfile(@ModelAttribute Member member, 
+                              @RequestParam("profileImage") MultipartFile profileImage,
+                              RedirectAttributes redirectAttributes) {
         Member loginMember = (Member) session.getAttribute("loginMember");
 
         if (loginMember == null) {
@@ -107,12 +112,29 @@ public class MemberController {
 
         try {
             member.setId(loginMember.getId()); // 기존 회원의 ID 설정
+
+            // 비밀번호가 비어 있으면 기존 비밀번호 유지
+            if (member.getPassword() == null || member.getPassword().isEmpty()) {
+                member.setPassword(loginMember.getPassword());
+            }
+
+            // 프로필 이미지 저장 로직 추가
+            if (!profileImage.isEmpty()) {
+                try {
+                    String imagePath = memberService.saveProfileImage(profileImage, loginMember.getId());
+                    member.setProfileImagePath(imagePath);
+                } catch (IOException e) {
+                    redirectAttributes.addFlashAttribute("error", "프로필 이미지 저장 중 오류가 발생했습니다.");
+                    return "redirect:/member/update";
+                }
+            }
+
             memberService.updateMember(member);
             session.setAttribute("loginMember", member); // 세션 정보 업데이트
             redirectAttributes.addFlashAttribute("message", "회원정보가 수정되었습니다.");
             return "redirect:/mypage";
-        } catch (IllegalStateException e) {
-            redirectAttributes.addFlashAttribute("error", e.getMessage());
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("error", "회원정보 수정 중 오류가 발생했습니다.");
             return "redirect:/member/update";
         }
     }
