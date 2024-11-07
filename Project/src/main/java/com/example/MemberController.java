@@ -150,4 +150,9 @@ public class MemberController {
         redirectAttributes.addFlashAttribute("message", "로그아웃 되었습니다.");
         return "redirect:/";
     }
+    @GetMapping("/index")
+    public String homepage() {
+
+        return "index";
+    }
 }
