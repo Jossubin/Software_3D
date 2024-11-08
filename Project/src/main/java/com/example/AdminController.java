@@ -1,8 +1,5 @@
 package com.example;
 
-import com.example.AdminForm;
-import com.example.Member;
-import com.example.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -22,7 +19,7 @@ public class AdminController {
     @GetMapping("/admin")
     public String showAdminForm(Model model) {
         model.addAttribute("adminForm", new AdminForm());
-        return "admin";
+        return "admin/admin";
     }
 
     @PostMapping("/admin")
@@ -35,7 +32,7 @@ public class AdminController {
         } else {
             model.addAttribute("errorMessage", "해당 ID의 회원을 찾을 수 없습니다.");
         }
-        return "admin";
+        return "admin/admin";
     }
 
     @GetMapping("/memberList")

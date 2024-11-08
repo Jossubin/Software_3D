@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>상품 추가 - Admin</title>
+  <link rel="stylesheet" href="/css/admin.css">
+</head>
+<body>
+<h1>새 상품 추가</h1>
+
+<div th:if="${errorMessage}" class="alert alert-danger" th:text="${errorMessage}"></div>
+
+<form th:action="@{/admin/products/add}" method="post" enctype="multipart/form-data">
+  <div>
+    <label for="name">상품명:</label>
+    <input type="text" id="name" name="name" th:value="${product.name}" required>
+  </div>
+  <div>
+    <label for="description">설명:</label>
+    <textarea id="description" name="description" required th:text="${product.description}"></textarea>
+  </div>
+  <div>
+    <label for="price">가격:</label>
+    <input type="number" id="price" name="price" th:value="${product.price}" step="0.01" required>
+  </div>
+  <div>
+    <label for="imageFile">이미지 업로드:</label>
+    <input type="file" id="imageFile" name="imageFile" accept="image/*" required>
+  </div>
+  <div>
+    <button type="submit">추가</button>
+    <a href="/admin/products">취소</a>
+  </div>
+</form>
+</body>
+</html>
