@@ -1,8 +1,5 @@
 package com.example;
 
-import com.example.AdminForm;
-import com.example.Member;
-import com.example.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

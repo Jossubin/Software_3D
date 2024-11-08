@@ -56,13 +56,8 @@ public class MemberController {
             Member authenticatedMember = memberService.login(member.getEmail(), member.getPassword());
             // 로그인 성공 시 세션에 회원 정보 저장
             session.setAttribute("loginMember", authenticatedMember);
-
-            // 관리자 여부 확인
-            if (authenticatedMember.isAdmin()) {
-                return "redirect:/admin";  // 관리자 페이지로 리다이렉트
-            }
-
-            return "redirect:/index";  // 일반 사용자 메인 페이지로 리다이렉트
+            return "redirect:/index";
+           // return "redirect:/best-products";
         } catch (IllegalArgumentException e) {
             redirectAttributes.addFlashAttribute("error", "이메일 또는 비밀번호가 올바르지 않습니다.");
             return "redirect:/login";
@@ -76,7 +71,7 @@ public class MemberController {
         if (loginMember != null) {
             model.addAttribute("member", loginMember);
         }
-        return "home";  // home.html 템플릿을 반환
+        return "home";
     }
 
     @GetMapping("/mypage")
@@ -189,6 +184,15 @@ public class MemberController {
         model.addAttribute("message", "제품 상세 페이지");
         return "product-detail";
     }
-
+////////
+@GetMapping("/home")
+public String home11(Model model) {
+    // 로그인된 회원 정보를 가져옴
+    Member loginMember = (Member) session.getAttribute("loginMember");
+    if (loginMember != null) {
+        model.addAttribute("member", loginMember);
+    }
+    return "home";
+}
 
 }
