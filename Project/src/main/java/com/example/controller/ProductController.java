@@ -19,11 +19,11 @@ public class ProductController {
     private ProductService productService;
 
     // 베스트 상품 페이지
-    @GetMapping("/best-products")
+    @GetMapping("/test_newhome")
     public String getBestProducts(Model model) {
         List<Product> products = productService.getAllProducts();
         model.addAttribute("products", products);
-        return "best-products"; // Thymeleaf 템플릿 이름
+        return "test_newhome"; // Thymeleaf 템플릿 이름
     }
 
     // 상품 추가 폼

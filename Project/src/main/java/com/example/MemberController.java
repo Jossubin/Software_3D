@@ -57,6 +57,7 @@ public class MemberController {
             // 로그인 성공 시 세션에 회원 정보 저장
             session.setAttribute("loginMember", authenticatedMember);
             return "redirect:/index";
+           // return "redirect:/best-products";
         } catch (IllegalArgumentException e) {
             redirectAttributes.addFlashAttribute("error", "이메일 또는 비밀번호가 올바르지 않습니다.");
             return "redirect:/login";
