@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html xmlns:th="http://www.thymeleaf.org" lang="ko">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -12,7 +12,7 @@
     <!-- 네비게이션 바 -->
     <header>
         <div class="navbar">
-            <div class="logo"><a href="/public"><img src="/images/logo.png" alt="Modaz Logo"></a></div>
+            <div class="logo"><a href="/"><img src="/images/logo.png" alt="Modaz Logo"></a></div>
             <ul class="nav-links">
                 <li><a href="#">HOME</a></li>
                 <li><a href="#">SHOP</a></li>
@@ -22,11 +22,22 @@
             </ul>
             <div class="icons">
                 <a href="#" class="icon-container"><img src="/images/search.svg" alt="Search Icon" class="icon"></a>
-                <a href="mypage" class="icon-container"><img src="/images/profile.svg" alt="Profile Icon" class="icon"></a>
+                <th:block th:if="${session.loginMember == null}">
+                    <a href="/login" class="icon-container"><img src="/images/profile.svg" alt="Login Icon" class="icon"></a>
+                </th:block>
+                <th:block th:if="${session.loginMember != null}">
+                    <a href="/mypage" class="icon-container"><img src="/images/profile.svg" alt="Profile Icon" class="icon"></a>
+                    <a href="/logout" class="icon-container">로그아웃</a>
+                </th:block>
                 <a href="#" class="icon-container"><img src="/images/cart.svg" alt="Cart Icon" class="icon"></a>
             </div>            
         </div>
     </header>
+
+    <!-- 메시지 표시 영역 -->
+    <div th:if="${message}" style="text-align: center; color: green; margin-top: 20px;">
+        <p th:text="${message}"></p>
+    </div>
 
     <!-- 슬라이더 섹션 -->
     <section class="slider">
@@ -92,7 +103,6 @@
         </div>
     </section>
 
-
-    <script src="/scripts/main.js"></script>
+    <script src="/js/main.js"></script>
 </body>
 </html>
