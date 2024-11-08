@@ -19,7 +19,7 @@ public class AdminController {
     @GetMapping("/admin")
     public String showAdminForm(Model model) {
         model.addAttribute("adminForm", new AdminForm());
-        return "admin/admin";
+        return "admin";
     }
 
     @PostMapping("/admin")
@@ -32,7 +32,7 @@ public class AdminController {
         } else {
             model.addAttribute("errorMessage", "해당 ID의 회원을 찾을 수 없습니다.");
         }
-        return "admin/admin";
+        return "admin";
     }
 
     @GetMapping("/memberList")
