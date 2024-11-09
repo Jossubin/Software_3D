@@ -30,7 +30,7 @@ public class ProductController {
     @GetMapping("/admin/add-product")
     public String showAddProductForm(Model model) {
         model.addAttribute("product", new Product());
-        return "add-product";
+        return "admin/add-product";
     }
 
     // 상품 저장
@@ -38,16 +38,22 @@ public class ProductController {
     public String saveProduct(@ModelAttribute Product product,
                               @RequestParam("imageFile") MultipartFile imageFile) {
         if (!imageFile.isEmpty()) {
-            String imageName = imageFile.getOriginalFilename();
-            product.setImageName(imageName);
             try {
+                // 원본 파일 이름 가져오기
+                String originalFilename = imageFile.getOriginalFilename();
+
                 // 이미지 파일 저장 경로
-                String uploadDir = "src/main/resources/static/product_IMG_/";
+                String uploadDir = System.getProperty("user.dir") + "/uploads/product_IMG_/";
                 File uploadPath = new File(uploadDir);
                 if (!uploadPath.exists()) {
                     uploadPath.mkdirs();
                 }
-                imageFile.transferTo(new File(uploadDir + imageName));
+
+                // 파일 저장
+                imageFile.transferTo(new File(uploadDir + originalFilename));
+
+                // Product 객체에 이미지 이름 설정
+                product.setImageName(originalFilename);
             } catch (IOException e) {
                 e.printStackTrace();
             }

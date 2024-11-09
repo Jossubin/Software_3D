@@ -30,7 +30,7 @@
   <tr th:each="product : ${products}">
     <td th:text="${product.id}">1</td>
     <td>
-      <img th:src="@{'/product_IMG_/' + ${product.imageName}}" alt="상품 이미지" width="100">
+      <img th:src="@{'/product_IMG_/'+${product.imageName}}" alt="상품 이미지" width="100">
     </td>
     <td th:text="${product.name}">상품명</td>
     <td th:text="${product.description}">상품 설명</td>

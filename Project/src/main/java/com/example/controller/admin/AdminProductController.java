@@ -11,11 +11,9 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.File;
 import java.io.IOException;
 import java.util.Optional;
-import java.util.UUID;
 
 @Controller
 @RequiredArgsConstructor
-
 @RequestMapping("/admin/products")
 public class AdminProductController {
 
@@ -42,23 +40,21 @@ public class AdminProductController {
                              Model model) {
         if (!imageFile.isEmpty()) {
             try {
-                // 고유한 파일 이름 생성
+                // 원본 파일 이름 가져오기
                 String originalFilename = imageFile.getOriginalFilename();
-                String fileExtension = originalFilename.substring(originalFilename.lastIndexOf("."));
-                String uniqueFilename = UUID.randomUUID().toString() + fileExtension;
 
                 // 파일 저장 경로
-                String uploadDir = System.getProperty("user.dir") + "/src/main/resources/static/product_IMG_/";
+                String uploadDir = System.getProperty("user.dir") + "/uploads/product_IMG_/";
                 File uploadPath = new File(uploadDir);
                 if (!uploadPath.exists()) {
                     uploadPath.mkdirs();
                 }
 
                 // 파일 저장
-                imageFile.transferTo(new File(uploadDir + uniqueFilename));
+                imageFile.transferTo(new File(uploadDir + originalFilename));
 
                 // Product 객체에 이미지 이름 설정
-                product.setImageName(uniqueFilename);
+                product.setImageName(originalFilename);
             } catch (IOException e) {
                 e.printStackTrace();
                 model.addAttribute("errorMessage", "이미지 업로드에 실패했습니다.");
@@ -100,13 +96,11 @@ public class AdminProductController {
 
             if (!imageFile.isEmpty()) {
                 try {
-                    // 고유한 파일 이름 생성
+                    // 원본 파일 이름 가져오기
                     String originalFilename = imageFile.getOriginalFilename();
-                    String fileExtension = originalFilename.substring(originalFilename.lastIndexOf("."));
-                    String uniqueFilename = UUID.randomUUID().toString() + fileExtension;
 
                     // 파일 저장 경로
-                    String uploadDir = System.getProperty("user.dir") + "/src/main/resources/static/product_IMG_/";
+                    String uploadDir = System.getProperty("user.dir") + "/uploads/product_IMG_/";
                     File uploadPath = new File(uploadDir);
                     if (!uploadPath.exists()) {
                         uploadPath.mkdirs();
@@ -122,10 +116,10 @@ public class AdminProductController {
                     }
 
                     // 파일 저장
-                    imageFile.transferTo(new File(uploadDir + uniqueFilename));
+                    imageFile.transferTo(new File(uploadDir + originalFilename));
 
                     // Product 객체에 이미지 이름 설정
-                    existingProduct.setImageName(uniqueFilename);
+                    existingProduct.setImageName(originalFilename);
                 } catch (IOException e) {
                     e.printStackTrace();
                     model.addAttribute("errorMessage", "이미지 업로드에 실패했습니다.");
@@ -151,7 +145,7 @@ public class AdminProductController {
             // 이미지 파일 삭제 (선택 사항)
             String imageName = productOpt.get().getImageName();
             if (imageName != null) {
-                String uploadDir = System.getProperty("user.dir") + "/src/main/resources/static/product_IMG_/";
+                String uploadDir = System.getProperty("user.dir") + "/uploads/product_IMG_/";
                 File imageFile = new File(uploadDir + imageName);
                 if (imageFile.exists()) {
                     imageFile.delete();

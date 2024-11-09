@@ -194,5 +194,9 @@ public String home11(Model model) {
     }
     return "home";
 }
+    @GetMapping("/productImage")
+    public String showProductImage() {
+        return "productImage";  // productImage.html 템플릿을 반환
+    }
 
 }
