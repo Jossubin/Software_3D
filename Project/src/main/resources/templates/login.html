@@ -5,23 +5,35 @@
     <title>로그인</title>
 </head>
 <body>
-    <h2>로그인</h2>
+<div style="max-width: 400px; margin: 50px auto; padding: 20px; border: 1px solid #ccc; border-radius: 8px; background-color: #f9f9f9;">
+    <h2 style="text-align: center; color: #333;">로그인</h2>
+
     <form action="/login" method="post">
-        <div>
-            <label for="email">이메일:</label>
-            <input type="email" id="email" name="email" required>
+        <div style="margin-bottom: 20px;">
+            <label for="email" style="font-size: 16px; color: #555;">이메일:</label><br>
+            <input type="email" id="email" name="email" required
+                   style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 5px; box-sizing: border-box; margin-top: 5px;">
         </div>
-        <div>
-            <label for="password">비밀번호:</label>
-            <input type="password" id="password" name="password" required>
+        <div style="margin-bottom: 20px;">
+            <label for="password" style="font-size: 16px; color: #555;">비밀번호:</label><br>
+            <input type="password" id="password" name="password" required
+                   style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 5px; box-sizing: border-box; margin-top: 5px;">
         </div>
-        <div th:if="${error}" style="color: red;">
+
+        <!-- 에러 메시지 -->
+        <div th:if="${error}" style="color: red; font-size: 14px; text-align: center;">
             <p th:text="${error}"></p>
         </div>
-        <button type="submit">로그인</button>
+
+        <button type="submit"
+                style="width: 100%; padding: 12px; background-color: #4CAF50; color: white; border: none; border-radius: 5px; cursor: pointer; font-size: 16px;">
+            로그인
+        </button>
     </form>
-    <div>
-        <p>계정이 없으신가요? <a href="/register">회원가입</a></p>
+
+    <div style="text-align: center; margin-top: 15px;">
+        <p style="font-size: 14px; color: #555;">계정이 없으신가요? <a href="/register" style="color: #4CAF50; text-decoration: none;">회원가입</a></p>
     </div>
+</div>
 </body>
-</html> 
+</html>
