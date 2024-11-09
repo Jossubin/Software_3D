@@ -5,7 +5,7 @@
     <title>관리자 페이지</title>
 </head>
 <body>
-<h1>송장번호 업데이트</h1>
+<h1>송장번호 등록</h1>
 
 <!-- 성공 메시지 -->
 <div th:if="${successMessage}">
@@ -20,16 +20,23 @@
 <!-- 관리자 폼 -->
 <form th:action="@{/admin}" th:object="${adminForm}" method="post">
     <div>
-        <label for="email">이메일:</label>
+        <label for="email">고객이메일:</label>
         <input type="email" id="email" th:field="*{email}" required />
     </div>
     <div>
-        <label for="invoice">송장번호:</label>
+        <label for="invoice">등록할 송장번호:</label>
         <input type="text" id="invoice" th:field="*{invoice}" required />
     </div>
     <div>
         <button type="submit">확인</button>
     </div>
 </form>
+
+<div>
+    <form th:action="@{/admin/products}" method="get"><a>
+        <button type="submit">홈쇼핑 제품 관리로 이동</button>
+    </form>
+</div>
+
 </body>
 </html>
