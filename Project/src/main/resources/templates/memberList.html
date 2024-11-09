@@ -3,28 +3,134 @@
 <head>
     <meta charset="UTF-8">
     <title>회원 목록</title>
+    <style>
+        /* 기본 스타일 */
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #6a11cb, #2575fc); /* 그라디언트 배경 */
+            margin: 0;
+            padding: 0;
+            color: #fff;
+        }
+
+        h1 {
+            text-align: center;
+            margin-top: 50px;
+            font-size: 36px;
+            color: #fff;
+        }
+
+        /* 카드 스타일 */
+        .table-container {
+            max-width: 1200px;
+            margin: 30px auto;
+            padding: 20px;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            color: #333;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background-color: white;
+            border-radius: 10px;
+        }
+
+        th, td {
+            padding: 15px;
+            text-align: center;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #4CAF50;
+            color: white;
+            font-size: 18px;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        td img {
+            border-radius: 8px;
+            width: 100px;
+            height: auto;
+        }
+
+        /* 버튼 스타일 */
+        .btn {
+            padding: 12px 20px;
+            background-color: #2196F3;
+            color: white;
+            text-align: center;
+            border-radius: 5px;
+            text-decoration: none;
+            font-size: 16px;
+            margin: 10px 0;
+            display: inline-block;
+            width: 100%;
+        }
+
+        .btn:hover {
+            background-color: #0b7dda;
+        }
+
+        .back-btn {
+            background-color: #4CAF50;
+        }
+
+        /* 링크 스타일 */
+        .link-container {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .link-container a {
+            color: #0c0000;
+            text-decoration: none;
+        }
+
+        .link-container a:hover {
+            text-decoration: underline;
+        }
+
+    </style>
 </head>
 <body>
+
 <h1>회원 목록</h1>
-<table border="1">
-    <thead>
-    <tr>
-        <th>ID</th>
-        <th>이메일</th>
-        <th>이름</th>
-        <th>전화번호</th>
-        <th>송장번호</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr th:each="member : ${members}">
-        <td th:text="${member.id}"></td>
-        <td th:text="${member.email}"></td>
-        <td th:text="${member.name}"></td>
-        <td th:text="${member.phone}"></td>
-        <td th:text="${member.invoice}"></td>
-    </tr>
-    </tbody>
-</table>
+
+<!-- 회원 목록 테이블 -->
+<div class="table-container">
+    <table>
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>이메일</th>
+            <th>이름</th>
+            <th>전화번호</th>
+            <th>송장번호</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="member : ${members}">
+            <td th:text="${member.id}"></td>
+            <td th:text="${member.email}"></td>
+            <td th:text="${member.name}"></td>
+            <td th:text="${member.phone}"></td>
+            <td th:text="${member.invoice}"></td>
+        </tr>
+        </tbody>
+    </table>
+
+    <!-- 뒤로 가는 버튼 -->
+    <div class="link-container">
+        <a href="/admin/products" class="btn back-btn">뒤로 가기</a>
+    </div>
+</div>
+
 </body>
 </html>

@@ -4,20 +4,30 @@
     <meta charset="UTF-8">
     <title>관리자 페이지</title>
     <style>
-        /* 폼 스타일 */
-        .form-container {
-            width: 400px;
-            margin: 50px auto;
-            padding: 20px;
-            background-color: #f9f9f9;
-            border-radius: 8px;
-            border: 1px solid #ccc;
+        /* 기본 스타일 */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
         }
 
         h1 {
             text-align: center;
-            font-size: 24px;
+            margin-top: 50px;
+            font-size: 32px;
             color: #333;
+        }
+
+        /* 폼 스타일 */
+        .form-container {
+            width: 80%;
+            max-width: 500px;
+            margin: 30px auto;
+            padding: 30px;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
         }
 
         .form-group {
@@ -32,12 +42,12 @@
         input[type="email"],
         input[type="text"] {
             width: 100%;
-            padding: 10px;
+            padding: 12px;
             border: 1px solid #ccc;
             border-radius: 5px;
             box-sizing: border-box;
             margin-top: 5px;
-            font-size: 14px;
+            font-size: 16px;
         }
 
         button {
@@ -49,7 +59,7 @@
             border-radius: 5px;
             cursor: pointer;
             font-size: 16px;
-            margin-top: 10px;
+            margin-top: 20px;
         }
 
         button:hover {
@@ -78,6 +88,26 @@
 
         .link-container a:hover {
             text-decoration: underline;
+        }
+
+        .extra-links {
+            text-align: center;
+            margin-top: 30px;
+        }
+
+        .extra-links a {
+            display: inline-block;
+            background-color: #2196F3;
+            color: white;
+            padding: 12px 20px;
+            border-radius: 5px;
+            text-decoration: none;
+            font-size: 16px;
+            margin: 10px;
+        }
+
+        .extra-links a:hover {
+            background-color: #0b7dda;
         }
     </style>
 </head>
@@ -114,6 +144,11 @@
         <a href="/admin/products">
             <button type="button">홈쇼핑 제품 관리로 이동</button>
         </a>
+    </div>
+
+    <!-- 전체 회원 목록으로 이동 버튼 -->
+    <div class="extra-links">
+        <a href="/memberList">전체 회원 목록 보기</a>
     </div>
 </div>
 
