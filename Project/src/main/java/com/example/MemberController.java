@@ -29,7 +29,7 @@ public class MemberController {
 
     @PostMapping("/register")
     public String register(@ModelAttribute Member member, Model model, RedirectAttributes redirectAttributes) {
-        // 이메일 중복 체크
+        // 이메일 중��� 체크
         if (memberService.isEmailExists(member.getEmail())) {
             model.addAttribute("emailError", true);
             return "register";
@@ -56,8 +56,13 @@ public class MemberController {
             Member authenticatedMember = memberService.login(member.getEmail(), member.getPassword());
             // 로그인 성공 시 세션에 회원 정보 저장
             session.setAttribute("loginMember", authenticatedMember);
+            
+            // admin 계정 체크
+            if (authenticatedMember.isAdmin()) {
+                return "redirect:/admin";  // AdminController에서 처리
+            }
+            
             return "redirect:/index";
-           // return "redirect:/best-products";
         } catch (IllegalArgumentException e) {
             redirectAttributes.addFlashAttribute("error", "이메일 또는 비밀번호가 올바르지 않습니다.");
             return "redirect:/login";
