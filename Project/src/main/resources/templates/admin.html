@@ -18,10 +18,10 @@
 </div>
 
 <!-- 관리자 폼 -->
-<form th:action="@{/templates/admin}" th:object="${adminForm}" method="post">
+<form th:action="@{/admin}" th:object="${adminForm}" method="post">
     <div>
-        <label for="id">회원 ID:</label>
-        <input type="number" id="id" th:field="*{id}" required />
+        <label for="email">이메일:</label>
+        <input type="email" id="email" th:field="*{email}" required />
     </div>
     <div>
         <label for="invoice">송장번호:</label>

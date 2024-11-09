@@ -24,13 +24,13 @@ public class AdminController {
 
     @PostMapping("/admin")
     public String updateInvoice(@ModelAttribute AdminForm adminForm, Model model) {
-        Member member = memberRepository.findById(adminForm.getId()).orElse(null);
+        Member member = memberRepository.findByEmail(adminForm.getEmail()).orElse(null);
         if (member != null) {
             member.setInvoice(adminForm.getInvoice());
             memberRepository.save(member);
             model.addAttribute("successMessage", "송장번호가 업데이트되었습니다.");
         } else {
-            model.addAttribute("errorMessage", "해당 ID의 회원을 찾을 수 없습니다.");
+            model.addAttribute("errorMessage", "해당 이메일의 회원을 찾을 수 없습니다.");
         }
         return "admin";
     }

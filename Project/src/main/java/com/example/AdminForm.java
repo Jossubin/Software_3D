@@ -1,20 +1,11 @@
 package com.example;
 
-
 import lombok.Getter;
+import lombok.Setter;
 
-//
 @Getter
+@Setter
 public class AdminForm {
-    //lombok사요 ㅇ 해서 간결
-    private Long id;
+    private String email;
     private String invoice;
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public void setInvoice(String invoice) {
-        this.invoice = invoice;
-    }
 }
