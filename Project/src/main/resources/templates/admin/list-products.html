@@ -8,13 +8,16 @@
 <body>
 <h1>상품 목록</h1>
 
-<!-- http://localhost:8080/admin/products 로 접속 해아함  해당 설정은 adminproductcontroller에서 가능 -->
-
+<!-- 새 상품 추가 링크 -->
 <a href="/admin/products/add">새 상품 추가</a>
 
+<!-- 성공 메시지 -->
 <div th:if="${successMessage}" class="alert alert-success" th:text="${successMessage}"></div>
+
+<!-- 오류 메시지 -->
 <div th:if="${errorMessage}" class="alert alert-danger" th:text="${errorMessage}"></div>
 
+<!-- 상품 목록 테이블 -->
 <table>
   <thead>
   <tr>
@@ -42,5 +45,11 @@
   </tr>
   </tbody>
 </table>
+
+<!-- 이동 버튼 추가 -->
+<a href="/test_newhome">
+  <button type="button">수정된 홈 쇼핑 사이트로 이동 하기 </button>
+</a>
+
 </body>
 </html>
