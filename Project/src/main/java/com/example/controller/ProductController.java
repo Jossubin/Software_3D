@@ -11,6 +11,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
+import java.util.Optional;
 
 @Controller
 public class ProductController {
@@ -60,5 +61,18 @@ public class ProductController {
         }
         productService.saveProduct(product);
         return "redirect:/best-products";
+    }
+
+    // 상품 상세 페이지 처리 메서드 추가
+    @GetMapping("/product-detail/{id}")
+    public String productDetail(@PathVariable("id") Long id, Model model) {
+        Optional<Product> productOpt = productService.getProductById(id);
+        
+        if (productOpt.isPresent()) {
+            model.addAttribute("product", productOpt.get());
+            return "product-detail";
+        } else {
+            return "redirect:/test_newhome";
+        }
     }
 }

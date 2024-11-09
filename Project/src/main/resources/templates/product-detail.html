@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html xmlns:th="http://www.thymeleaf.org" lang="ko">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -31,12 +31,17 @@
 
 <section class="product-detail">
     <div class="product-image">
-        <img src="/images/sell1.jpg" alt="Spectacle Shoes">
+        <img th:if="${product.imageName}" th:src="@{'/product_IMG_/' + ${product.imageName}}" th:alt="${product.name}">
+        <img th:unless="${product.imageName}" src="/images/default-product.jpg" alt="Default Product Image">
     </div>
     <div class="product-info">
-        <h1 class="product-title">Spectacle Shoes</h1>
-        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
-        <p class="price"><span class="old-price">$90.00</span> $24.00</p>
+        <h1 class="product-title" th:text="${product.name}">Product Name</h1>
+        <p th:text="${product.description}">Product Description</p>
+        
+        <p class="price">
+            <span th:if="${product.oldPrice}" class="old-price" th:text="'$' + ${#numbers.formatDecimal(product.oldPrice, 0, 'COMMA', 2, 'POINT')}">$90.00</span>
+            <span th:text="'$' + ${#numbers.formatDecimal(product.price, 0, 'COMMA', 2, 'POINT')}">$24.00</span>
+        </p>
 
         <!-- 사이즈 선택 -->
         <div class="sizes">
