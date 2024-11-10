@@ -1,7 +1,5 @@
 package com.example;
 
-import com.example.Member;
-import com.example.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -184,10 +182,10 @@ public class MemberController {
     }
 
 
-    @GetMapping("/product-detail")
+    @GetMapping("/original_product-detail")
     public String productDetail(Model model) {
         model.addAttribute("message", "제품 상세 페이지");
-        return "product-detail";
+        return "original_product-detail";
     }
 ////////
 @GetMapping("/home")

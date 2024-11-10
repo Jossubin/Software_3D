@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <title>상품 추가 - Admin</title>
   <style>
-    /* 기본 스타일 */
+    /* 기존 스타일 유지 */
     body {
       font-family: Arial, sans-serif;
       background-color: #f4f4f4;
@@ -33,6 +33,7 @@
       font-size: 16px;
       color: #555;
       margin-bottom: 8px;
+      display: block;
     }
 
     .form-container input[type="text"],
@@ -111,29 +112,39 @@
 
 <!-- 상품 추가 폼 -->
 <div class="form-container">
-  <form th:action="@{/admin/products/add}" method="post" enctype="multipart/form-data">
+  <form th:action="@{/admin/products/add}" th:object="${product}" method="post" enctype="multipart/form-data">
     <!-- 상품명 입력 -->
     <div>
       <label for="name">상품명:</label>
-      <input type="text" id="name" name="name" th:value="${product.name}" required>
+      <input type="text" id="name" th:field="*{name}" placeholder="예: 트렌디한 티셔츠" required>
     </div>
 
     <!-- 상품 설명 입력 -->
     <div>
       <label for="description">설명:</label>
-      <textarea id="description" name="description" required th:text="${product.description}"></textarea>
+      <textarea id="description" th:field="*{description}" placeholder="상품 설명을 입력하세요." required></textarea>
     </div>
 
     <!-- 가격 입력 -->
     <div>
       <label for="price">가격:</label>
-      <input type="number" id="price" name="price" th:value="${product.price}" step="0.01" required>
+      <input type="number" id="price" th:field="*{price}" step="0.01" placeholder="예: 24.00" required>
+    </div>
+    <!-- 할인전 가격 입력-->
+    <div>
+      <label for="oldPrice">이전 가격:</label>
+      <input type="number" id="oldPrice" th:field="*{oldPrice}" step="0.01" placeholder="예: 150.00">
     </div>
 
     <!-- 이미지 업로드 -->
     <div>
       <label for="imageFile">이미지 업로드:</label>
       <input type="file" id="imageFile" name="imageFile" accept="image/*" required>
+    </div>
+
+    <div>
+      <label for="feature">Feature (쉼표로 구분)</label>
+      <input type="text" id="feature" th:field="*{feature}" placeholder="예: 100% cotton,6 months warranty,High Quality">
     </div>
 
     <!-- 상품 추가 버튼 -->

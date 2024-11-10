@@ -7,6 +7,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.io.File;
 import java.io.IOException;
@@ -35,8 +36,9 @@ public class AdminProductController {
 
     // 상품 추가 처리
     @PostMapping("/add")
-    public String addProduct(@ModelAttribute Product product,
+    public String addProduct(@ModelAttribute("product") Product product,
                              @RequestParam("imageFile") MultipartFile imageFile,
+                             RedirectAttributes redirectAttributes,
                              Model model) {
         if (!imageFile.isEmpty()) {
             try {
@@ -64,7 +66,8 @@ public class AdminProductController {
 
         // 상품 저장
         productService.saveProduct(product);
-        model.addAttribute("successMessage", "상품이 성공적으로 추가되었습니다.");
+        // 성공 메시지 전달
+        redirectAttributes.addFlashAttribute("successMessage", "상품이 성공적으로 추가되었습니다.");
         return "redirect:/admin/products";
     }
 
@@ -84,8 +87,9 @@ public class AdminProductController {
     // 상품 수정 처리
     @PostMapping("/edit/{id}")
     public String editProduct(@PathVariable Long id,
-                              @ModelAttribute Product product,
+                              @ModelAttribute("product") Product product,
                               @RequestParam("imageFile") MultipartFile imageFile,
+                              RedirectAttributes redirectAttributes,
                               Model model) {
         Optional<Product> existingProductOpt = productService.getProductById(id);
         if (existingProductOpt.isPresent()) {
@@ -93,6 +97,8 @@ public class AdminProductController {
             existingProduct.setName(product.getName());
             existingProduct.setDescription(product.getDescription());
             existingProduct.setPrice(product.getPrice());
+            existingProduct.setFeature(product.getFeature());
+            existingProduct.setOldPrice(product.getOldPrice());
 
             if (!imageFile.isEmpty()) {
                 try {
@@ -106,7 +112,7 @@ public class AdminProductController {
                         uploadPath.mkdirs();
                     }
 
-                    // 기존 이미지 삭제 (선택 사항)
+                    // 기존 이미지 삭제
                     String existingImage = existingProduct.getImageName();
                     if (existingImage != null) {
                         File existingFile = new File(uploadDir + existingImage);
@@ -129,7 +135,8 @@ public class AdminProductController {
 
             // 수정된 상품 저장
             productService.saveProduct(existingProduct);
-            model.addAttribute("successMessage", "상품이 성공적으로 수정되었습니다.");
+            // 성공 메시지 전달
+            redirectAttributes.addFlashAttribute("successMessage", "상품이 성공적으로 수정되었습니다.");
             return "redirect:/admin/products";
         } else {
             model.addAttribute("errorMessage", "해당 ID의 상품을 찾을 수 없습니다.");
@@ -139,10 +146,10 @@ public class AdminProductController {
 
     // 상품 삭제 처리
     @GetMapping("/delete/{id}")
-    public String deleteProduct(@PathVariable Long id, Model model) {
+    public String deleteProduct(@PathVariable Long id, RedirectAttributes redirectAttributes) {
         Optional<Product> productOpt = productService.getProductById(id);
         if (productOpt.isPresent()) {
-            // 이미지 파일 삭제 (선택 사항)
+            // 이미지 파일 삭제
             String imageName = productOpt.get().getImageName();
             if (imageName != null) {
                 String uploadDir = System.getProperty("user.dir") + "/uploads/product_IMG_/";
@@ -154,9 +161,10 @@ public class AdminProductController {
 
             // 상품 삭제
             productService.deleteProduct(id);
-            model.addAttribute("successMessage", "상품이 성공적으로 삭제되었습니다.");
+            // 성공 메시지 전달
+            redirectAttributes.addFlashAttribute("successMessage", "상품이 성공적으로 삭제되었습니다.");
         } else {
-            model.addAttribute("errorMessage", "해당 ID의 상품을 찾을 수 없습니다.");
+            redirectAttributes.addFlashAttribute("errorMessage", "해당 ID의 상품을 찾을 수 없습니다.");
         }
 
         return "redirect:/admin/products";

@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<html lang="ko">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title th:text="${product.name}">Product Detail</title>
+    <title>Sell1</title>
     <link href='https://fonts.googleapis.com/css?family=Montserrat' rel='stylesheet'>
     <link rel="stylesheet" href="/css/product-detail.css">
     <link rel="stylesheet" href="/css/nav.css">
@@ -12,9 +12,9 @@
 
 <header>
     <div class="navbar">
-        <div class="logo"><a href="/test_newhome"><img src="/images/logo.png" alt="Modaz Logo"></a></div>
+        <div class="logo"><a href="/public"><img src="/images/logo.png" alt="Modaz Logo"></a></div>
         <ul class="nav-links">
-            <li><a href="/test_newhome">HOME</a></li>
+            <li><a href="#">HOME</a></li>
             <li><a href="#">SHOP</a></li>
             <li><a href="#">PAGE</a></li>
             <li><a href="#">BLOG</a></li>
@@ -28,20 +28,17 @@
     </div>
 </header>
 
+
 <section class="product-detail">
     <div class="product-image">
-        <!-- 이미지 경로 수정 -->
-        <img th:src="@{'/product_IMG_/' + ${product.imageName}}" alt="Product Image">
+        <img src="/images/sell1.jpg" alt="Spectacle Shoes">
     </div>
     <div class="product-info">
-        <h1 class="product-title" th:text="${product.name}">Product Name</h1>
-        <p th:text="${product.description}">Product Description</p>
-        <p class="price">
-            <span class="old-price" th:if="${product.oldPrice != null}" th:text="'$' + ${product.oldPrice}">Old Price</span>
-            <span th:text="'$' + ${product.price}">Price</span>
-        </p>
+        <h1 class="product-title">Spectacle Shoes</h1>
+        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+        <p class="price"><span class="old-price">$90.00</span> $24.00</p>
 
-        <!-- 사이즈 선택  -->
+        <!-- 사이즈 선택 -->
         <div class="sizes">
             <strong>Size:</strong>
             <label><input type="radio" name="size" value="S"> S</label>
@@ -60,15 +57,11 @@
             <span class="color yellow"></span>
         </div>
 
-        <!-- features 부분은 쉼표를 만나면 줄 변경 하도록  특별 요청 -->
         <ul class="features">
-            <th:block th:if="${product.feature != null}">
-                <th:block th:each="item : ${#strings.arraySplit(product.feature, ',')}">
-                    <li th:text="${item}">Feature Item</li>
-                </th:block>
-            </th:block>
+            <li>100% cotton</li>
+            <li>6 months warranty</li>
+            <li>High Quality</li>
         </ul>
-
 
         <!-- 수량 및 버튼 한 줄 배치 -->
         <div class="quantity-and-buttons">
