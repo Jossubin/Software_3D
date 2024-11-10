@@ -27,6 +27,7 @@ public class Product {
     private String imageName;
     private boolean isNew;
     private Double oldPrice;
+    private String feature;
 
     // 필요한 경우 추가 필드 및 메서드
 }
