@@ -3,7 +3,11 @@ package com.example.controller;
 
 import com.example.model.Product;
 import com.example.service.ProductService;
+import com.example.service.CartService;
+import com.example.dto.CartRequest;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -11,7 +15,9 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
+import java.security.Principal;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @Controller
@@ -19,6 +25,7 @@ import java.util.Optional;
 public class ProductController {
 
     private final ProductService productService;
+    private final CartService cartService;
 
     // 베스트 상품 페이지
     @GetMapping("/test_newhome")
@@ -64,29 +71,46 @@ public class ProductController {
         return "redirect:/test_newhome"; // 리다이렉트할 페이지 수정 가능
     }
 
-    // 상품 상세 페이지
+    // 하나의 통합된 상품 상세 페이지 메소드
     @GetMapping("/product-detail/{id}")
-    public String getProductDetail(@PathVariable Long id, Model model) {
+    public String getProductDetail(@PathVariable("id") Long id, Model model) {
         Optional<Product> productOpt = productService.getProductById(id);
-        if (productOpt.isPresent()) {
-            model.addAttribute("product", productOpt.get());
-            return "product-detail"; // Thymeleaf 템플릿 이름
-        } else {
-
-            return "redirect:/error";
-        }
-    }
-
-    // 상품 상세 페이지 처리 메서드 추가
-    @GetMapping("/product-detail/{id}")
-    public String productDetail(@PathVariable("id") Long id, Model model) {
-        Optional<Product> productOpt = productService.getProductById(id);
-        
         if (productOpt.isPresent()) {
             model.addAttribute("product", productOpt.get());
             return "product-detail";
         } else {
-            return "redirect:/test_newhome";
+            return "redirect:/test_newhome";  // 상품이 없을 경우 메인 페이지로 리다이렉트
+        }
+    }
+
+    @PostMapping("/add-to-cart")
+    @ResponseBody
+    public ResponseEntity<?> addToCart(@RequestBody CartRequest request, Principal principal) {
+        if (principal == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("로그인이 필요합니다.");
+        }
+        
+        try {
+            if (request.getProductId() == null || request.getQuantity() == null) {
+                return ResponseEntity.badRequest().body("상품 정보가 올바르지 않습니다.");
+            }
+            
+            cartService.addToCart(
+                request.getProductId(),
+                request.getQuantity(),
+                request.getSize(), 
+                request.getColor(),
+                principal.getName()
+            );
+            return ResponseEntity.ok().body(Map.of(
+                "success", true,
+                "message", "장바구니에 추가되었습니다."
+            ));
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(Map.of(
+                "success", false,
+                "message", e.getMessage()
+            ));
         }
     }
 }
