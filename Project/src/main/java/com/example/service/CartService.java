@@ -9,6 +9,7 @@ import com.example.model.Product;
 import com.example.MemberRepository;
 import com.example.repository.ProductRepository;
 import com.example.model.Cart;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -18,20 +19,22 @@ public class CartService {
     private final ProductRepository productRepository;
 
     @Transactional
-    public void addToCart(Long productId, int quantity, String size, String color, String email) {
-        Member member = memberRepository.findByEmail(email)
-            .orElseThrow(() -> new RuntimeException("회원을 찾을 수 없습니다."));
-        
+    public void addToCart(Member member, Long productId, int quantity, 
+                         String selectedSize, String selectedColor) {
         Product product = productRepository.findById(productId)
-            .orElseThrow(() -> new RuntimeException("상품을 찾을 수 없습니다."));
+                .orElseThrow(() -> new RuntimeException("상품을 찾을 수 없습니다"));
 
         Cart cart = new Cart();
         cart.setMember(member);
         cart.setProduct(product);
         cart.setQuantity(quantity);
-        cart.setSize(size);
-        cart.setColor(color);
+        cart.setSelectedSize(selectedSize);
+        cart.setSelectedColor(selectedColor);
 
         cartRepository.save(cart);
+    }
+
+    public List<Cart> getCartItems(Member member) {
+        return cartRepository.findByMember(member);
     }
 } 

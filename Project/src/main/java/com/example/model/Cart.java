@@ -11,6 +11,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import com.example.Member;
+import jakarta.persistence.Column;
 
 @Entity
 @Table(name = "cart")
@@ -29,6 +30,28 @@ public class Cart {
     private Product product;
 
     private int quantity;
-    private String size;
-    private String color;
+
+    @Column(name = "selected_size")
+    private String selectedSize;
+
+    @Column(name = "selected_color")
+    private String selectedColor;
+
+    public Long getId() { return id; }
+    public void setId(Long id) { this.id = id; }
+
+    public Member getMember() { return member; }
+    public void setMember(Member member) { this.member = member; }
+
+    public Product getProduct() { return product; }
+    public void setProduct(Product product) { this.product = product; }
+
+    public int getQuantity() { return quantity; }
+    public void setQuantity(int quantity) { this.quantity = quantity; }
+
+    public String getSelectedSize() { return selectedSize; }
+    public void setSelectedSize(String selectedSize) { this.selectedSize = selectedSize; }
+
+    public String getSelectedColor() { return selectedColor; }
+    public void setSelectedColor(String selectedColor) { this.selectedColor = selectedColor; }
 } 

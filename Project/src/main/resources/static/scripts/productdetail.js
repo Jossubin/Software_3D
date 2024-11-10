@@ -18,6 +18,7 @@ document.querySelector('.add-to-cart').addEventListener('click', function() {
         headers: {
             'Content-Type': 'application/json',
         },
+        credentials: 'include',
         body: JSON.stringify({
             productId: productId,
             quantity: quantity,

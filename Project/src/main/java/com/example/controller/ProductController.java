@@ -12,6 +12,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import com.example.Member;
 
 import java.io.File;
 import java.io.IOException;
@@ -19,6 +20,8 @@ import java.security.Principal;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+
+import jakarta.servlet.http.HttpSession;
 
 @Controller
 @RequiredArgsConstructor
@@ -85,22 +88,20 @@ public class ProductController {
 
     @PostMapping("/add-to-cart")
     @ResponseBody
-    public ResponseEntity<?> addToCart(@RequestBody CartRequest request, Principal principal) {
-        if (principal == null) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("로그인이 필요합니다.");
+    public ResponseEntity<?> addToCart(@RequestBody CartRequest request, HttpSession session) {
+        // 세션 체크 추가
+        Member loginMember = (Member) session.getAttribute("loginMember");
+        if (loginMember == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
         
         try {
-            if (request.getProductId() == null || request.getQuantity() == null) {
-                return ResponseEntity.badRequest().body("상품 정보가 올바르지 않습니다.");
-            }
-            
             cartService.addToCart(
+                loginMember,
                 request.getProductId(),
                 request.getQuantity(),
-                request.getSize(), 
-                request.getColor(),
-                principal.getName()
+                request.getSize(),
+                request.getColor()
             );
             return ResponseEntity.ok().body(Map.of(
                 "success", true,
