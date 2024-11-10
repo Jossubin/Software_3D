@@ -2,6 +2,7 @@ package com.example.controller.admin;
 
 import com.example.model.Product;
 import com.example.service.ProductService;
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -19,7 +20,7 @@ import java.util.Optional;
 public class AdminProductController {
 
     private final ProductService productService;
-
+    private final HttpSession session;
     // 상품 목록 페이지
     @GetMapping
     public String listProducts(Model model) {
