@@ -28,11 +28,11 @@ public class ProductController {
     private final CartService cartService;
 
     // 베스트 상품 페이지
-    @GetMapping("/test_newhome")
+    @GetMapping("/home")
     public String getBestProducts(Model model) {
         List<Product> products = productService.getAllProducts();
         model.addAttribute("products", products);
-        return "test_newhome"; // Thymeleaf 템플릿 이름
+        return "home"; // Thymeleaf 템플릿 이름
     }
 
     // 상품 추가 폼
@@ -68,7 +68,7 @@ public class ProductController {
             }
         }
         productService.saveProduct(product);
-        return "redirect:/test_newhome"; // 리다이렉트할 페이지 수정 가능
+        return "redirect:/home"; // 리다이렉트할 페이지 수정 가능
     }
 
     // 하나의 통합된 상품 상세 페이지 메소드
@@ -79,7 +79,7 @@ public class ProductController {
             model.addAttribute("product", productOpt.get());
             return "product-detail";
         } else {
-            return "redirect:/test_newhome";  // 상품이 없을 경우 메인 페이지로 리다이렉트
+            return "redirect:/home";  // 상품이 없을 경우 메인 페이지로 리다이렉트
         }
     }
 

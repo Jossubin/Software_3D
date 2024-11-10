@@ -11,12 +11,16 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import jakarta.servlet.http.HttpSession;
 import java.io.IOException;
+import java.util.List;
+import com.example.model.Product;
+import com.example.service.ProductService;
 
 @Controller
 @RequiredArgsConstructor
 public class MemberController {
 
     private final MemberService memberService;
+    private final ProductService productService;
     private final HttpSession session;
 
     @GetMapping("/register")
@@ -27,7 +31,7 @@ public class MemberController {
 
     @PostMapping("/register")
     public String register(@ModelAttribute Member member, Model model, RedirectAttributes redirectAttributes) {
-        // 이메일 중��� 체크
+        // 이메일 중 체크
         if (memberService.isEmailExists(member.getEmail())) {
             model.addAttribute("emailError", true);
             return "register";
@@ -74,6 +78,11 @@ public class MemberController {
         if (loginMember != null) {
             model.addAttribute("member", loginMember);
         }
+        
+        // 상품 정보 추가
+        List<Product> products = productService.getAllProducts();
+        model.addAttribute("products", products);
+        
         return "home";
     }
 
@@ -177,8 +186,11 @@ public class MemberController {
         return "redirect:/";
     }
     @GetMapping("/index")
-    public String homepage() {
-        return "index";
+    public String homepage(Model model) {
+        // 상품 정보 추가
+        List<Product> products = productService.getAllProducts();
+        model.addAttribute("products", products);
+        return "home";
     }
 
 
@@ -188,15 +200,21 @@ public class MemberController {
         return "original_product-detail";
     }
 ////////
-@GetMapping("/home")
-public String home11(Model model) {
-    // 로그인된 회원 정보를 가져옴
-    Member loginMember = (Member) session.getAttribute("loginMember");
-    if (loginMember != null) {
-        model.addAttribute("member", loginMember);
+    @GetMapping("/member-home")
+    public String home11(Model model) {
+        // 로그인된 회원 정보를 가져옴
+        Member loginMember = (Member) session.getAttribute("loginMember");
+        if (loginMember != null) {
+            model.addAttribute("member", loginMember);
+        }
+        
+        // 상품 정보 추가
+        List<Product> products = productService.getAllProducts();
+        model.addAttribute("products", products);
+        
+        return "home";
     }
-    return "home";
-}
+
     @GetMapping("/productImage")
     public String showProductImage() {
         return "productImage";  // productImage.html 템플릿을 반환
