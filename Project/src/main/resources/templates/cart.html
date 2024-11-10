@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>장바구니</title>
+</head>
+<body>
+    <h2>장바구니</h2>
+    
+    <div th:if="${cartItems.empty}">
+        <p>장바구니가 비어있습니다.</p>
+    </div>
+    
+    <div th:unless="${cartItems.empty}">
+        <table>
+            <thead>
+                <tr>
+                    <th>상품</th>
+                    <th>가격</th>
+                    <th>수량</th>
+                    <th>합계</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="item : ${cartItems}">
+                    <td>
+                        <img th:src="@{'/product_IMG_/' + ${item.product.imageName}}" width="50">
+                        <span th:text="${item.product.name}"></span>
+                        <br>
+                        <small>
+                            색상: <span th:text="${item.selectedColor}"></span>
+                            사이즈: <span th:text="${item.selectedSize}"></span>
+                        </small>
+                    </td>
+                    <td>
+                        <span th:text="${#numbers.formatDecimal(item.product.price, 0, 'COMMA', 0, 'POINT')}">0</span>원
+                    </td>
+                    <td th:text="${item.quantity}"></td>
+                    <td>
+                        <span th:text="${#numbers.formatDecimal(item.product.price * item.quantity, 0, 'COMMA', 0, 'POINT')}">0</span>원
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</body>
+</html> 

@@ -97,11 +97,11 @@ public class ProductController {
         
         try {
             cartService.addToCart(
+                loginMember,
                 request.getProductId(),
                 request.getQuantity(),
-                request.getSize(), 
-                request.getColor(),
-                loginMember
+                request.getSize(),
+                request.getColor()
             );
             return ResponseEntity.ok().body(Map.of(
                 "success", true,
