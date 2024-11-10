@@ -18,10 +18,7 @@ public class CartService {
     private final ProductRepository productRepository;
 
     @Transactional
-    public void addToCart(Long productId, int quantity, String size, String color, String email) {
-        Member member = memberRepository.findByEmail(email)
-            .orElseThrow(() -> new RuntimeException("회원을 찾을 수 없습니다."));
-        
+    public void addToCart(Long productId, Integer quantity, String size, String color, Member member) {
         Product product = productRepository.findById(productId)
             .orElseThrow(() -> new RuntimeException("상품을 찾을 수 없습니다."));
 
