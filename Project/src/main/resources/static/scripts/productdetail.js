@@ -50,4 +50,15 @@ document.querySelectorAll('input[name="color"]').forEach(radio => {
         // 선택된 라디오 버튼의 다음 형제 요소(span.color)에 selected 클래스 추가
         this.nextElementSibling.classList.add('selected');
     });
+});
+
+document.querySelector('.view-3d-button').addEventListener('click', function(e) {
+    const button = e.currentTarget;
+    button.style.transform = 'scale(0.95)';
+    
+    setTimeout(() => {
+        button.style.transform = '';
+        // 멀티뷰어를 여는 로직
+        alert('멀티뷰 기능이 곧 준비됩니다!');
+    }, 150);
 }); 
