@@ -3,6 +3,9 @@ package com.example;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
+import com.example.model.Member;
+import com.example.repository.MemberRepository;
+
 @Component
 public class DatabaseInitializer implements CommandLineRunner {
 

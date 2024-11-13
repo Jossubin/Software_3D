@@ -1,10 +1,15 @@
-package com.example;
+package com.example.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+
+import com.example.model.AdminForm;
+import com.example.model.Member;
+import com.example.repository.MemberRepository;
+
 import org.springframework.web.bind.annotation.ModelAttribute;
 
 import java.util.List;

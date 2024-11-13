@@ -4,11 +4,12 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import com.example.repository.CartRepository;
-import com.example.Member;
+import com.example.repository.MemberRepository;
 import com.example.model.Product;
-import com.example.MemberRepository;
 import com.example.repository.ProductRepository;
 import com.example.model.Cart;
+import com.example.model.Member;
+
 import java.util.List;
 
 @Service

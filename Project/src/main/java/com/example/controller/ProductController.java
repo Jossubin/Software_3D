@@ -1,6 +1,7 @@
 // src/main/java/com/example/controller/ProductController.java
 package com.example.controller;
 
+import com.example.model.Member;
 import com.example.model.Product;
 import com.example.service.ProductService;
 import com.example.service.CartService;
@@ -12,7 +13,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import com.example.Member;
 
 import java.io.File;
 import java.io.IOException;

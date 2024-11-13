@@ -1,4 +1,4 @@
-package com.example;
+package com.example.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -12,7 +12,10 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import jakarta.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.List;
+
+import com.example.model.Member;
 import com.example.model.Product;
+import com.example.service.MemberService;
 import com.example.service.ProductService;
 
 @Controller
@@ -56,6 +59,11 @@ public class MemberController {
     public String login(@ModelAttribute Member member, HttpSession session) {
         try {
             Member authenticatedMember = memberService.login(member.getEmail(), member.getPassword());
+            // admin@admin 계정 체크
+            if ("admin@admin".equals(authenticatedMember.getEmail())) {
+                authenticatedMember.setAdmin(true);
+            }
+            
             // 세션에 저장
             session.setAttribute("loginMember", authenticatedMember);
             System.out.println("세션 저장됨: " + session.getId());  // 디버깅용

@@ -1,9 +1,14 @@
-package com.example;
+package com.example.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+
+import com.example.model.Address;
+import com.example.model.Member;
+import com.example.service.AddressService;
+
 import jakarta.servlet.http.HttpSession;
 import java.util.List;
 import org.springframework.http.ResponseEntity;
