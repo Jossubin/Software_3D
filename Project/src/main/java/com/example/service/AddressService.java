@@ -1,8 +1,12 @@
-package com.example;
+package com.example.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import com.example.model.Address;
+import com.example.repository.AddressRepository;
+
 import java.util.List;
 
 @Service

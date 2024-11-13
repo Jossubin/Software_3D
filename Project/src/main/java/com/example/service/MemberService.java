@@ -1,8 +1,9 @@
-package com.example;
+package com.example.service;
 
-import com.example.Member;
-import com.example.MemberRepository;
-import com.example.AddressRepository;
+import com.example.model.Member;
+import com.example.repository.AddressRepository;
+import com.example.repository.MemberRepository;
+
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

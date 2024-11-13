@@ -6,8 +6,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.SessionAttribute;
 
 import com.example.service.CartService;
-import com.example.Member;
 import com.example.model.Cart;
+import com.example.model.Member;
 
 import java.util.List;
 
