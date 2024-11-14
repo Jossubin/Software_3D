@@ -12,18 +12,34 @@
 
 <header>
     <div class="navbar">
-        <div class="logo"><a href="/test_newhome"><img src="/images/logo.png" alt="Modaz Logo"></a></div>
+        <div class="logo">
+            <a href="/home"><img src="/images/logo.png" alt="Modaz Logo"></a>
+        </div>
         <ul class="nav-links">
-            <li><a href="/test_newhome">HOME</a></li>
+            <li><a href="/home">HOME</a></li>
             <li><a href="#">SHOP</a></li>
             <li><a href="#">PAGE</a></li>
             <li><a href="#">BLOG</a></li>
             <li><a href="#">CONTACT</a></li>
         </ul>
         <div class="icons">
-            <a href="#" class="icon-container"><img src="/images/search.svg" alt="Search Icon" class="icon"></a>
-            <a href="#" class="icon-container"><img src="/images/profile.svg" alt="Profile Icon" class="icon"></a>
-            <a href="#" class="icon-container"><img src="/images/cart.svg" alt="Cart Icon" class="icon"></a>
+            <a href="#" class="icon-container">
+                <img src="/images/search.svg" alt="Search Icon" class="icon">
+            </a>
+            <th:block th:if="${session.loginMember == null}">
+                <a href="/login" class="icon-container">
+                    <img src="/images/profile.svg" alt="Login Icon" class="icon">
+                </a>
+            </th:block>
+            <th:block th:if="${session.loginMember != null}">
+                <a href="/mypage" class="icon-container">
+                    <img src="/images/profile.svg" alt="Profile Icon" class="icon">
+                </a>
+                <a href="/logout" class="icon-container">로그아웃</a>
+            </th:block>
+            <a href="/cart" class="icon-container">
+                <img src="/images/cart.svg" alt="Cart Icon" class="icon">
+            </a>
         </div>
     </div>
 </header>
@@ -53,11 +69,11 @@
 
         <div class="colors">
             <strong>Colors:</strong>
-            <span class="color white"></span>
-            <span class="color red"></span>
-            <span class="color black"></span>
-            <span class="color green"></span>
-            <span class="color yellow"></span>
+            <label><input type="radio" name="color" value="white"> <span class="color white"></span></label>
+            <label><input type="radio" name="color" value="red"> <span class="color red"></span></label>
+            <label><input type="radio" name="color" value="black"> <span class="color black"></span></label>
+            <label><input type="radio" name="color" value="green"> <span class="color green"></span></label>
+            <label><input type="radio" name="color" value="yellow"> <span class="color yellow"></span></label>
         </div>
 
         <!-- features 부분은 쉼표를 만나면 줄 변경 하도록  특별 요청 -->
@@ -79,10 +95,17 @@
             <button class="heart-button">
                 <img src="/images/heart.svg" alt="Heart">
             </button>
+            <button class="view-3d-button">
+                <span class="button-content">
+                    <i class="fas fa-cube"></i>
+                    <span class="button-text">Multi View</span>
+                </span>
+                <span class="button-glare"></span>
+            </button>
         </div>
     </div>
 </section>
 
-<script src="/scripts/main.js"></script>
+<script src="/scripts/productdetail.js"></script>
 </body>
 </html>
