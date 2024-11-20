@@ -16,7 +16,7 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public List<Product> getAllProducts() {
-        // 기본적으로 최신순 정렬
+        // 사용자의 요청에 따라 초기 페이지 정렬 방식은 createdDate기준으로 정렬 !
         return productRepository.findAll(Sort.by(Sort.Direction.DESC, "createdDate"));
     }
 
@@ -51,6 +51,7 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public void deleteProduct(Long id) {
+
         productRepository.deleteById(id);
     }
 }
