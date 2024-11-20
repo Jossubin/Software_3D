@@ -52,6 +52,7 @@ public class MemberController {
 
     @GetMapping("/login")
     public String loginForm() {
+
         return "login";  // login.html 템플릿을 반환
     }
 

@@ -114,14 +114,13 @@ public class ProductController {
             ));
         }
     }
-
-    // SHOP 페이지를 처리하는 메서드
+    // shop메서드를 불러오는 부분이다.
     @GetMapping("/shop")
     public String shop(@RequestParam(value = "sort", required = false, defaultValue = "latest") String sort,
                        Model model) {
         List<Product> products = productService.getAllProductsSorted(sort);
         model.addAttribute("products", products);
-        model.addAttribute("currentSort", sort); // 현재 정렬 기준을 템플릿에 전달
-        return "shop"; // shop.html 템플릿을 반환
+        model.addAttribute("currentSort", sort);
+        return "shop";
     }
 }
