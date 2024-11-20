@@ -117,9 +117,11 @@ public class ProductController {
 
     // SHOP 페이지를 처리하는 메서드
     @GetMapping("/shop")
-    public String shop(Model model) {
-        List<Product> products = productService.getAllProducts();
+    public String shop(@RequestParam(value = "sort", required = false, defaultValue = "latest") String sort,
+                       Model model) {
+        List<Product> products = productService.getAllProductsSorted(sort);
         model.addAttribute("products", products);
+        model.addAttribute("currentSort", sort); // 현재 정렬 기준을 템플릿에 전달
         return "shop"; // shop.html 템플릿을 반환
     }
 }
