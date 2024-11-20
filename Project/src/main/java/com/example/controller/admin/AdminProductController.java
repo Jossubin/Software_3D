@@ -74,7 +74,7 @@ public class AdminProductController {
 
     // 상품 수정 폼 페이지
     @GetMapping("/edit/{id}")
-    public String showEditProductForm(@PathVariable Long id, Model model) {
+    public String showEditProductForm(@PathVariable("id") Long id, Model model) {
         Optional<Product> productOpt = productService.getProductById(id);
         if (productOpt.isPresent()) {
             model.addAttribute("product", productOpt.get());
@@ -87,7 +87,7 @@ public class AdminProductController {
 
     // 상품 수정 처리
     @PostMapping("/edit/{id}")
-    public String editProduct(@PathVariable Long id,
+    public String editProduct(@PathVariable("id") Long id,
                               @ModelAttribute("product") Product product,
                               @RequestParam("imageFile") MultipartFile imageFile,
                               RedirectAttributes redirectAttributes,
@@ -147,7 +147,7 @@ public class AdminProductController {
 
     // 상품 삭제 처리
     @GetMapping("/delete/{id}")
-    public String deleteProduct(@PathVariable Long id, RedirectAttributes redirectAttributes) {
+    public String deleteProduct(@PathVariable("id") Long id, RedirectAttributes redirectAttributes) {
         Optional<Product> productOpt = productService.getProductById(id);
         if (productOpt.isPresent()) {
             // 이미지 파일 삭제
