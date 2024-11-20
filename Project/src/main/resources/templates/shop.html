@@ -1,0 +1,92 @@
+<!-- src/main/resources/templates/shop.html -->
+
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modaz - Shop</title>
+    <link href='https://fonts.googleapis.com/css?family=Montserrat' rel='stylesheet'>
+    <link rel="stylesheet" href="/css/main.css">
+    <link rel="stylesheet" href="/css/nav.css">
+</head>
+<body>
+<!-- 네비게이션 바 (home.html과 동일하게 재사용) -->
+<header>
+    <div class="navbar">
+        <div class="logo">
+            <a href="/home"><img src="/images/logo.png" alt="Modaz Logo"></a>
+        </div>
+        <ul class="nav-links">
+            <li><a href="/home">HOME</a></li>
+            <li><a href="/shop">SHOP</a></li>
+            <li class="dropdown">
+                <a href="#">CONTACT</a>
+                <ul class="dropdown-content">
+                    <li><a href="/notice">공지사항</a></li>
+                    <li><a href="/about">자주묻는질문</a></li>
+                    <li><a href="/inquiry">1:1문의</a></li>
+                </ul>
+            </li>
+        </ul>
+        <div class="icons">
+            <a href="#" class="icon-container">
+                <img src="/images/search.svg" alt="Search Icon" class="icon">
+            </a>
+            <th:block th:if="${session.loginMember == null}">
+                <a href="/login" class="icon-container">
+                    <img src="/images/profile.svg" alt="Login Icon" class="icon">
+                </a>
+            </th:block>
+            <th:block th:if="${session.loginMember != null}">
+                <a href="/mypage" class="icon-container">
+                    <img src="/images/profile.svg" alt="Profile Icon" class="icon">
+                </a>
+                <a href="/logout" class="icon-container">로그아웃</a>
+            </th:block>
+            <a href="/cart" class="icon-container">
+                <img src="/images/cart.svg" alt="Cart Icon" class="icon">
+            </a>
+        </div>
+    </div>
+</header>
+
+<!-- SHOP 페이지 콘텐츠 -->
+<section class="shop-products">
+    <h2>All Products</h2>
+    <div class="underline"></div>
+    <div class="product-grid">
+        <th:block th:each="product : ${products}">
+            <div class="product-card">
+                <!-- 상품 라벨 (새 상품 또는 세일) -->
+                <span class="label" th:classappend="${product.isNew ? ' new' : ' sale'}"
+                      th:text="${product.isNew ? 'New' : 'Sale'}"></span>
+
+                <!-- 상품 상세 페이지 링크 -->
+                <a th:href="@{'/product-detail/' + ${product.id}}">
+                    <img th:src="@{'/product_IMG_/' + ${product.imageName}}" th:alt="${product.name}">
+                </a>
+
+                <!-- 상품 이름 -->
+                <h3 th:text="${product.name}">Product Name</h3>
+
+                <!-- 상품 가격 (세일 전 가격 표시 가능) -->
+                <p class="price">
+                    <span th:if="${product.oldPrice != null}" class="old-price" th:text="${'$' + product.oldPrice}">$150.00</span>
+                    <span th:text="${'$' + product.price}">$100.00</span>
+                </p>
+
+                <!-- 색상 옵션 (고정값 사용) -->
+                <div class="color-options">
+                    <span class="color red"></span>
+                    <span class="color green"></span>
+                    <span class="color black"></span>
+                </div>
+            </div>
+        </th:block>
+    </div>
+</section>
+
+<script src="/js/main.js"></script>
+</body>
+</html>
