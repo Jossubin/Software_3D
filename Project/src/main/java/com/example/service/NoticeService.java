@@ -38,6 +38,21 @@ public class NoticeService {
     
     @Transactional(readOnly = true)
     public Notice getNotice(Long id) {
-        return noticeRepository.findById(id).orElse(null);
+        Notice notice = noticeRepository.findById(id).orElse(null);
+        System.out.println("Found notice: " + notice);
+        return notice;
+    }
+    
+    @Transactional
+    public void deleteNotice(Long id) {
+        noticeRepository.deleteById(id);
+    }
+    
+    @Transactional
+    public void updateNotice(Long id, Notice updateNotice) {
+        Notice notice = noticeRepository.findById(id).orElseThrow();
+        notice.setTitle(updateNotice.getTitle());
+        notice.setContent(updateNotice.getContent());
+        // 나머지 필드는 유지
     }
 } 
