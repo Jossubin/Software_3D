@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>공지사항 상세</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .notice-detail {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .notice-header {
+            border-bottom: 2px solid #ddd;
+            padding-bottom: 15px;
+            margin-bottom: 20px;
+        }
+        .notice-info {
+            color: #666;
+            font-size: 0.9em;
+            margin-top: 10px;
+        }
+        .notice-content {
+            min-height: 200px;
+            margin: 30px 0;
+            white-space: pre-line;
+            padding: 20px;
+            background-color: #f8f9fa;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container mt-5">
+        <div class="notice-detail">
+            <div class="notice-header">
+                <h2 th:text="${notice.title}"></h2>
+                <div class="notice-info">
+                    <span th:text="|작성자: ${notice.writer}|"></span> |
+                    <span th:text="|작성일: ${#temporals.format(notice.createdDate, 'yyyy-MM-dd HH:mm')}|"></span> |
+                    <span th:text="|조회수: ${notice.viewCount}|"></span>
+                </div>
+            </div>
+            
+            <div class="notice-content" th:text="${notice.content}"></div>
+            
+            <div class="text-center mt-4">
+                <div th:if="${session.loginMember != null && session.loginMember.email == 'admin@admin'}" 
+                     class="mb-3">
+                    <a th:href="@{'/contact/notice/edit/' + ${notice.id}}" class="btn btn-warning">수정</a>
+                    <a th:href="@{'/contact/notice/delete/' + ${notice.id}}" 
+                       class="btn btn-danger"
+                       onclick="return confirm('정말 삭제하시겠습니까?');">삭제</a>
+                </div>
+                <a href="/contact/notice" class="btn btn-secondary">목록으로</a>
+            </div>
+        </div>
+    </div>
+</body>
+</html> 
