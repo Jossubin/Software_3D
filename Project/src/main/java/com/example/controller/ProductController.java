@@ -16,7 +16,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
-import java.security.Principal;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -86,6 +85,7 @@ public class ProductController {
         }
     }
 
+    // 장바구니에 상품 추가
     @PostMapping("/add-to-cart")
     @ResponseBody
     public ResponseEntity<?> addToCart(@RequestBody CartRequest request, HttpSession session) {
@@ -94,24 +94,33 @@ public class ProductController {
         if (loginMember == null) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
-        
+
         try {
             cartService.addToCart(
-                loginMember,
-                request.getProductId(),
-                request.getQuantity(),
-                request.getSize(),
-                request.getColor()
+                    loginMember,
+                    request.getProductId(),
+                    request.getQuantity(),
+                    request.getSize(),
+                    request.getColor()
             );
             return ResponseEntity.ok().body(Map.of(
-                "success", true,
-                "message", "장바구니에 추가되었습니다."
+                    "success", true,
+                    "message", "장바구니에 추가되었습니다."
             ));
         } catch (IllegalArgumentException e) {
             return ResponseEntity.badRequest().body(Map.of(
-                "success", false,
-                "message", e.getMessage()
+                    "success", false,
+                    "message", e.getMessage()
             ));
         }
+    }
+    // shop메서드를 불러오는 부분이다.
+    @GetMapping("/shop")
+    public String shop(@RequestParam(value = "sort", required = false, defaultValue = "latest") String sort,
+                       Model model) {
+        List<Product> products = productService.getAllProductsSorted(sort);
+        model.addAttribute("products", products);
+        model.addAttribute("currentSort", sort);
+        return "shop";
     }
 }

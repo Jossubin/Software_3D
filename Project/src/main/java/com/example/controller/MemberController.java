@@ -52,6 +52,7 @@ public class MemberController {
 
     @GetMapping("/login")
     public String loginForm() {
+
         return "login";  // login.html 템플릿을 반환
     }
 
@@ -197,11 +198,6 @@ public class MemberController {
     }
 
 
-    @GetMapping("/original_product-detail")
-    public String productDetail(Model model) {
-        model.addAttribute("message", "제품 상세 페이지");
-        return "original_product-detail";
-    }
 ////////
     @GetMapping("/member-home")
     public String home11(Model model) {

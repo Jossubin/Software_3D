@@ -1,6 +1,5 @@
 package com.example.model;
 
-
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -9,6 +8,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.AllArgsConstructor;
 import jakarta.persistence.Id;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "products")
@@ -16,7 +16,6 @@ import jakarta.persistence.Id;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Product {
-// 사용자의 요청에 의한 db 생성
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -29,5 +28,7 @@ public class Product {
     private Double oldPrice;
     private String feature;
 
-    // 필요한 경우 추가 필드 및 메서드
+    private Integer popularity;
+    private Integer salesVolume;
+    private LocalDateTime createdDate;
 }
