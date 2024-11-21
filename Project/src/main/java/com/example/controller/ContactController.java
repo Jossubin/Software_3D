@@ -88,4 +88,45 @@ public class ContactController {
         model.addAttribute("notice", notice);
         return "contact/notice-detail";
     }
+    
+    @GetMapping("/notice/delete/{id}")
+    public String deleteNotice(@PathVariable("id") Long id, HttpSession session) {
+        // admin 권한 체크
+        Member loginMember = (Member) session.getAttribute("loginMember");
+        if (loginMember == null || !"admin@admin".equals(loginMember.getEmail())) {
+            return "redirect:/contact/notice";
+        }
+        
+        noticeService.deleteNotice(id);
+        return "redirect:/contact/notice";
+    }
+    
+    @GetMapping("/notice/edit/{id}")
+    public String editNoticeForm(@PathVariable("id") Long id, Model model, HttpSession session) {
+        // admin 권한 체크
+        Member loginMember = (Member) session.getAttribute("loginMember");
+        if (loginMember == null || !"admin@admin".equals(loginMember.getEmail())) {
+            return "redirect:/contact/notice";
+        }
+        
+        Notice notice = noticeService.getNotice(id);
+        if (notice == null) {
+            return "redirect:/contact/notice";
+        }
+        
+        model.addAttribute("notice", notice);
+        return "contact/notice-edit";
+    }
+    
+    @PostMapping("/notice/edit/{id}")
+    public String editNotice(@PathVariable("id") Long id, @ModelAttribute Notice notice, HttpSession session) {
+        // admin 권한 체크
+        Member loginMember = (Member) session.getAttribute("loginMember");
+        if (loginMember == null || !"admin@admin".equals(loginMember.getEmail())) {
+            return "redirect:/contact/notice";
+        }
+        
+        noticeService.updateNotice(id, notice);
+        return "redirect:/contact/notice";
+    }
 } 
