@@ -29,47 +29,66 @@
             background-color: #333;
             color: #fff;
         }
+        
+        /* 섹션 여백 조정 */
+        .shop-products {
+            margin-top: 120px;  /* 네비바 높이만큼 여백 추가 */
+            padding: 20px;
+        }
+        
+        /* 제목과 언더라인 스타일 조정 */
+        .shop-products h2 {
+            text-align: center;
+            margin-bottom: 10px;
+        }
+        
+        .shop-products .underline {
+            width: 50px;
+            height: 3px;
+            background-color: #333;
+            margin: 0 auto 30px;
+        }
     </style>
 </head>
 <body>
-<!-- 사용자의 요청에 의한 HOME부분   -->
+<!-- 네비게이션 바 -->
 <header>
-    <div class="navbar">
-        <div class="logo">
-            <a href="/home"><img src="/images/logo.png" alt="Modaz Logo"></a>
-        </div>
-        <ul class="nav-links">
-            <li><a href="/home">HOME</a></li>
-            <li><a href="/shop">SHOP</a></li>
-            <li class="dropdown">
-                <a href="#">CONTACT</a>
-                <ul class="dropdown-content">
-                    <li><a href="/notice">공지사항</a></li>
-                    <li><a href="/about">자주묻는질문</a></li>
-                    <li><a href="/inquiry">1:1문의</a></li>
-                </ul>
-            </li>
-        </ul>
-        <div class="icons">
-            <a href="#" class="icon-container">
-                <img src="/images/search.svg" alt="Search Icon" class="icon">
-            </a>
-            <th:block th:if="${session.loginMember == null}">
-                <a href="/login" class="icon-container">
-                    <img src="/images/profile.svg" alt="Login Icon" class="icon">
-                </a>
-            </th:block>
-            <th:block th:if="${session.loginMember != null}">
-                <a href="/mypage" class="icon-container">
-                    <img src="/images/profile.svg" alt="Profile Icon" class="icon">
-                </a>
-                <a href="/logout" class="icon-container">로그아웃</a>
-            </th:block>
-            <a href="/cart" class="icon-container">
-                <img src="/images/cart.svg" alt="Cart Icon" class="icon">
-            </a>
-        </div>
+  <div class="navbar">
+    <div class="logo">
+      <a href="/home"><img src="/images/logo.png" alt="Modaz Logo"></a>
     </div>
+    <ul class="nav-links">
+      <li><a href="/home">HOME</a></li>
+      <li><a href="/shop">SHOP</a></li>
+      <li class="dropdown">
+        <a href="#">CONTACT</a>
+        <ul class="dropdown-content">
+          <li><a href="/contact/notice">공지사항</a></li>
+          <li><a href="/about">자주묻는질문</a></li>
+          <li><a href="/inquiry">1:1문의</a></li>
+        </ul>
+      </li>
+    </ul>
+    <div class="icons">
+      <a href="#" class="icon-container">
+        <img src="/images/search.svg" alt="Search Icon" class="icon">
+      </a>
+      <th:block th:if="${session.loginMember == null}">
+        <a href="/login" class="icon-container">
+          <img src="/images/profile.svg" alt="Login Icon" class="icon">
+        </a>
+      </th:block>
+      <th:block th:if="${session.loginMember != null}">
+        <a href="/mypage" class="icon-container">
+          <img src="/images/profile.svg" alt="Profile Icon" class="icon">
+        </a>
+        <a href="/logout" class="icon-container">로그아웃</a>
+      </th:block>
+      <a href="/cart" class="icon-container">
+        <img src="/images/cart.svg" alt="Cart Icon" class="icon">
+      </a>
+    </div>
+  </div>
 </header>
 
 <!-- SHOP 페이지 콘텐츠 -->

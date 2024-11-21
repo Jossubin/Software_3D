@@ -4,8 +4,52 @@
     <meta charset="UTF-8">
     <title>공지사항 수정</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <link href='https://fonts.googleapis.com/css?family=Montserrat' rel='stylesheet'>
+    <link rel="stylesheet" href="/css/main.css">
+    <link rel="stylesheet" href="/css/nav.css">
 </head>
 <body>
+    <!-- 네비게이션 바 -->
+    <header>
+      <div class="navbar">
+        <div class="logo">
+          <a href="/home"><img src="/images/logo.png" alt="Modaz Logo"></a>
+        </div>
+        <ul class="nav-links">
+          <li><a href="/home">HOME</a></li>
+          <li><a href="/shop">SHOP</a></li>
+          <li class="dropdown">
+            <a href="#">CONTACT</a>
+            <ul class="dropdown-content">
+              <li><a href="/contact/notice">공지사항</a></li>
+              <li><a href="/about">자주묻는질문</a></li>
+              <li><a href="/inquiry">1:1문의</a></li>
+            </ul>
+          </li>
+        </ul>
+        <div class="icons">
+          <a href="#" class="icon-container">
+            <img src="/images/search.svg" alt="Search Icon" class="icon">
+          </a>
+          <th:block th:if="${session.loginMember == null}">
+            <a href="/login" class="icon-container">
+              <img src="/images/profile.svg" alt="Login Icon" class="icon">
+            </a>
+          </th:block>
+          <th:block th:if="${session.loginMember != null}">
+            <a href="/mypage" class="icon-container">
+              <img src="/images/profile.svg" alt="Profile Icon" class="icon">
+            </a>
+            <a href="/logout" class="icon-container">로그아웃</a>
+          </th:block>
+          <a href="/cart" class="icon-container">
+            <img src="/images/cart.svg" alt="Cart Icon" class="icon">
+          </a>
+        </div>
+      </div>
+    </header>
+
     <div class="container mt-5">
         <div class="row justify-content-center">
             <div class="col-md-8">
