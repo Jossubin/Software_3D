@@ -7,6 +7,7 @@
     <link href='https://fonts.googleapis.com/css?family=Montserrat' rel='stylesheet'>
     <link rel="stylesheet" href="/css/main.css">
     <link rel="stylesheet" href="/css/nav.css">
+    <link rel="stylesheet" href="/css/cart.css">
     <style>
         .cart {
             margin-top: 120px;
@@ -163,7 +164,7 @@
                             <td class="price" th:data-price="${item.product.price}">$<span th:text="${item.product.price}"></span></td>
                             <td><input type="number" class="quantity-input" th:value="${item.quantity}" min="1" onchange="updatePrice(this)"></td>
                             <td class="total-price">$<span th:text="${item.product.price * item.quantity}"></span>.00</td>
-                            <td><button class="remove-btn" onclick="removeItem(this)">×</button></td>
+                            <td><button class="remove-btn" th:data-item-id="${item.id}" onclick="removeItem(this)">×</button></td>
                         </tr>
                     </tbody>
                 </table>
@@ -224,9 +225,35 @@
 
     function removeItem(button) {
         if (confirm('정말 삭제하시겠습니까?')) {
-            const row = button.closest('tr');
-            row.remove();
-            updateTotalSum();
+            const itemId = button.getAttribute('data-item-id');
+            
+            fetch(`/cart/remove/${itemId}`, {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+            .then(response => {
+                if (response.ok) {
+                    const row = button.closest('tr');
+                    row.remove();
+                    updateTotalSum();
+                    
+                    // 장바구니가 비었는지 확인
+                    const remainingItems = document.querySelectorAll('.cart-table tbody tr');
+                    if (remainingItems.length === 0) {
+                        location.reload(); // 페이지 새로고침
+                    }
+                } else {
+                    response.text().then(errorMessage => {
+                        alert(errorMessage || '삭제에 실패했습니다. 다시 시도해주세요.');
+                    });
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('삭제 중 오류가 발생했습니다.');
+            });
         }
     }
 

@@ -17,10 +17,15 @@
         </div>
         <ul class="nav-links">
             <li><a href="/home">HOME</a></li>
-            <li><a href="#">SHOP</a></li>
-            <li><a href="#">PAGE</a></li>
-            <li><a href="#">BLOG</a></li>
-            <li><a href="#">CONTACT</a></li>
+            <li><a href="/shop">SHOP</a></li>
+            <li class="dropdown">
+                <a href="#">CONTACT</a>
+                <ul class="dropdown-content">
+                    <li><a href="/contact/notice">공지사항</a></li>
+                    <li><a href="/about">자주묻는질문</a></li>
+                    <li><a href="/inquiry">1:1문의</a></li>
+                </ul>
+            </li>
         </ul>
         <div class="icons">
             <a href="#" class="icon-container">
@@ -57,23 +62,58 @@
             <span th:text="'$' + ${product.price}">Price</span>
         </p>
 
-        <!-- 사이즈 선택  -->
+        <!-- 사이즈 선택 부분 수정 -->
         <div class="sizes">
             <strong>Size:</strong>
-            <label><input type="radio" name="size" value="S"> S</label>
-            <label><input type="radio" name="size" value="M"> M</label>
-            <label><input type="radio" name="size" value="L"> L</label>
-            <label><input type="radio" name="size" value="XL"> XL</label>
-            <label><input type="radio" name="size" value="XXL"> XXL</label>
+            <div class="size-options">
+                <label class="size-label">
+                    <input type="radio" name="size" value="S">
+                    <span class="size-text">S</span>
+                </label>
+                <label class="size-label">
+                    <input type="radio" name="size" value="M">
+                    <span class="size-text">M</span>
+                </label>
+                <label class="size-label">
+                    <input type="radio" name="size" value="L">
+                    <span class="size-text">L</span>
+                </label>
+                <label class="size-label">
+                    <input type="radio" name="size" value="XL">
+                    <span class="size-text">XL</span>
+                </label>
+                <label class="size-label">
+                    <input type="radio" name="size" value="XXL">
+                    <span class="size-text">XXL</span>
+                </label>
+            </div>
         </div>
 
+        <!-- 색상 선택 부분 수정 -->
         <div class="colors">
             <strong>Colors:</strong>
-            <label><input type="radio" name="color" value="white"> <span class="color white"></span></label>
-            <label><input type="radio" name="color" value="red"> <span class="color red"></span></label>
-            <label><input type="radio" name="color" value="black"> <span class="color black"></span></label>
-            <label><input type="radio" name="color" value="green"> <span class="color green"></span></label>
-            <label><input type="radio" name="color" value="yellow"> <span class="color yellow"></span></label>
+            <div class="color-options">
+                <label class="color-label">
+                    <input type="radio" name="color" value="white">
+                    <span class="color white"></span>
+                </label>
+                <label class="color-label">
+                    <input type="radio" name="color" value="red">
+                    <span class="color red"></span>
+                </label>
+                <label class="color-label">
+                    <input type="radio" name="color" value="black">
+                    <span class="color black"></span>
+                </label>
+                <label class="color-label">
+                    <input type="radio" name="color" value="green">
+                    <span class="color green"></span>
+                </label>
+                <label class="color-label">
+                    <input type="radio" name="color" value="yellow">
+                    <span class="color yellow"></span>
+                </label>
+            </div>
         </div>
 
         <!-- features 부분은 쉼표를 만나면 줄 변경 하도록  특별 요청 -->
@@ -93,26 +133,82 @@
             </div>
             <button class="add-to-cart">ADD TO CART</button>
             <button class="heart-button">
-                <img src="/images/heart.svg" alt="Heart">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+                </svg>
             </button>
             <button class="view-3d-button">
-                <span class="button-content">
-                    <i class="fas fa-cube"></i>
-                    <span class="button-text">FITTING</span>
-                </span>
-                <span class="button-glare"></span>
+                <span>FITTING</span>
             </button>
-            <button class="3D-button">
-                <span class="button-content">
-                    <i class="fas fa-cube"></i>
-                    <span class="button-text">3D VIEW</span>
-                </span>
-                <span class="button-glare"></span>
+            <button class="view-3D-button">
+                <span>3D VIEW</span>
             </button>
         </div>
     </div>
 </section>
 
-<script src="/scripts/productdetail.js"></script>
+<!-- 상품 ID를 hidden input으로 추가 -->
+<input type="hidden" id="productId" th:value="${product.id}">
+
+<!-- 기존 스크립트 태그를 수정 -->
+<script src="/js/product-detail.js"></script>
+
+<!-- 페이지 하단에 다음 스크립트 추가 -->
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const addToCartButton = document.querySelector('.add-to-cart');
+    
+    addToCartButton.addEventListener('click', function() {
+        const productId = document.getElementById('productId').value;
+        const quantity = document.getElementById('quantity').value;
+        const selectedSize = document.querySelector('input[name="size"]:checked')?.value;
+        const selectedColor = document.querySelector('input[name="color"]:checked')?.value;
+
+        // 필수 선택 옵션 확인
+        if (!selectedSize || !selectedColor) {
+            alert('사이즈와 색상을 선택해주세요.');
+            return;
+        }
+
+        // 장바구니 추가 요청
+        fetch('/cart/add', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                productId: productId,
+                quantity: parseInt(quantity),
+                size: selectedSize,
+                color: selectedColor
+            })
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.text();
+        })
+        .then(data => {
+            if (confirm('상품이 장바구니에 추가되었습니다.\n장바구니로 이동하시겠습니까?')) {
+                window.location.href = '/cart';
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            if (error.message.includes('401')) {
+                if (confirm('로그인이 필요합니다. 로그인 페이지로 이동하시겠습니까?')) {
+                    window.location.href = '/login';
+                }
+            } else {
+                alert('장바구니 추가에 실패했습니다.');
+            }
+        })
+        .catch(error => {
+            console.error('장바구니 추가 요청 중 오류가 발생했습니다.', error);
+        });
+    });
+});
+</script>
 </body>
 </html>

@@ -38,4 +38,26 @@ public class CartService {
     public List<Cart> getCartItems(Member member) {
         return cartRepository.findByMember(member);
     }
+
+    @Transactional
+    public void removeCartItem(Long cartItemId, Long memberId) {
+        Cart cartItem = cartRepository.findById(cartItemId)
+                .orElseThrow(() -> new RuntimeException("장바구니 아이템을 찾을 수 없습니다"));
+        
+        // 본인의 장바구니 아이템인지 확인
+        if (!cartItem.getMember().getId().equals(memberId)) {
+            throw new RuntimeException("권한이 없습니다");
+        }
+        
+        cartRepository.delete(cartItem);
+    }
+    
+    // 장바구니 전체 비우기 기능 (필요한 경우)
+    @Transactional
+    public void clearCart(Long memberId) {
+        Member member = memberRepository.findById(memberId)
+                .orElseThrow(() -> new RuntimeException("회원을 찾을 수 없습니다"));
+        
+        cartRepository.deleteByMember(member);
+    }
 } 
