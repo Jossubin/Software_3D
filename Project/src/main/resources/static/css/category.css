@@ -1,0 +1,233 @@
+/* 상품 카테고리 섹션 */
+.category {
+    padding: 50px 5vw; /* 좌우 여백 축소 */
+    margin-top: 20px;
+}
+
+.product-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); /* 자동으로 화면에 맞게 상품 배치 */
+    gap: 20px; /* 상품 간격 */
+    justify-content: center; /* 가운데 정렬 */
+    margin-top: 30px;
+}
+
+.product-card {
+    background-color: #fff;
+    border: 1px solid #e0e0e0;
+    border-radius: 10px;
+    padding: 20px;
+    text-align: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
+}
+
+.product-card:hover {
+    transform: scale(1.05);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+.product-card img {
+    width: 100%; /* 이미지가 카드 너비에 맞게 표시 */
+    height: auto;
+    margin-bottom: 15px;
+}
+
+.product-card h3 {
+    font-size: 16px; /* 텍스트 크기 최적화 */
+    color: #333;
+    margin-bottom: 10px;
+}
+
+.product-card .price {
+    font-size: 18px;
+    color: #d00000;
+    margin-bottom: 10px;
+}
+
+/* 라벨 */
+.label {
+    position: absolute;
+    top: 15px;
+    left: 15px;
+    padding: 5px 10px;
+    font-size: 12px;
+    color: #fff;
+    border-radius: 5px;
+}
+
+.label.new {
+    background-color: #4CAF50;
+}
+
+/* 색상 옵션 */
+.color-options {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    margin-bottom: 15px;
+}
+
+.color {
+    width: 15px;
+    height: 15px;
+    border-radius: 50%;
+    display: inline-block;
+    border: 1px solid #ddd;
+}
+
+.color.red {
+    background-color: #f44336;
+}
+
+.color.green {
+    background-color: #4CAF50;
+}
+
+.color.black {
+    background-color: #000;
+}
+
+/* ADD TO CART 버튼 */
+.add-to-cart {
+    display: inline-block;
+    padding: 12px 25px;
+    background-color: #d00000;
+    color: #fff;
+    font-size: 14px;
+    font-weight: bold;
+    text-decoration: none;
+    border-radius: 5px;
+    transition: background-color 0.3s ease, transform 0.1s ease;
+    cursor: pointer;
+}
+
+.add-to-cart:hover {
+    background-color: #cc001f;
+    transform: scale(1.05);
+}
+
+
+/* ADD TO CART 버튼 */
+.add-to-cart {
+    display: inline-block;
+    padding: 12px 25px;
+    background-color: #d00000;
+    color: #fff;
+    font-size: 14px;
+    font-weight: bold;
+    text-decoration: none;
+    border-radius: 5px;
+    transition: background-color 0.3s ease, transform 0.1s ease;
+    cursor: pointer;
+}
+
+.add-to-cart:hover {
+    background-color: #cc001f;
+    transform: scale(1.05);
+}
+
+.filter-btn {
+    padding: 10px 20px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    background-color: #f5f5f5;
+    color: #333;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.filter-btn.active {
+    background-color: #d00000;
+    color: #fff;
+    border-color: #d00000;
+}
+
+.filter-btn:hover {
+    background-color: #d00000;
+    color: #fff;
+}
+
+/* 페이지네이션 */
+.pagination {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 30px;
+    margin-bottom: 30px;
+}
+
+.page-btn {
+    padding: 15px 20px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    background-color: #fff;
+    color: #333;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.page-btn.active {
+    background-color: #d00000;
+    color: #fff;
+    border-color: #d00000;
+}
+
+.page-btn:hover {
+    background-color: #d00000;
+    color: #fff;
+}
+
+/* Shop 헤더 */
+.shop-header {
+    position: relative;
+    width: 100%;
+    height: 350px; /* 이미지와 텍스트 높이 조정 */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    margin-top: 100px;
+}
+
+.header-banner {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+}
+
+.header-banner img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* 이미지가 섹션 크기에 맞게 표시 */
+
+}
+
+.header-content {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: black;
+}
+
+.header-content h1 {
+    font-size: 48px;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.header-content p {
+    font-size: 16px;
+}
+
+.header-content p a {
+    color: black;
+}
+
+.header-content p a:hover {
+    color: #d00000;
+}
