@@ -166,7 +166,7 @@ body {
 
 .view-btn {
     padding: 5px 10px;
-    background-color: #333;
+    background-color: #fffefe;
     color: #fff;
     border: none;
     border-radius: 5px;
@@ -202,17 +202,22 @@ body {
 }
 
 .details-btn {
-    background: #e74c3c;
-    color: white;
+    text-decoration: none;
+    display: inline-block;
+    padding: 10px 20px;
     border: none;
-    padding: 8px 16px;
-    border-radius: 5px;
+    border-radius: 4px;
+    background-color: #dc0000;
+    color: white;
     cursor: pointer;
-    transition: background-color 0.3s ease;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
 .details-btn:hover {
-    background: #c0392b;
+    background-color: #b00000;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(220, 0, 0, 0.3);
 }
 
 /* 반응형에서 버튼 스타일 수정 */
@@ -225,4 +230,15 @@ body {
     .details-btn {
         width: 100%;
     }
+}
+
+.button-group a {
+    text-decoration: none;
+    color: white;
+    margin: 0 10px;
+}
+
+/* 호버 시 배경색 변경 방지 */
+.button-group a:hover {
+    color: white;
 } 
