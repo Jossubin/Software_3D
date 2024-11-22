@@ -6,6 +6,7 @@
     <title>마이페이지 - Modaz</title>
     <link href='https://fonts.googleapis.com/css?family=Montserrat' rel='stylesheet'>
     <link rel="stylesheet" href="/css/nav.css">
+    <link rel="stylesheet" href="/css/mypage.css">
     <style>
         .my-page {
             padding: 120px 5vw;
@@ -197,8 +198,8 @@
                         <h3 th:text="${session.loginMember.name + ' (VIP)'}">홍길동 (VIP)</h3>
                         <p>고객님의 총 적립액은 63,000원입니다.</p>
                         <div class="button-group">
-                            <button class="details-btn">회원정보 수정</button>
-                            <button class="details-btn">주소지 관리</button>
+                            <a href="/member/update" button class="details-btn">회원정보 수정</a>
+                            <a href="/address" button class="details-btn">주소지 관리</a>
                         </div>
                     </div>
                 </div>
