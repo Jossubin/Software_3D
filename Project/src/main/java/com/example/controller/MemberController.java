@@ -14,8 +14,10 @@ import java.io.IOException;
 import java.util.List;
 
 import com.example.model.Member;
+import com.example.model.Order;
 import com.example.model.Product;
 import com.example.service.MemberService;
+import com.example.service.OrderService;
 import com.example.service.ProductService;
 
 @Controller
@@ -24,7 +26,7 @@ public class MemberController {
 
     private final MemberService memberService;
     private final ProductService productService;
-    private final HttpSession session;
+    private final OrderService orderService; // OrderService 주입
 
     @GetMapping("/register")
     public String registerForm(Model model) {
@@ -34,7 +36,7 @@ public class MemberController {
 
     @PostMapping("/register")
     public String register(@ModelAttribute Member member, Model model, RedirectAttributes redirectAttributes) {
-        // 이메일 중 체크
+        // 이메일 중복 체크
         if (memberService.isEmailExists(member.getEmail())) {
             model.addAttribute("emailError", true);
             return "register";
@@ -52,7 +54,6 @@ public class MemberController {
 
     @GetMapping("/login")
     public String loginForm() {
-
         return "login";  // login.html 템플릿을 반환
     }
 
@@ -64,11 +65,11 @@ public class MemberController {
             if ("admin@admin".equals(authenticatedMember.getEmail())) {
                 authenticatedMember.setAdmin(true);
             }
-            
+
             // 세션에 저장
             session.setAttribute("loginMember", authenticatedMember);
             System.out.println("세션 저장됨: " + session.getId());  // 디버깅용
-            
+
             return "redirect:/";
         } catch (IllegalArgumentException e) {
             return "redirect:/login?error";
@@ -76,17 +77,17 @@ public class MemberController {
     }
 
     @GetMapping("/")
-    public String home(Model model) {
+    public String home(Model model, HttpSession session) {
         // 로그인된 회원 정보를 가져옴
         Member loginMember = (Member) session.getAttribute("loginMember");
         if (loginMember != null) {
             model.addAttribute("member", loginMember);
         }
-        
+
         // 상품 정보 추가
         List<Product> products = productService.getAllProducts();
         model.addAttribute("products", products);
-        
+
         return "home";
     }
 
@@ -102,11 +103,16 @@ public class MemberController {
 
         // 모델에 회원 정보 추가
         model.addAttribute("member", loginMember);
+
+        // 최근 주문 정보 조회 (예: 최근 5건)
+        List<Order> recentOrders = orderService.getRecentOrders(loginMember);
+        model.addAttribute("recentOrders", recentOrders);
+
         return "mypage";
     }
 
     @GetMapping("/member/update")
-    public String editProfileForm(Model model) {
+    public String editProfileForm(Model model, HttpSession session) {
         Member loginMember = (Member) session.getAttribute("loginMember");
 
         if (loginMember == null) {
@@ -118,9 +124,9 @@ public class MemberController {
     }
 
     @PostMapping("/member/update")
-    public String editProfile(@ModelAttribute Member member, 
+    public String editProfile(@ModelAttribute Member member,
                               @RequestParam("profileImage") MultipartFile profileImage,
-                              RedirectAttributes redirectAttributes) {
+                              RedirectAttributes redirectAttributes, HttpSession session) {
         Member loginMember = (Member) session.getAttribute("loginMember");
 
         if (loginMember == null) {
@@ -185,10 +191,11 @@ public class MemberController {
     public String logout(HttpSession session, RedirectAttributes redirectAttributes) {
         // 세션 무효화
         session.invalidate();
-        
+
         redirectAttributes.addFlashAttribute("message", "로그아웃 되었습니다.");
         return "redirect:/";
     }
+
     @GetMapping("/index")
     public String homepage(Model model) {
         // 상품 정보 추가
@@ -197,26 +204,50 @@ public class MemberController {
         return "home";
     }
 
-
-////////
+    ////////
     @GetMapping("/member-home")
-    public String home11(Model model) {
+    public String home11(Model model, HttpSession session) {
         // 로그인된 회원 정보를 가져옴
         Member loginMember = (Member) session.getAttribute("loginMember");
         if (loginMember != null) {
             model.addAttribute("member", loginMember);
         }
-        
+
         // 상품 정보 추가
         List<Product> products = productService.getAllProducts();
         model.addAttribute("products", products);
-        
+
         return "home";
     }
 
     @GetMapping("/productImage")
     public String showProductImage() {
         return "productImage";  // productImage.html 템플릿을 반환
+    }
+
+    @PostMapping("/checkout")
+    public String checkout(HttpSession session, RedirectAttributes redirectAttributes) {
+        // 세션에서 로그인된 회원 정보 가져오기
+        Member loginMember = (Member) session.getAttribute("loginMember");
+
+        // 로그인 체크
+        if (loginMember == null) {
+            return "redirect:/login";
+        }
+
+        try {
+            // 주문 처리
+            orderService.checkout(loginMember);
+
+            // 성공 메시지 설정
+            redirectAttributes.addFlashAttribute("message", "주문이 성공적으로 완료되었습니다.");
+
+            return "redirect:/mypage";
+        } catch (RuntimeException e) {
+            // 에러 메시지 설정
+            redirectAttributes.addFlashAttribute("error", e.getMessage());
+            return "redirect:/cart";
+        }
     }
 
 }

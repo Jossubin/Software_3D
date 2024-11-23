@@ -7,275 +7,144 @@
     <link href='https://fonts.googleapis.com/css?family=Montserrat' rel='stylesheet'>
     <link rel="stylesheet" href="/css/nav.css">
     <link rel="stylesheet" href="/css/mypage.css">
-    <style>
-        .my-page {
-            padding: 120px 5vw;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-
-        .dashboard {
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-        }
-
-        .user-summary {
-            background: #fff;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-        }
-
-        .user-info {
-            display: flex;
-            align-items: center;
-            gap: 20px;
-            padding-bottom: 20px;
-            border-bottom: 1px solid #eee;
-        }
-
-        .user-photo {
-            width: 80px;
-            height: 80px;
-            border-radius: 50%;
-        }
-
-        .user-details h3 {
-            margin: 0;
-            font-size: 1.5em;
-        }
-
-        .details-btn {
-            background: #e74c3c;
-            color: white;
-            border: none;
-            padding: 8px 15px;
-            border-radius: 5px;
-            margin-top: 10px;
-            cursor: pointer;
-        }
-
-        .user-stats {
-            display: flex;
-            justify-content: space-around;
-            margin-top: 20px;
-            text-align: center;
-        }
-
-        .order-stats {
-            display: flex;
-            justify-content: space-between;
-            background: #fff;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-            text-align: center;
-        }
-
-        .recent-orders {
-            background: #fff;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-        }
-
-        .recent-orders table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 15px;
-        }
-
-        .recent-orders th, .recent-orders td {
-            padding: 15px;
-            text-align: left;
-            border-bottom: 1px solid #eee;
-        }
-
-        .recent-orders img {
-            width: 50px;
-            height: 50px;
-            object-fit: cover;
-            margin-right: 10px;
-        }
-
-        .view-btn {
-            background: #333;
-            color: white;
-            border: none;
-            padding: 5px 15px;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-
-        .admin-button {
-            display: inline-block;
-            background: #ff4444;
-            color: white;
-            padding: 10px 20px;
-            border-radius: 5px;
-            text-decoration: none;
-            margin: 10px 0;
-        }
-
-        .button-group {
-            display: flex;
-            gap: 10px;
-            margin-top: 15px;
-        }
-
-        .user-button {
-            background: #fff;
-            color: #333;
-            border: 1px solid #333;
-            padding: 8px 15px;
-            border-radius: 5px;
-            cursor: pointer;
-            text-decoration: none;
-            font-size: 14px;
-            transition: all 0.3s ease;
-            display: inline-block;
-        }
-
-        .user-button:hover {
-            background: #333;
-            color: #fff;
-        }
-    </style>
 </head>
 <body>
-    <header>
-        <div class="navbar">
-            <div class="logo">
-                <a href="/home"><img src="/images/logo.png" alt="Modaz Logo"></a>
+<header>
+    <div class="navbar">
+        <div class="logo">
+            <a href="/home"><img src="/images/logo.png" alt="Modaz Logo"></a>
+        </div>
+        <ul class="nav-links">
+            <li><a href="/home">HOME</a></li>
+            <li><a href="/shop">SHOP</a></li>
+            <li class="dropdown">
+                <a href="#">CONTACT</a>
+                <ul class="dropdown-content">
+                    <li><a href="/contact/notice">공지사항</a></li>
+                    <li><a href="/about">자주묻는질문</a></li>
+                    <li><a href="/inquiry">1:1문의</a></li>
+                </ul>
+            </li>
+        </ul>
+        <div class="icons">
+            <a href="#" class="icon-container">
+                <img src="/images/search.svg" alt="Search Icon" class="icon">
+            </a>
+            <th:block th:if="${session.loginMember == null}">
+                <a href="/login" class="icon-container">
+                    <img src="/images/profile.svg" alt="Login Icon" class="icon">
+                </a>
+            </th:block>
+            <th:block th:if="${session.loginMember != null}">
+                <a href="/mypage" class="icon-container">
+                    <img src="/images/profile.svg" alt="Profile Icon" class="icon">
+                </a>
+                <a href="/logout" class="icon-container">로그아웃</a>
+            </th:block>
+            <a href="/cart" class="icon-container">
+                <img src="/images/cart.svg" alt="Cart Icon" class="icon">
+            </a>
+        </div>
+    </div>
+</header>
+
+<section class="my-page">
+    <h2>마이페이지</h2>
+
+    <div th:if="${session.loginMember != null && session.loginMember.email == 'admin@admin'}">
+        <a href="/admin" class="admin-button">관리자 페이지</a>
+    </div>
+
+    <div class="dashboard">
+        <div class="user-summary">
+            <div class="user-info">
+                <img src="/images/profile.svg" alt="프로필 이미지" class="user-photo">
+                <div class="user-details">
+                    <h3>
+                        <span th:text="${session.loginMember.name}">홍길동</span>
+                        <span th:if="${session.loginMember.vip}">(VIP)</span>
+                    </h3>
+                    <p><span th:text="${session.loginMember.points}">63,000</span>원입니다.
+                    <div class="button-group">
+                        <a href="/member/update" class="details-btn">회원정보 수정</a>
+                        <a href="/address" class="user-button">주소지 관리</a>
+                    </div>
+                </div>
             </div>
-            <ul class="nav-links">
-                <li><a href="/home">HOME</a></li>
-                <li><a href="/shop">SHOP</a></li>
-                <li class="dropdown">
-                    <a href="#">CONTACT</a>
-                    <ul class="dropdown-content">
-                        <li><a href="/contact/notice">공지사항</a></li>
-                        <li><a href="/about">자주묻는질문</a></li>
-                        <li><a href="/inquiry">1:1문의</a></li>
-                    </ul>
-                </li>
-            </ul>
-            <div class="icons">
-                <a href="#" class="icon-container">
-                    <img src="/images/search.svg" alt="Search Icon" class="icon">
-                </a>
-                <th:block th:if="${session.loginMember == null}">
-                    <a href="/login" class="icon-container">
-                        <img src="/images/profile.svg" alt="Login Icon" class="icon">
-                    </a>
-                </th:block>
-                <th:block th:if="${session.loginMember != null}">
-                    <a href="/mypage" class="icon-container">
-                        <img src="/images/profile.svg" alt="Profile Icon" class="icon">
-                    </a>
-                    <a href="/logout" class="icon-container">로그아웃</a>
-                </th:block>
-                <a href="/cart" class="icon-container">
-                    <img src="/images/cart.svg" alt="Cart Icon" class="icon">
-                </a>
+            <div class="user-stats">
+                <div>
+                    <h4>쿠폰</h4>
+                    <p th:text="${session.loginMember.couponCount}">1</p>
+                </div>
+                <div>
+                    <h4>포인트</h4>
+                    <p th:text="${session.loginMember.accumulatedAmount}">2,000</p>
+                </div>
+                <div>
+                    <h4>작성한 리뷰</h4>
+                    <p th:text="${session.loginMember.reviewCount}">3</p>
+                </div>
             </div>
         </div>
-    </header>
 
-    <section class="my-page">
-        <h2>마이페이지</h2>
-        
-        <div th:if="${session.loginMember != null && session.loginMember.email == 'admin@admin'}">
-            <a href="/admin" class="admin-button">관리자 페이지</a>
+        <div class="order-stats">
+            <div>
+                <h4>입금 대기</h4>
+                <p th:text="${session.loginMember.pendingPaymentCount}">10</p>
+            </div>
+            <div>
+                <h4>결제 완료</h4>
+                <p th:text="${session.loginMember.paymentCompletedCount}">5</p>
+            </div>
+            <div>
+                <h4>배송 준비</h4>
+                <p th:text="${session.loginMember.preparingShipmentCount}">7</p>
+            </div>
+            <div>
+                <h4>배송 중</h4>
+                <p th:text="${session.loginMember.inTransitCount}">0</p>
+            </div>
+            <div>
+                <h4>배송 완료</h4>
+                <p th:text="${session.loginMember.deliveredCount}">1</p>
+            </div>
         </div>
 
-        <div class="dashboard">
-            <div class="user-summary">
-                <div class="user-info">
-                    <img src="/images/profile.svg" alt="프로필 이미지" class="user-photo">
-                    <div class="user-details">
-                        <h3 th:text="${session.loginMember.name + ' (VIP)'}">홍길동 (VIP)</h3>
-                        <p>고객님의 총 적립액은 63,000원입니다.</p>
-                        <div class="button-group">
-                            <a href="/member/update" button class="details-btn">회원정보 수정</a>
-                            <a href="/address" button class="details-btn">주소지 관리</a>
+        <div class="recent-orders">
+            <h3>최근 주문 정보</h3>
+            <table>
+                <thead>
+                <tr>
+                    <th>주문번호</th>
+                    <th>상품정보</th>
+                    <th>상품구매액</th>
+                    <th>조회</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="order : ${recentOrders}">
+                    <td>
+                        <span th:text="${order.id}">주문번호</span><br>
+                        <span th:text="${#temporals.format(order.orderDate, 'yyyy.MM.dd')}">주문일</span>
+                    </td>
+                    <td class="product-info">
+                        <div th:each="item : ${order.orderItems}" style="display: flex; align-items: center; margin-bottom: 5px;">
+                            <img th:src="@{'/images/' + ${item.product.imageName}}" alt="Product Image" style="width: 50px; height: 50px; object-fit: cover; margin-right: 10px;">
+                            <span th:text="${item.product.name}">상품명</span>
                         </div>
-                    </div>
-                </div>
-                <div class="user-stats">
-                    <div>
-                        <h4>쿠폰</h4>
-                        <p>1</p>
-                    </div>
-                    <div>
-                        <h4>포인트</h4>
-                        <p>2,000</p>
-                    </div>
-                    <div>
-                        <h4>작성한 리뷰</h4>
-                        <p>3</p>
-                    </div>
-                </div>
-            </div>
-
-            <div class="order-stats">
-                <div>
-                    <h4>입금 대기</h4>
-                    <p>10</p>
-                </div>
-                <div>
-                    <h4>결제 완료</h4>
-                    <p>5</p>
-                </div>
-                <div>
-                    <h4>배송 준비</h4>
-                    <p>7</p>
-                </div>
-                <div>
-                    <h4>배송 중</h4>
-                    <p>0</p>
-                </div>
-                <div>
-                    <h4>배송 완료</h4>
-                    <p>1</p>
-                </div>
-            </div>
-
-            <div class="recent-orders">
-                <h3>최근 주문 정보</h3>
-                <table>
-                    <thead>
-                        <tr>
-                            <th>주문번호</th>
-                            <th>상품정보</th>
-                            <th>상품구매액</th>
-                            <th>조회</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>133977<br>2023.02.10</td>
-                            <td class="product-info">
-                                <img src="/images/product1.jpg" alt="Product Image">
-                                조깅화 밀크 카멜 스니커즈 - 화이트
-                            </td>
-                            <td>2,000원</td>
-                            <td><button class="view-btn">조회</button></td>
-                        </tr>
-                        <tr>
-                            <td>133258<br>2023.01.26</td>
-                            <td class="product-info">
-                                <img src="/images/product2.jpg" alt="Product Image">
-                                빈 피크닉 - 베이지
-                            </td>
-                            <td>8,000원</td>
-                            <td><button class="view-btn">조회</button></td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
+                    </td>
+                    <td th:text="${order.totalAmount} + '원'">상품구매액</td>
+                    <td>
+                        <button class="view-btn" th:onclick="|location.href='/order/details/${order.id}'|">조회</button>
+                    </td>
+                </tr>
+                <tr th:if="${#lists.isEmpty(recentOrders)}">
+                    <td colspan="4">최근 주문이 없습니다.</td>
+                </tr>
+                </tbody>
+            </table>
         </div>
-    </section>
+    </div>
+</section>
 </body>
-</html> 
+</html>

@@ -13,30 +13,30 @@
             margin-top: 120px;
             padding: 20px;
         }
-        
+
         .container {
             max-width: 1200px;
             margin: 0 auto;
         }
-        
+
         .cart-table {
             width: 100%;
             border-collapse: collapse;
             margin-bottom: 30px;
         }
-        
+
         .cart-table th,
         .cart-table td {
             padding: 15px;
             text-align: center;
             border-bottom: 1px solid #ddd;
         }
-        
+
         .cart-table img {
             width: 100px;
             height: auto;
         }
-        
+
         .remove-btn {
             background: none;
             border: none;
@@ -44,7 +44,7 @@
             color: #ff0000;
             cursor: pointer;
         }
-        
+
         .cart-total {
             float: right;
             width: 300px;
@@ -52,21 +52,21 @@
             background: #f9f9f9;
             border-radius: 5px;
         }
-        
+
         .total-row {
             display: flex;
             justify-content: space-between;
             margin: 10px 0;
             padding: 5px 0;
         }
-        
+
         .total {
             border-top: 2px solid #333;
             margin-top: 15px;
             padding-top: 15px;
             font-weight: bold;
         }
-        
+
         .checkout-btn {
             width: 100%;
             padding: 15px;
@@ -77,11 +77,11 @@
             margin-top: 20px;
             cursor: pointer;
         }
-        
+
         .checkout-btn:hover {
             background: #555;
         }
-        
+
         input[type="number"] {
             width: 60px;
             padding: 5px;
@@ -90,82 +90,88 @@
     </style>
 </head>
 <body>
-    <!-- 네비게이션 바 -->
-    <header>
-        <div class="navbar">
-            <div class="logo">
-                <a href="/home"><img src="/images/logo.png" alt="Modaz Logo"></a>
-            </div>
-            <ul class="nav-links">
-                <li><a href="/home">HOME</a></li>
-                <li><a href="/shop">SHOP</a></li>
-                <li class="dropdown">
-                    <a href="#">CONTACT</a>
-                    <ul class="dropdown-content">
-                        <li><a href="/contact/notice">공지사항</a></li>
-                        <li><a href="/about">자주묻는질문</a></li>
-                        <li><a href="/inquiry">1:1문의</a></li>
-                    </ul>
-                </li>
-            </ul>
-            <div class="icons">
-                <a href="#" class="icon-container">
-                    <img src="/images/search.svg" alt="Search Icon" class="icon">
-                </a>
-                <th:block th:if="${session.loginMember == null}">
-                    <a href="/login" class="icon-container">
-                        <img src="/images/profile.svg" alt="Login Icon" class="icon">
-                    </a>
-                </th:block>
-                <th:block th:if="${session.loginMember != null}">
-                    <a href="/mypage" class="icon-container">
-                        <img src="/images/profile.svg" alt="Profile Icon" class="icon">
-                    </a>
-                    <a href="/logout" class="icon-container">로그아웃</a>
-                </th:block>
-                <a href="/cart" class="icon-container">
-                    <img src="/images/cart.svg" alt="Cart Icon" class="icon">
-                </a>
-            </div>
+<!-- 네비게이션 바 -->
+<header>
+    <div class="navbar">
+        <div class="logo">
+            <a href="/home"><img src="/images/logo.png" alt="Modaz Logo"></a>
         </div>
-    </header>
+        <ul class="nav-links">
+            <li><a href="/home">HOME</a></li>
+            <li><a href="/shop">SHOP</a></li>
+            <li class="dropdown">
+                <a href="#">CONTACT</a>
+                <ul class="dropdown-content">
+                    <li><a href="/contact/notice">공지사항</a></li>
+                    <li><a href="/about">자주묻는질문</a></li>
+                    <li><a href="/inquiry">1:1문의</a></li>
+                </ul>
+            </li>
+        </ul>
+        <div class="icons">
+            <a href="#" class="icon-container">
+                <img src="/images/search.svg" alt="Search Icon" class="icon">
+            </a>
+            <th:block th:if="${session.loginMember == null}">
+                <a href="/login" class="icon-container">
+                    <img src="/images/profile.svg" alt="Login Icon" class="icon">
+                </a>
+            </th:block>
+            <th:block th:if="${session.loginMember != null}">
+                <a href="/mypage" class="icon-container">
+                    <img src="/images/profile.svg" alt="Profile Icon" class="icon">
+                </a>
+                <a href="/logout" class="icon-container">로그아웃</a>
+            </th:block>
+            <a href="/cart" class="icon-container">
+                <img src="/images/cart.svg" alt="Cart Icon" class="icon">
+            </a>
+        </div>
+    </div>
+</header>
 
-    <!-- 장바구니 섹션 -->
-    <section class="cart">
-        <div class="container">
-            <h2>장바구니</h2>
-            
-            <div th:if="${cartItems.empty}">
-                <p>장바구니가 비어있습니다.</p>
-            </div>
-            
-            <div th:unless="${cartItems.empty}">
+<!-- 장바구니 섹션 -->
+<section class="cart">
+    <div class="container">
+        <h2>장바구니</h2>
+
+        <div th:if="${cartItems.empty}">
+            <p>장바구니가 비어있습니다.</p>
+        </div>
+
+        <div th:unless="${cartItems.empty}">
+            <!-- 폼 시작 -->
+            <form th:action="@{/checkout}" method="post">
+                <!-- CSRF 토큰은 나중에 추가 -->
+
                 <table class="cart-table">
                     <thead>
-                        <tr>
-                            <th>상품</th>
-                            <th>이름</th>
-                            <th>가격</th>
-                            <th>수량</th>
-                            <th>총액</th>
-                            <th>삭제</th>
-                        </tr>
+                    <tr>
+                        <th>상품</th>
+                        <th>이름</th>
+                        <th>가격</th>
+                        <th>수량</th>
+                        <th>총액</th>
+                        <th>삭제</th>
+                    </tr>
                     </thead>
                     <tbody>
-                        <tr th:each="item : ${cartItems}">
-                            <td><img th:src="@{'/product_IMG_/' + ${item.product.imageName}}" th:alt="${item.product.name}"></td>
-                            <td>
-                                <span th:text="${item.product.name}"></span><br>
-                                <small>
-                                    색상: <span th:text="${item.selectedColor}"></span>
-                                    사이즈: <span th:text="${item.selectedSize}"></span>
-                                </small>
-                            </td>
-                            <td class="price" th:data-price="${item.product.price}">$<span th:text="${item.product.price}"></span></td>
-                            <td><input type="number" class="quantity-input" th:value="${item.quantity}" min="1" onchange="updatePrice(this)"></td>
-                            <td class="total-price">$<span th:text="${item.product.price * item.quantity}"></span>.00</td>
-                            <td><button class="remove-btn" th:data-item-id="${item.id}" onclick="removeItem(this)">×</button></td>
-                        </tr>
+                    <tr th:each="item : ${cartItems}">
+                        <td><img th:src="@{'/product_IMG_/' + ${item.product.imageName}}" th:alt="${item.product.name}"></td>
+                        <td>
+                            <span th:text="${item.product.name}"></span><br>
+                            <small>
+                                색상: <span th:text="${item.selectedColor}"></span>
+                                사이즈: <span th:text="${item.selectedSize}"></span>
+                            </small>
+                        </td>
+                        <td class="price" th:data-price="${item.product.price}">$<span th:text="${item.product.price}"></span></td>
+                        <td>
+                            <input type="number" class="quantity-input" th:value="${item.quantity}" min="1" onchange="updateQuantity(this, [[${item.id}]])">
+                        </td>
+                        <td class="total-price">$<span th:text="${item.product.price * item.quantity}"></span>.00</td>
+                        <td><button type="button" class="remove-btn" th:data-item-id="${item.id}" onclick="removeItem(this)">×</button></td>
+                    </tr>
                     </tbody>
                 </table>
 
@@ -184,41 +190,60 @@
                         <span>총 합계</span>
                         <span class="final-total">$<span>0</span>.00</span>
                     </div>
-                    <button class="checkout-btn">결제하기</button>
+                    <button type="submit" class="checkout-btn">결제하기</button>
                 </div>
-            </div>
+            </form>
+            <!-- 폼 끝 -->
         </div>
-    </section>
+    </div>
+</section>
 
-    <!-- 페이지 하단에 JavaScript 추가 -->
-    <script>
+<!-- 페이지 하단에 JavaScript 추가 -->
+<script>
     function updatePrice(input) {
         const row = input.closest('tr');
         const quantity = parseInt(input.value);
         const price = parseFloat(row.querySelector('.price').getAttribute('data-price'));
         const totalPriceCell = row.querySelector('.total-price');
-        
+
         // 개별 상품 총액 업데이트
         const itemTotal = price * quantity;
         totalPriceCell.innerHTML = `$${itemTotal}.00`;
-        
+
         // 전체 합계 업데이트
         updateTotalSum();
+    }
+
+    function updateQuantity(input, itemId) {
+        const row = input.closest('tr');
+        const quantity = parseInt(input.value);
+        const price = parseFloat(row.querySelector('.price').getAttribute('data-price'));
+        const totalPriceCell = row.querySelector('.total-price');
+
+        // 개별 상품 총액 업데이트
+        const itemTotal = price * quantity;
+        totalPriceCell.innerHTML = `$${itemTotal}.00`;
+
+        // 전체 합계 업데이트
+        updateTotalSum();
+
+        // AJAX 요청을 통해 서버에 수량 업데이트 (기능 구현 예정)
+        // 추후 구현 시 이곳에 AJAX 요청 추가
     }
 
     function updateTotalSum() {
         let subtotal = 0;
         const shippingFee = 5;
-        
+
         // 모든 상품의 총액 계산
         document.querySelectorAll('.total-price').forEach(cell => {
             const price = parseFloat(cell.textContent.replace('$', ''));
             subtotal += price;
         });
-        
+
         // 소계 업데이트
         document.querySelector('.subtotal span').textContent = subtotal;
-        
+
         // 최종 합계 업데이트 (소계 + 배송비)
         document.querySelector('.final-total span').textContent = subtotal + shippingFee;
     }
@@ -226,7 +251,7 @@
     function removeItem(button) {
         if (confirm('정말 삭제하시겠습니까?')) {
             const itemId = button.getAttribute('data-item-id');
-            
+
             fetch(`/cart/remove/${itemId}`, {
                 method: 'DELETE',
                 headers: {
@@ -235,27 +260,27 @@
                     // 'X-CSRF-TOKEN': document.querySelector('meta[name="_csrf"]').content
                 }
             })
-            .then(response => {
-                if (response.ok) {
-                    const row = button.closest('tr');
-                    row.remove();
-                    updateTotalSum();
-                    
-                    // 장바구니가 비었는지 확인
-                    const remainingItems = document.querySelectorAll('.cart-table tbody tr');
-                    if (remainingItems.length === 0) {
-                        location.reload(); // 페이지 새로고침
+                .then(response => {
+                    if (response.ok) {
+                        const row = button.closest('tr');
+                        row.remove();
+                        updateTotalSum();
+
+                        // 장바구니가 비었는지 확인
+                        const remainingItems = document.querySelectorAll('.cart-table tbody tr');
+                        if (remainingItems.length === 0) {
+                            location.reload(); // 페이지 새로고침
+                        }
+                    } else {
+                        response.text().then(errorMessage => {
+                            alert(errorMessage || '삭제에 실패했습니다. 다시 시도해주세요.');
+                        });
                     }
-                } else {
-                    response.text().then(errorMessage => {
-                        alert(errorMessage || '삭제에 실패했습니다. 다시 시도해주세요.');
-                    });
-                }
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                alert('삭제 중 오류가 발생했습니다.');
-            });
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('삭제 중 오류가 발생했습니다.');
+                });
         }
     }
 
@@ -263,6 +288,6 @@
     document.addEventListener('DOMContentLoaded', function() {
         updateTotalSum();
     });
-    </script>
+</script>
 </body>
-</html> 
+</html>

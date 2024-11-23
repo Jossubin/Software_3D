@@ -6,6 +6,7 @@ import lombok.Setter;
 
 @Entity
 @Getter @Setter
+@Table(name = "member") // 테이블 이름을 정확히 매칭 (CREATE TABLE은 'member')
 public class Member {
 
     @Id
@@ -15,7 +16,7 @@ public class Member {
     @Column(nullable = false)
     private String name;
 
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     private String email;
 
     @Column(nullable = false)
@@ -31,23 +32,38 @@ public class Member {
 
     private boolean isAdmin;
 
+    // 새로 추가된 필드들
+    @Column(nullable = false)
+    private Integer couponCount = 0;
+
+    @Column(nullable = false)
+    private Integer deliveredCount = 0;
+
+    @Column(nullable = false)
+    private Integer inTransitCount = 0;
+
+    @Column(nullable = false)
+    private Integer paymentCompletedCount = 0;
+
+    @Column(nullable = false)
+    private Integer pendingPaymentCount = 0;
+
+    @Column(nullable = false)
+    private Integer points = 0;
+
+    @Column(nullable = false)
+    private Integer preparingShipmentCount = 0;
+
+    @Column(nullable = false)
+    private Integer reviewCount = 0;
+
+    @Column(nullable = false)
+    private boolean vip = false;
+
+    @Column(name = "accumulated_amount", nullable = false)
+    private Integer accumulatedAmount = 0;
+    // 기본 생성자
     public Member() {
         this.id = null;
-    }
-
-    public void setProfileImagePath(String profileImagePath) {
-        this.profileImagePath = profileImagePath;
-    }
-
-    public String getProfileImagePath() {
-        return profileImagePath;
-    }
-
-    public boolean isAdmin() {
-        return isAdmin;
-    }
-
-    public void setAdmin(boolean admin) {
-        isAdmin = admin;
     }
 }
