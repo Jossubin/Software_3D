@@ -81,6 +81,7 @@ public class MemberService {
             System.out.println("회원 삭제 중 오류 발생: " + e.getMessage());
             throw new IllegalStateException("회원 삭제 중 오류가 발생했습니다.", e);
         }
+
     }
 
     public boolean isEmailExists(String email) {
