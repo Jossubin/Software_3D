@@ -112,6 +112,10 @@ body {
 
 /* 베스트 상품 섹션 */
 .best-products {
+    background-image: url('/images/background.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
     padding: 50px 10vw;
     text-align: center;
     background-color: #f7f7f7;

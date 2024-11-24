@@ -68,38 +68,69 @@
 </div>
 
 <!-- 베스트 상품 섹션 -->
-<section class="best-products">
+<section class="best-products" style="background-image: url('/images/background.jpg');">
   <h2>New Product</h2>
   <div class="underline"></div>
   <div class="product-grid">
-    <th:block th:each="product : ${products}">
-      <div class="product-card">
-        <!-- 상품 라벨 (새 상품 또는 세일) -->
-        <span class="label" th:classappend="${product.isNew ? ' new' : ' sale'}"
-              th:text="${product.isNew ? 'New' : 'Sale'}"></span>
-
-        <!-- 상품 상세 페이지 링크 -->
-        <a th:href="@{'/product-detail/' + ${product.id}}">
-          <img th:src="@{'/product_IMG_/' + ${product.imageName}}" th:alt="${product.name}">
-        </a>
-
-        <!-- 상품 이름 -->
-        <h3 th:text="${product.name}">Product Name</h3>
-
-        <!-- 상품 가격 (세일 전 가격 표시 가능) -->
-        <p class="price">
-          <span th:if="${product.oldPrice != null}" class="old-price" th:text="${'$' + product.oldPrice}">$150.00</span>
-          <span th:text="${'$' + product.price}">$100.00</span>
-        </p>
-
-        <!-- 색상 옵션 (고정값 사용) -->
-        <div class="color-options">
-          <span class="color red"></span>
-          <span class="color green"></span>
-          <span class="color black"></span>
-        </div>
+    <div class="product-card">
+      <img src="/images/home1.jpg" alt="Product 1">
+      <h3>Casual Dress</h3>
+      <p class="price">$100.00</p>
+      <div class="color-options">
+        <span class="color red"></span>
+        <span class="color green"></span>
+        <span class="color black"></span>
       </div>
-    </th:block>
+    </div>
+    
+    <div class="product-card">
+      <img src="/images/home2.jpg" alt="Product 2">
+      <h3>Summer Shirt</h3>
+      <p class="price">$85.00</p>
+      <div class="color-options">
+        <span class="color red"></span>
+        <span class="color green"></span>
+        <span class="color black"></span>
+      </div>
+    </div>
+    <div class="product-card">
+      <img src="/images/home3.jpg" alt="Product 2">
+      <h3>Summer Shirt</h3>
+      <p class="price">$85.00</p>
+      <div class="color-options">
+        <span class="color red"></span>
+        <span class="color green"></span>
+        <span class="color black"></span>
+      </div>
+    </div>    <div class="product-card">
+      <img src="/images/home4.jpg" alt="Product 2">
+      <h3>Summer Shirt</h3>
+      <p class="price">$85.00</p>
+      <div class="color-options">
+        <span class="color red"></span>
+        <span class="color green"></span>
+        <span class="color black"></span>
+      </div>
+    </div>    <div class="product-card">
+      <img src="/images/home5.jpg" alt="Product 2">
+      <h3>Summer Shirt</h3>
+      <p class="price">$85.00</p>
+      <div class="color-options">
+        <span class="color red"></span>
+        <span class="color green"></span>
+        <span class="color black"></span>
+      </div>
+    </div>    <div class="product-card">
+      <img src="/images/home6.jpg" alt="Product 2">
+      <h3>Summer Shirt</h3>
+      <p class="price">$85.00</p>
+      <div class="color-options">
+        <span class="color red"></span>
+        <span class="color green"></span>
+        <span class="color black"></span>
+      </div>
+    </div>
+
   </div>
 </section>
 
