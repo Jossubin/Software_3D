@@ -167,7 +167,7 @@
                         </td>
                         <td class="price" th:data-price="${item.product.price}">$<span th:text="${item.product.price}"></span></td>
                         <td>
-                            <input type="number" class="quantity-input" th:value="${item.quantity}" min="1" onchange="updateQuantity(this, [[${item.id}]])">
+                            <span th:text="${item.quantity}"></span>
                         </td>
                         <td class="total-price">$<span th:text="${item.product.price * item.quantity}"></span>.00</td>
                         <td><button type="button" class="remove-btn" th:data-item-id="${item.id}" onclick="removeItem(this)">×</button></td>
@@ -200,44 +200,13 @@
 
 <!-- 페이지 하단에 JavaScript 추가 -->
 <script>
-    function updatePrice(input) {
-        const row = input.closest('tr');
-        const quantity = parseInt(input.value);
-        const price = parseFloat(row.querySelector('.price').getAttribute('data-price'));
-        const totalPriceCell = row.querySelector('.total-price');
-
-        // 개별 상품 총액 업데이트
-        const itemTotal = price * quantity;
-        totalPriceCell.innerHTML = `$${itemTotal}.00`;
-
-        // 전체 합계 업데이트
-        updateTotalSum();
-    }
-
-    function updateQuantity(input, itemId) {
-        const row = input.closest('tr');
-        const quantity = parseInt(input.value);
-        const price = parseFloat(row.querySelector('.price').getAttribute('data-price'));
-        const totalPriceCell = row.querySelector('.total-price');
-
-        // 개별 상품 총액 업데이트
-        const itemTotal = price * quantity;
-        totalPriceCell.innerHTML = `$${itemTotal}.00`;
-
-        // 전체 합계 업데이트
-        updateTotalSum();
-
-        // AJAX 요청을 통해 서버에 수량 업데이트 (기능 구현 예정)
-        // 추후 구현 시 이곳에 AJAX 요청 추가
-    }
-
     function updateTotalSum() {
         let subtotal = 0;
         const shippingFee = 5;
 
         // 모든 상품의 총액 계산
-        document.querySelectorAll('.total-price').forEach(cell => {
-            const price = parseFloat(cell.textContent.replace('$', ''));
+        document.querySelectorAll('.total-price span').forEach(cell => {
+            const price = parseFloat(cell.textContent);
             subtotal += price;
         });
 

@@ -129,7 +129,7 @@
                     </td>
                     <td class="product-info">
                         <div th:each="item : ${order.orderItems}" style="display: flex; align-items: center; margin-bottom: 5px;">
-                            <img th:src="@{'/images/' + ${item.product.imageName}}" alt="Product Image" style="width: 50px; height: 50px; object-fit: cover; margin-right: 10px;">
+                            <img th:src="@{'/product_IMG_/' + ${item.product.imageName}}" alt="Product Image" style="width: 50px; height: 50px; object-fit: cover; margin-right: 10px;">
                             <span th:text="${item.product.name}">상품명</span>
                         </div>
                     </td>
