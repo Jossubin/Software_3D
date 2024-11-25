@@ -87,4 +87,50 @@ document.addEventListener('DOMContentLoaded', function() {
             alert('3D View 기능 준비중입니다.');
         });
     }
+
+    // 드롭다운 관련 요소들
+    const colorSelect = document.querySelector('.color-select-btn');
+    const colorOptions = document.querySelector('.color-options-dropdown');
+    
+    console.log('colorSelect:', colorSelect);
+    console.log('colorOptions:', colorOptions);
+
+    if (colorSelect && colorOptions) {
+        // 드롭다운 토글
+        colorSelect.addEventListener('click', function(e) {
+            console.log('Button clicked');
+            e.preventDefault();
+            e.stopPropagation();
+            
+            if (colorOptions.style.display === 'block') {
+                colorOptions.style.display = 'none';
+            } else {
+                colorOptions.style.display = 'block';
+            }
+        });
+
+        // 각 색상 옵션 클릭 이벤트
+        const colorOptionElements = document.querySelectorAll('.color-option');
+        colorOptionElements.forEach(option => {
+            option.addEventListener('click', function(e) {
+                e.stopPropagation();
+                const color = this.getAttribute('data-color');
+                const colorName = this.querySelector('.color-name').textContent;
+                
+                // 선택된 색상 표시 업데이트
+                document.querySelector('.selected-color').style.backgroundColor = color;
+                document.querySelector('.color-text').textContent = colorName;
+                
+                // 드롭다운 닫기
+                colorOptions.style.display = 'none';
+            });
+        });
+
+        // 드롭다운 외부 클릭시 닫기
+        document.addEventListener('click', function(e) {
+            if (!colorSelect.contains(e.target) && !colorOptions.contains(e.target)) {
+                colorOptions.style.display = 'none';
+            }
+        });
+    }
 }); 
