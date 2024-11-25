@@ -100,7 +100,7 @@ public class AdminProductController {
             existingProduct.setPrice(product.getPrice());
             existingProduct.setFeature(product.getFeature());
             existingProduct.setOldPrice(product.getOldPrice());
-
+            existingProduct.setCategory(product.getCategory());
             if (!imageFile.isEmpty()) {
                 try {
                     // 원본 파일 이름 가져오기

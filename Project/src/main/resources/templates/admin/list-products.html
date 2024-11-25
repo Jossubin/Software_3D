@@ -125,6 +125,7 @@
     <th>이름</th>
     <th>설명</th>
     <th>가격</th>
+    <th>카테고리</th>
     <th>관리</th>
   </tr>
   </thead>
@@ -137,6 +138,18 @@
     <td th:text="${product.name}">상품명</td>
     <td th:text="${product.description}">상품 설명</td>
     <td th:text="${'$' + product.price}">$100.00</td>
+    <td>
+      <span th:switch="${product.category}">
+        <span th:case="'top'">상의</span>
+        <span th:case="'outer'">아우터</span>
+        <span th:case="'pants'">팬츠</span>
+        <span th:case="'dress'">원피스</span>
+        <span th:case="'knit'">니트/가디건</span>
+        <span th:case="'skirt'">스커트</span>
+        <span th:case="'training'">트레이닝</span>
+        <span th:case="'set'">투피스/세트</span>
+      </span>
+    </td>
     <td>
       <a th:href="@{'/admin/products/edit/' + ${product.id}}" style="color: #2196F3; text-decoration: none;">수정</a> |
       <a th:href="@{'/admin/products/delete/' + ${product.id}}" onclick="return confirm('정말 삭제하시겠습니까?');" style="color: #f44336; text-decoration: none;">삭제</a>

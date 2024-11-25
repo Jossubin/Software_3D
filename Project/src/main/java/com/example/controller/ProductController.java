@@ -116,11 +116,19 @@ public class ProductController {
     }
     // shop메서드를 불러오는 부분이다.
     @GetMapping("/shop")
-    public String shop(@RequestParam(value = "sort", required = false, defaultValue = "latest") String sort,
-                       Model model) {
-        List<Product> products = productService.getAllProductsSorted(sort);
+    public String shop(@RequestParam(required = false) String category, Model model) {
+        List<Product> products;
+        
+        if (category != null && !category.isEmpty()) {
+            // 특정 카테고리의 상품만 가져오기
+            products = productService.getProductsByCategory(category);
+        } else {
+            // 카테고리가 선택되지 않았을 경우 모든 상품 가져오기
+            products = productService.getAllProducts();
+        }
+        
         model.addAttribute("products", products);
-        model.addAttribute("currentSort", sort);
+        model.addAttribute("category", category);
         return "shop";
     }
 }

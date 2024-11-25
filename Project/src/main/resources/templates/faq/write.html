@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FAQ 작성 - Modaz</title>
+    <link href='https://fonts.googleapis.com/css?family=Montserrat' rel='stylesheet'>
+    <link rel="stylesheet" href="/css/nav.css">
+    <style>
+        body {
+            padding-top: 80px; /* 네비바 높이만큼 여백 추가 */
+        }
+        .write-container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+        }
+        input[type="text"], 
+        textarea,
+        select {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        textarea {
+            height: 200px;
+            resize: vertical;
+        }
+        .submit-btn {
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        .submit-btn:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <!-- 네비게이션 바 -->
+    <header>
+        <div class="navbar">
+            <div class="logo">
+                <a href="/home"><img src="/images/logo.png" alt="Modaz Logo"></a>
+            </div>
+            <ul class="nav-links">
+                <li><a href="/home">HOME</a></li>
+                <li><a href="/shop">SHOP</a></li>
+                <li class="dropdown">
+                    <a href="#">CONTACT</a>
+                    <ul class="dropdown-content">
+                        <li><a href="/contact/notice">공지사항</a></li>
+                        <li><a href="/about">자주묻는질문</a></li>
+                        <li><a href="/inquiry">1:1문의</a></li>
+                    </ul>
+                </li>
+            </ul>
+            <div class="icons">
+                <a href="#" class="icon-container">
+                    <img src="/images/search.svg" alt="Search Icon" class="icon">
+                </a>
+                <th:block th:if="${session.loginMember == null}">
+                    <a href="/login" class="icon-container">
+                        <img src="/images/profile.svg" alt="Login Icon" class="icon">
+                    </a>
+                </th:block>
+                <th:block th:if="${session.loginMember != null}">
+                    <a href="/mypage" class="icon-container">
+                        <img src="/images/profile.svg" alt="Profile Icon" class="icon">
+                    </a>
+                    <a href="/logout" class="icon-container">로그아웃</a>
+                </th:block>
+                <a href="/cart" class="icon-container">
+                    <img src="/images/cart.svg" alt="Cart Icon" class="icon">
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- FAQ 작성 폼 -->
+    <div class="write-container">
+        <h1>FAQ 작성</h1>
+        
+        <form th:action="@{/about/write}" th:object="${faq}" method="post">
+            <div class="form-group">
+                <label for="category">카테고리</label>
+                <select id="category" th:field="*{category}" required>
+                    <option value="[기타문의]">기타문의</option>
+                    <option value="[배송문의]">배송문의</option>
+                    <option value="[주문결제]">주문결제</option>
+                    <option value="[취소/반품/교환]">취소/반품/교환</option>
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label for="question">질문</label>
+                <input type="text" id="question" th:field="*{question}" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="answer">답변</label>
+                <textarea id="answer" th:field="*{answer}" required></textarea>
+            </div>
+            
+            <button type="submit" class="submit-btn">등록</button>
+        </form>
+    </div>
+</body>
+</html> 

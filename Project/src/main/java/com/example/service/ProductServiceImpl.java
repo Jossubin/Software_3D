@@ -3,10 +3,13 @@ package com.example.service;
 import com.example.model.Product;
 import com.example.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.data.domain.Sort;
 import java.util.List;
 import java.util.Optional;
+import com.example.service.ProductService;
+import com.example.repository.ProductRepository;
 
 @Service
 @RequiredArgsConstructor
@@ -54,4 +57,10 @@ public class ProductServiceImpl implements ProductService {
 
         productRepository.deleteById(id);
     }
+
+    @Override
+    public List<Product> getProductsByCategory(String category) {
+        return productRepository.findByCategory(category);
+    }
+
 }

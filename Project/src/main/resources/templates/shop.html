@@ -63,6 +63,7 @@
     <!-- 카테고리 선택 -->
     <section class="category-select">
         <div class="category-buttons">
+            <a href="/shop" class="filter-btn" th:classappend="${category == null} ? 'active'">전체</a>
             <a href="/shop?category=top" class="filter-btn" th:classappend="${category == 'top'} ? 'active'">상의</a>
             <a href="/shop?category=outer" class="filter-btn" th:classappend="${category == 'outer'} ? 'active'">아우터</a>
             <a href="/shop?category=pants" class="filter-btn" th:classappend="${category == 'pants'} ? 'active'">팬츠</a>
