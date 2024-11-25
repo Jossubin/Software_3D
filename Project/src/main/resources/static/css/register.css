@@ -1,0 +1,80 @@
+/* 회원가입 섹션 스타일 */
+.register-section {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh; /* 화면 전체 높이 */
+    background-color: #f7f7f7;
+    padding: 20px; /* 여백 */
+}
+
+.register-container {
+    background-color: #fff;
+    padding: 50px; /* 내부 여백 */
+    width: 70vw; /* 화면 너비의 70% */
+    max-width: 600px; /* 최대 600px로 제한 */
+    height: auto; /* 높이는 콘텐츠에 따라 조정 */
+    border-radius: 15px; /* 모서리 둥글게 */
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15); /* 그림자 효과 */
+    text-align: center;
+}
+
+.register-title {
+    font-size: 36px; /* 제목 크기 */
+    font-weight: 700;
+    margin-bottom: 40px; /* 제목 아래 간격 */
+    color: #333;
+}
+
+.register-form label {
+    display: block;
+    text-align: left;
+    font-size: 16px; /* 레이블 크기 */
+    font-weight: 600;
+    margin-bottom: 8px; /* 레이블과 필드 간 간격 */
+    color: #555;
+}
+
+.register-form input {
+    width: 100%; /* 입력 필드 전체 너비 */
+    padding: 15px; /* 필드 높이 */
+    margin-bottom: 25px; /* 필드 사이 간격 */
+    border: 1px solid #ddd;
+    border-radius: 8px; /* 필드의 모서리 부드럽게 */
+    font-size: 16px;
+    font-family: 'Montserrat', sans-serif;
+}
+
+.register-btn {
+    width: 100%;
+    padding: 18px; /* 버튼 높이 */
+    background-color: #d00000;
+    color: #fff;
+    font-size: 18px; /* 버튼 폰트 크기 */
+    font-weight: 700;
+    border: none;
+    border-radius: 10px; /* 버튼 모서리 둥글게 */
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.1s ease;
+}
+
+.register-btn:hover {
+    background-color: #cc001f;
+    transform: scale(1.02); /* 버튼 살짝 확대 효과 */
+}
+
+.register-options {
+    margin-top: 30px; /* 옵션 상단 간격 */
+    text-align: center;
+}
+
+.register-options a {
+    font-size: 16px; /* 옵션 폰트 크기 */
+    color: #d00000;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.register-options a:hover {
+    color: #cc001f;
+}
