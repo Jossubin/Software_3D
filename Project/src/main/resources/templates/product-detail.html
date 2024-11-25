@@ -89,30 +89,43 @@
             </div>
         </div>
 
-        <!-- 색상 선택 부분 수정 -->
-        <div class="colors">
-            <strong>Colors:</strong>
-            <div class="color-options">
-                <label class="color-label">
-                    <input type="radio" name="color" value="white">
-                    <span class="color white"></span>
-                </label>
-                <label class="color-label">
-                    <input type="radio" name="color" value="red">
-                    <span class="color red"></span>
-                </label>
-                <label class="color-label">
-                    <input type="radio" name="color" value="black">
-                    <span class="color black"></span>
-                </label>
-                <label class="color-label">
-                    <input type="radio" name="color" value="green">
-                    <span class="color green"></span>
-                </label>
-                <label class="color-label">
-                    <input type="radio" name="color" value="yellow">
-                    <span class="color yellow"></span>
-                </label>
+        <!-- 색상 선택 섹션 -->
+        <div class="product-options">
+            <div class="color-select">
+                <label>COLOR</label>
+                <div class="color-dropdown">
+                    <button type="button" class="color-select-btn">
+                        <span class="selected-color"></span>
+                        <span class="color-text">색상 선택</span>
+                        <span class="dropdown-arrow">▼</span>
+                    </button>
+                    <ul class="color-options-dropdown">
+                        <li class="color-option" data-color="white">
+                            <span class="color-circle white"></span>
+                            <span class="color-name">화이트</span>
+                        </li>
+                        <li class="color-option" data-color="olive">
+                            <span class="color-circle olive"></span>
+                            <span class="color-name">올리브</span>
+                        </li>
+                        <li class="color-option" data-color="brown">
+                            <span class="color-circle brown"></span>
+                            <span class="color-name">브라운</span>
+                        </li>
+                        <li class="color-option" data-color="navy">
+                            <span class="color-circle navy"></span>
+                            <span class="color-name">네이비</span>
+                        </li>
+                        <li class="color-option" data-color="gray">
+                            <span class="color-circle gray"></span>
+                            <span class="color-name">그레이</span>
+                        </li>
+                        <li class="color-option" data-color="black">
+                            <span class="color-circle black"></span>
+                            <span class="color-name">블랙</span>
+                        </li>
+                    </ul>
+                </div>
             </div>
         </div>
 
@@ -151,22 +164,86 @@
 <input type="hidden" id="productId" th:value="${product.id}">
 
 <!-- 기존 스크립트 태그를 수정 -->
-<script src="/js/product-detail.js"></script>
+<script src="/static/scripts/productdetail.js"></script>
 
 <!-- 페이지 하단에 다음 스크립트 추가 -->
 <script>
 document.addEventListener('DOMContentLoaded', function() {
+    // 버튼과 드롭다운 요소 선택
+    const btn = document.querySelector('.color-select-btn');
+    const dropdown = document.querySelector('.color-options-dropdown');
+    const selectedColorCircle = document.querySelector('.selected-color');
+    const colorText = document.querySelector('.color-text');
+
+    // 버튼 클릭 이벤트
+    btn.addEventListener('click', function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        
+        // 드롭다운 토글
+        if (dropdown.style.display === 'block') {
+            dropdown.style.display = 'none';
+        } else {
+            dropdown.style.display = 'block';
+        }
+    });
+
+    // 색상 옵션 선택 이벤트
+    document.querySelectorAll('.color-option').forEach(option => {
+        option.addEventListener('click', function(e) {
+            e.stopPropagation();
+            const color = this.getAttribute('data-color');
+            const colorName = this.querySelector('.color-name').textContent;
+            const colorCircle = this.querySelector('.color-circle');
+            
+            // 선택된 색상 원 업데이트 - 실제 색상값 사용
+            selectedColorCircle.style.backgroundColor = getComputedStyle(colorCircle).backgroundColor;
+            // 선택된 색상 텍스트 업데이트
+            colorText.textContent = colorName;
+            
+            // hidden input 업데이트
+            let colorInput = document.querySelector('input[name="color"]');
+            if (!colorInput) {
+                colorInput = document.createElement('input');
+                colorInput.type = 'hidden';
+                colorInput.name = 'color';
+                document.querySelector('.color-dropdown').appendChild(colorInput);
+            }
+            colorInput.value = color;
+            
+            // 드롭다운 닫기
+            dropdown.style.display = 'none';
+        });
+    });
+
+    // 드롭다운 외부 클릭 시 닫기
+    document.addEventListener('click', function(e) {
+        if (!btn.contains(e.target) && !dropdown.contains(e.target)) {
+            dropdown.style.display = 'none';
+        }
+    });
+
+    // 장바구니 추가 버튼 클릭 이벤트
     const addToCartButton = document.querySelector('.add-to-cart');
     
     addToCartButton.addEventListener('click', function() {
         const productId = document.getElementById('productId').value;
         const quantity = document.getElementById('quantity').value;
         const selectedSize = document.querySelector('input[name="size"]:checked')?.value;
-        const selectedColor = document.querySelector('input[name="color"]:checked')?.value;
+        // 색상은 hidden input에서 가져오기
+        const selectedColor = document.querySelector('input[name="color"]')?.value;
+
+        console.log('선택된 사이즈:', selectedSize); // 디버깅용
+        console.log('선택된 색상:', selectedColor); // 디버깅용
 
         // 필수 선택 옵션 확인
-        if (!selectedSize || !selectedColor) {
-            alert('사이즈와 색상을 선택해주세요.');
+        if (!selectedSize) {
+            alert('사이즈를 선택해주세요.');
+            return;
+        }
+        
+        if (!selectedColor) {
+            alert('색상을 선택해주세요.');
             return;
         }
 
@@ -203,9 +280,6 @@ document.addEventListener('DOMContentLoaded', function() {
             } else {
                 alert('장바구니 추가에 실패했습니다.');
             }
-        })
-        .catch(error => {
-            console.error('장바구니 추가 요청 중 오류가 발생했습니다.', error);
         });
     });
 });

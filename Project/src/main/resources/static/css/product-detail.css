@@ -377,3 +377,202 @@ input[type="number"] {
     background-color: #f5f5f5;
 }
 
+.color-dropdown {
+    position: relative;
+    width: 200px;
+}
+
+.color-select-btn {
+    width: 100%;
+    padding: 10px 15px;
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.selected-color {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    margin-right: 10px;
+    border: 1px solid #ddd;
+    display: inline-block;
+}
+
+.color-text {
+    flex-grow: 1;
+    text-align: left;
+}
+
+.dropdown-arrow {
+    margin-left: 10px;
+}
+
+.color-options-dropdown {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    margin-top: 5px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    z-index: 1000;
+}
+
+.color-option {
+    padding: 10px;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.color-option:hover {
+    background-color: #f5f5f5;
+}
+
+.color-circle {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    margin-right: 10px;
+    border: 1px solid #ddd;
+    display: inline-block;
+}
+
+/* 색상 정의 */
+.white { background-color: #FFFFFF !important; }
+.olive { background-color: #808000 !important; }
+.brown { background-color: #8B4513 !important; }
+.navy { background-color: #000080 !important; }
+.gray { background-color: #808080 !important; }
+.black { background-color: #000000 !important; }
+
+.color-select {
+    margin: 20px 0;
+}
+
+.color-select label {
+    display: block;
+    margin-bottom: 10px;
+    font-weight: bold;
+}
+
+.color-dropdown {
+    position: relative;
+    width: 200px;
+}
+
+.color-select-btn {
+    width: 100%;
+    padding: 10px;
+    display: flex;
+    align-items: center;
+    background: white;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.selected-color {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    margin-right: 10px;
+    border: 1px solid #ddd;
+}
+
+.color-text {
+    flex-grow: 1;
+    text-align: left;
+}
+
+.dropdown-arrow {
+    margin-left: 10px;
+}
+
+.color-options-dropdown {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    background: white;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    z-index: 1000;
+    list-style: none;
+    padding: 0;
+}
+
+.color-option {
+    padding: 10px 15px;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+}
+
+.color-option:hover {
+    background: #f5f5f5;
+}
+
+.color-circle {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    margin-right: 10px;
+    border: 1px solid #ddd;
+}
+
+/* 색상 정의 */
+.white { background-color: #FFFFFF; }
+.olive { background-color: #808000; }
+.brown { background-color: #8B4513; }
+.navy { background-color: #000080; }
+.gray { background-color: #808080; }
+.black { background-color: #000000; }
+
+.color-select-btn {
+    width: 100%;
+    padding: 10px 15px;
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.color-options-dropdown {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    margin-top: 5px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    z-index: 1000;
+}
+
+/* 드롭다운이 표시될 때의 스타일 */
+.color-options-dropdown.show {
+    display: block;
+}
+
+/* 선택된 색상 원 스타일 */
+.selected-color {
+    transition: background-color 0.3s ease;
+}
+

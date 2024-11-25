@@ -49,7 +49,7 @@
         </div>
     </header>
 
-    <!-- Shop 헤더 추가 -->
+    <!-- Shop 헤더 -->
     <section class="shop-header">
         <div class="header-banner">
             <img src="/images/banner.jpg" alt="Shop Banner">
@@ -60,52 +60,61 @@
         </div>
     </section>
 
-    <!-- 상품 목록 섹션 -->
-    <section class="shop-products">
-        <!-- 정렬 버튼 -->
-        <div class="sort-buttons">
-            <a th:href="@{/shop(sort='latest')}"
-               th:classappend="${currentSort == 'latest'} ? 'active'"
-               th:text="'최신순'">최신순</a>
-            <a th:href="@{/shop(sort='popular')}"
-               th:classappend="${currentSort == 'popular'} ? 'active'"
-               th:text="'인기순'">인기순</a>
-            <a th:href="@{/shop(sort='sales')}"
-               th:classappend="${currentSort == 'sales'} ? 'active'"
-               th:text="'판매량순'">판매량순</a>
+    <!-- 카테고리 선택 -->
+    <section class="category-select">
+        <div class="category-buttons">
+            <a href="/shop?category=top" class="filter-btn" th:classappend="${category == 'top'} ? 'active'">상의</a>
+            <a href="/shop?category=outer" class="filter-btn" th:classappend="${category == 'outer'} ? 'active'">아우터</a>
+            <a href="/shop?category=pants" class="filter-btn" th:classappend="${category == 'pants'} ? 'active'">팬츠</a>
+            <a href="/shop?category=dress" class="filter-btn" th:classappend="${category == 'dress'} ? 'active'">원피스</a>
+            <a href="/shop?category=knit" class="filter-btn" th:classappend="${category == 'knit'} ? 'active'">니트/가디건</a>
+            <a href="/shop?category=skirt" class="filter-btn" th:classappend="${category == 'skirt'} ? 'active'">스커트</a>
+            <a href="/shop?category=training" class="filter-btn" th:classappend="${category == 'training'} ? 'active'">트레이닝</a>
+            <a href="/shop?category=set" class="filter-btn" th:classappend="${category == 'set'} ? 'active'">투피스/세트</a>
         </div>
+    </section>
 
-        <!-- 상품 그리드 -->
+    <!-- 상품 리스트 -->
+    <section class="product-list">
         <div class="product-grid">
             <th:block th:each="product : ${products}">
-                <div class="product-card">
-                    <span class="label" th:classappend="${product.isNew ? ' new' : ' sale'}"
-                          th:text="${product.isNew ? 'New' : 'Sale'}"></span>
-                    <a th:href="@{'/product-detail/' + ${product.id}}">
-                        <img th:src="@{'/product_IMG_/' + ${product.imageName}}" th:alt="${product.name}">
-                    </a>
-                    <h3 th:text="${product.name}">Product Name</h3>
-                    <p class="price">
-                        <span th:if="${product.oldPrice != null}" class="old-price" th:text="${'$' + product.oldPrice}">$150.00</span>
-                        <span th:text="${'$' + product.price}">$100.00</span>
-                    </p>
-                    <div class="color-options">
-                        <span class="color red"></span>
-                        <span class="color green"></span>
-                        <span class="color black"></span>
+                <a th:href="@{'/product-detail/' + ${product.id}}" class="product-link">
+                    <div class="product-card">
+                        <div class="image-container">
+                            <img th:src="@{'/product_IMG_/' + ${product.imageName}}" th:alt="${product.name}">
+                        </div>
+                        <div class="product-info">
+                            <p class="product-title" th:text="${product.name}">Product Name</p>
+                            <p class="product-description" th:text="${product.description}">Description</p>
+                            <p class="product-price">
+                                <th:block th:if="${product.oldPrice != null && product.oldPrice > product.price}">
+                                    <span class="discount-rate" 
+                                          th:text="${#numbers.formatDecimal((product.oldPrice - product.price) / product.oldPrice * 100, 0, 0) + '%'}">
+                                    </span>
+                                </th:block>
+                                <span class="price-amount" 
+                                      th:text="${'₩' + #numbers.formatDecimal(product.price, 0, 'COMMA', 0, 'POINT')}">
+                                    ₩0
+                                </span>
+                            </p>
+                            <div class="tags-container">
+                                <div class="tags">
+                                    <span class="tag" th:if="${product.isNew}">새 상품</span>
+                                    <span class="tag popularity" th:if="${product.popularity != null && product.popularity >= 80}">인기상품</span>
+                                    <span class="tag sales" th:if="${product.salesVolume != null && product.salesVolume >= 100}">베스트셀러</span>
+                                    <span class="tag new-arrival" 
+                                          th:if="${product.createdDate != null && #temporals.format(product.createdDate, 'yyyy-MM-dd').equals(#temporals.format(#temporals.createNow(), 'yyyy-MM-dd'))}">
+                                        신상품
+                                    </span>
+                                </div>
+                                <div class="wishlist-icon">
+                                    <img src="/images/heart.svg" alt="Wishlist Icon">
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    <button class="add-to-cart">ADD TO CART</button>
-                </div>
+                </a>
             </th:block>
-        </div>
-
-        <!-- 페이지네이션 추가 -->
-        <div class="pagination">
-            <button class="page-btn">&lt;</button>
-            <button class="page-btn active">1</button>
-            <button class="page-btn">2</button>
-            <button class="page-btn">3</button>
-            <button class="page-btn">&gt;</button>
         </div>
     </section>
 
