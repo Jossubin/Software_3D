@@ -12,4 +12,5 @@ public interface ProductService {
     Product saveProduct(Product product);
     void deleteProduct(Long id);
     List<Product> getProductsByCategory(String category);
+    List<Product> getNewProducts(int limit);
 }
