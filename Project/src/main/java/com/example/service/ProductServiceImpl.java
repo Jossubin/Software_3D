@@ -1,15 +1,16 @@
+// src/main/java/com/example/service/ProductServiceImpl.java
 package com.example.service;
 
 import com.example.model.Product;
 import com.example.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.stereotype.Service;
+
 import java.util.List;
 import java.util.Optional;
-import com.example.service.ProductService;
-import com.example.repository.ProductRepository;
 
 @Service
 @RequiredArgsConstructor
@@ -19,7 +20,7 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public List<Product> getAllProducts() {
-        // 사용자의 요청에 따라 초기 페이지 정렬 방식은 createdDate기준으로 정렬 !
+        // 초기 페이지 정렬 방식은 createdDate 기준으로 내림차순 정렬
         return productRepository.findAll(Sort.by(Sort.Direction.DESC, "createdDate"));
     }
 
@@ -54,7 +55,6 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public void deleteProduct(Long id) {
-
         productRepository.deleteById(id);
     }
 
@@ -63,4 +63,9 @@ public class ProductServiceImpl implements ProductService {
         return productRepository.findByCategory(category);
     }
 
+    @Override
+    public List<Product> getNewProducts(int limit) {
+        Pageable pageable = PageRequest.of(0, limit);
+        return productRepository.findByIsNewTrueOrderByCreatedDateDesc(pageable);
+    }
 }

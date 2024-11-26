@@ -1,4 +1,3 @@
-// src/main/java/com/example/controller/ProductController.java
 package com.example.controller;
 
 import com.example.model.Member;
@@ -29,11 +28,12 @@ public class ProductController {
     private final ProductService productService;
     private final CartService cartService;
 
-    // 베스트 상품 페이지
+    // 메인 페이지 - 새로운 상품만 조회
     @GetMapping("/home")
-    public String getBestProducts(Model model) {
-        List<Product> products = productService.getAllProducts();
-        model.addAttribute("products", products);
+    public String getHomePage(Model model) {
+        int newProductLimit = 6; // 원하는 개수 설정
+        List<Product> newProducts = productService.getNewProducts(newProductLimit);
+        model.addAttribute("newProducts", newProducts);
         return "home"; // Thymeleaf 템플릿 이름
     }
 
@@ -73,7 +73,7 @@ public class ProductController {
         return "redirect:/home"; // 리다이렉트할 페이지 수정 가능
     }
 
-    // 하나의 통합된 상품 상세 페이지 메소드
+    // 상품 상세 페이지
     @GetMapping("/product-detail/{id}")
     public String getProductDetail(@PathVariable("id") Long id, Model model) {
         Optional<Product> productOpt = productService.getProductById(id);
@@ -114,11 +114,12 @@ public class ProductController {
             ));
         }
     }
-    // shop메서드를 불러오는 부분이다.
+
+    // Shop 페이지
     @GetMapping("/shop")
     public String shop(@RequestParam(required = false) String category, Model model) {
         List<Product> products;
-        
+
         if (category != null && !category.isEmpty()) {
             // 특정 카테고리의 상품만 가져오기
             products = productService.getProductsByCategory(category);
@@ -126,7 +127,7 @@ public class ProductController {
             // 카테고리가 선택되지 않았을 경우 모든 상품 가져오기
             products = productService.getAllProducts();
         }
-        
+
         model.addAttribute("products", products);
         model.addAttribute("category", category);
         return "shop";
