@@ -11,6 +11,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
+
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -66,6 +68,10 @@ public class OrderService {
 
     public List<Order> getRecentOrders(Member member) {
         return orderRepository.findByMemberIdOrderByOrderDateDesc(member.getId());
+    }
+
+    public Optional<Order> findById(Long orderId) {
+        return orderRepository.findById(orderId);
     }
 
     public Order getOrderById(Long orderId) {
