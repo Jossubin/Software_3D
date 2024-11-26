@@ -77,18 +77,8 @@ public class MemberController {
     }
 
     @GetMapping("/")
-    public String home(Model model, HttpSession session) {
-        // 로그인된 회원 정보를 가져옴
-        Member loginMember = (Member) session.getAttribute("loginMember");
-        if (loginMember != null) {
-            model.addAttribute("member", loginMember);
-        }
-
-        // 상품 정보 추가
-        List<Product> products = productService.getAllProducts();
-        model.addAttribute("products", products);
-
-        return "home";
+    public String rootRedirect() {
+        return "redirect:/home";
     }
 
     @GetMapping("/mypage")
