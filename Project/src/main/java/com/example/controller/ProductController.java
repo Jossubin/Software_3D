@@ -12,7 +12,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-
+import com.example.repository.ProductRepository;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
@@ -130,6 +130,13 @@ public class ProductController {
 
         model.addAttribute("products", products);
         model.addAttribute("category", category);
+        return "shop";
+    }
+    @GetMapping("/shop/search")
+public String searchProducts(@RequestParam("keyword") String keyword, Model model) {
+    List<Product> searchResults = productService.searchProducts(keyword);
+    model.addAttribute("products", searchResults);
+    model.addAttribute("searchKeyword", keyword);
         return "shop";
     }
 }

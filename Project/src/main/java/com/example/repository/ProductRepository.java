@@ -15,4 +15,5 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
 
 
     List<Product> findByIsNewTrueOrderByCreatedDateDesc(Pageable pageable);
+    List<Product> findByNameContainingIgnoreCase(String keyword);
 }
