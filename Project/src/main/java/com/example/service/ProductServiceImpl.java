@@ -68,4 +68,13 @@ public class ProductServiceImpl implements ProductService {
         Pageable pageable = PageRequest.of(0, limit);
         return productRepository.findByIsNewTrueOrderByCreatedDateDesc(pageable);
     }
+
+    @Override
+    public List<Product> searchProducts(String keyword) {
+        // 검색어가 비어있는 경우 모든 상품 반환
+        if (keyword == null || keyword.trim().isEmpty()) {
+            return getAllProducts();
+        }
+        return productRepository.findByNameContainingIgnoreCase(keyword);
+    }
 }
