@@ -7,6 +7,7 @@
     <link href='https://fonts.googleapis.com/css?family=Montserrat' rel='stylesheet'>
     <link rel="stylesheet" href="/css/product-detail.css">
     <link rel="stylesheet" href="/css/nav.css">
+    <script src="https://unpkg.com/@dotlottie/player-component@2.7.12/dist/dotlottie-player.mjs" type="module"></script>
 </head>
 <body>
 
@@ -59,8 +60,10 @@
 
 <section class="product-detail">
     <div class="product-image">
-        <!-- 이미지 경로 수정 -->
         <img th:src="@{'/product_IMG_/' + ${product.imageName}}" alt="Product Image">
+        <div class="avata-overlay">
+            <img src="/images/avata.svg" alt="Avata Icon" id="avata-icon">
+        </div>
     </div>
     <div class="product-info">
         <h1 class="product-title" th:text="${product.name}">Product Name</h1>
@@ -70,88 +73,43 @@
             <span th:text="'$' + ${product.price}">Price</span>
         </p>
 
-        <!-- 사이즈 선택 부분 수정 -->
-        <div class="sizes">
-            <strong>Size:</strong>
-            <div class="size-options">
-                <label class="size-label">
-                    <input type="radio" name="size" value="S">
-                    <span class="size-text">S</span>
-                </label>
-                <label class="size-label">
-                    <input type="radio" name="size" value="M">
-                    <span class="size-text">M</span>
-                </label>
-                <label class="size-label">
-                    <input type="radio" name="size" value="L">
-                    <span class="size-text">L</span>
-                </label>
-                <label class="size-label">
-                    <input type="radio" name="size" value="XL">
-                    <span class="size-text">XL</span>
-                </label>
-                <label class="size-label">
-                    <input type="radio" name="size" value="XXL">
-                    <span class="size-text">XXL</span>
-                </label>
-            </div>
-        </div>
-
-        <!-- 색상 선택 섹션 -->
         <div class="product-options">
-            <div class="color-select">
-                <label>COLOR</label>
-                <div class="color-dropdown">
-                    <button type="button" class="color-select-btn">
-                        <span class="selected-color"></span>
-                        <span class="color-text">색상 선택</span>
-                        <span class="dropdown-arrow">▼</span>
-                    </button>
-                    <ul class="color-options-dropdown">
-                        <li class="color-option" data-color="white">
-                            <span class="color-circle white"></span>
-                            <span class="color-name">화이트</span>
-                        </li>
-                        <li class="color-option" data-color="olive">
-                            <span class="color-circle olive"></span>
-                            <span class="color-name">올리브</span>
-                        </li>
-                        <li class="color-option" data-color="brown">
-                            <span class="color-circle brown"></span>
-                            <span class="color-name">브라운</span>
-                        </li>
-                        <li class="color-option" data-color="navy">
-                            <span class="color-circle navy"></span>
-                            <span class="color-name">네이비</span>
-                        </li>
-                        <li class="color-option" data-color="gray">
-                            <span class="color-circle gray"></span>
-                            <span class="color-name">그레이</span>
-                        </li>
-                        <li class="color-option" data-color="black">
-                            <span class="color-circle black"></span>
-                            <span class="color-name">블랙</span>
-                        </li>
-                    </ul>
-                </div>
-            </div>
+            <label for="size">SIZE:</label>
+            <select id="size" name="size" required>
+                <option value="" disabled selected>SELECT</option>
+                <option value="S">Small</option>
+                <option value="M">Medium</option>
+                <option value="L">Large</option>
+                <option value="XL">X-Large</option>
+                <option value="XXL">XX-Large</option>
+            </select>
         </div>
 
-        <!-- features 부분은 쉼표를 만나면 줄 변경 하도록  특별 요청 -->
-        <ul class="features">
-            <th:block th:if="${product.feature != null}">
-                <th:block th:each="item : ${#strings.arraySplit(product.feature, ',')}">
-                    <li th:text="${item}">Feature Item</li>
-                </th:block>
-            </th:block>
-        </ul>
+        <div class="product-options">
+            <label for="color">COLOR:</label>
+            <select id="color" name="color" required>
+                <option value="" disabled selected>SELECT</option>
+                <option value="white">화이트</option>
+                <option value="olive">올리브</option>
+                <option value="brown">브라운</option>
+                <option value="navy">네이비</option>
+                <option value="gray">그레이</option>
+                <option value="black">블랙</option>
+            </select>
+        </div>
 
+        <div class="product-options">
+            <label for="quantity">QUANTITY:</label>
+            <select id="quantity" name="quantity">
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
+            </select>
+        </div>
 
-        <!-- 수량 및 버튼 한 줄 배치 -->
-        <div class="quantity-and-buttons">
-            <div class="quantity-control">
-                <input type="number" id="quantity" name="quantity" value="1" min="1">
-            </div>
+        <div class="button-group">
             <button class="add-to-cart">ADD TO CART</button>
             <button class="heart-button">
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -167,130 +125,19 @@
         </div>
     </div>
 </section>
+<div id="loader" style="display: none;">
+    <dotlottie-player 
+        src="https://lottie.host/434179f9-9c87-4680-9b1e-71a2d16d6c87/nfMpoFdwzW.lottie" 
+        background="transparent" 
+        speed="1" 
+        style="width: 300px; height: 300px;" 
+        loop autoplay>
+    </dotlottie-player>
+</div>
 
-<!-- 상품 ID를 hidden input으로 추가 -->
 <input type="hidden" id="productId" th:value="${product.id}">
 
-<!-- 기존 스크립트 태그를 수정 -->
-<script src="/static/scripts/productdetail.js"></script>
-
-<!-- 페이지 하단에 다음 스크립트 추가 -->
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-    // 버튼과 드롭다운 요소 선택
-    const btn = document.querySelector('.color-select-btn');
-    const dropdown = document.querySelector('.color-options-dropdown');
-    const selectedColorCircle = document.querySelector('.selected-color');
-    const colorText = document.querySelector('.color-text');
-
-    // 버튼 클릭 이벤트
-    btn.addEventListener('click', function(e) {
-        e.preventDefault();
-        e.stopPropagation();
-        
-        // 드롭다운 토글
-        if (dropdown.style.display === 'block') {
-            dropdown.style.display = 'none';
-        } else {
-            dropdown.style.display = 'block';
-        }
-    });
-
-    // 색상 옵션 선택 이벤트
-    document.querySelectorAll('.color-option').forEach(option => {
-        option.addEventListener('click', function(e) {
-            e.stopPropagation();
-            const color = this.getAttribute('data-color');
-            const colorName = this.querySelector('.color-name').textContent;
-            const colorCircle = this.querySelector('.color-circle');
-            
-            // 선택된 색상 원 업데이트 - 실제 색상값 사용
-            selectedColorCircle.style.backgroundColor = getComputedStyle(colorCircle).backgroundColor;
-            // 선택된 색상 텍스트 업데이트
-            colorText.textContent = colorName;
-            
-            // hidden input 업데이트
-            let colorInput = document.querySelector('input[name="color"]');
-            if (!colorInput) {
-                colorInput = document.createElement('input');
-                colorInput.type = 'hidden';
-                colorInput.name = 'color';
-                document.querySelector('.color-dropdown').appendChild(colorInput);
-            }
-            colorInput.value = color;
-            
-            // 드롭다운 닫기
-            dropdown.style.display = 'none';
-        });
-    });
-
-    // 드롭다운 외부 클릭 시 닫기
-    document.addEventListener('click', function(e) {
-        if (!btn.contains(e.target) && !dropdown.contains(e.target)) {
-            dropdown.style.display = 'none';
-        }
-    });
-
-    // 장바구니 추가 버튼 클릭 이벤트
-    const addToCartButton = document.querySelector('.add-to-cart');
-    
-    addToCartButton.addEventListener('click', function() {
-        const productId = document.getElementById('productId').value;
-        const quantity = document.getElementById('quantity').value;
-        const selectedSize = document.querySelector('input[name="size"]:checked')?.value;
-        // 색상은 hidden input에서 가져오기
-        const selectedColor = document.querySelector('input[name="color"]')?.value;
-
-        console.log('선택된 사이즈:', selectedSize); // 디버깅용
-        console.log('선택된 색상:', selectedColor); // 디버깅용
-
-        // 필수 선택 옵션 확인
-        if (!selectedSize) {
-            alert('사이즈를 선택해주세요.');
-            return;
-        }
-        
-        if (!selectedColor) {
-            alert('색상을 선택해주세요.');
-            return;
-        }
-
-        // 장바구니 추가 요청
-        fetch('/cart/add', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                productId: productId,
-                quantity: parseInt(quantity),
-                size: selectedSize,
-                color: selectedColor
-            })
-        })
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
-            }
-            return response.text();
-        })
-        .then(data => {
-            if (confirm('상품이 장바구니에 추가되었습니다.\n장바구니로 이동하시겠습니까?')) {
-                window.location.href = '/cart';
-            }
-        })
-        .catch(error => {
-            console.error('Error:', error);
-            if (error.message.includes('401')) {
-                if (confirm('로그인이 필요합니다. 로그인 페이지로 이동하시겠습니까?')) {
-                    window.location.href = '/login';
-                }
-            } else {
-                alert('장바구니 추가에 실패했습니다.');
-            }
-        });
-    });
-});
-</script>
+<script src="/js/main.js"></script>
+<script src="/scripts/productdetail.js"></script>
 </body>
 </html>
