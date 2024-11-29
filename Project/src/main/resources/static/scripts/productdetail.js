@@ -6,6 +6,7 @@ document.addEventListener('DOMContentLoaded', function() {
         return;
     }
     const productId = productIdElement.value;
+    console.log('Product ID:', productId);
 
     // 수량 입력 제한
     const quantityInput = document.getElementById('quantity');
@@ -20,33 +21,50 @@ document.addEventListener('DOMContentLoaded', function() {
     if (addToCartBtn) {
         addToCartBtn.addEventListener('click', function() {
             const quantity = document.getElementById('quantity').value;
-            const selectedSize = document.querySelector('input[name="size"]:checked')?.value;
-            const selectedColor = document.querySelector('input[name="color"]:checked')?.value;
+            const selectedSize = document.getElementById('size').value;
+            const selectedColor = document.getElementById('color').value;
 
-            if (!selectedSize || !selectedColor) {
-                alert('사이즈와 색상을 선택해주세요.');
+            console.log('Selected options:', {
+                quantity,
+                selectedSize,
+                selectedColor
+            });
+
+            if (!selectedSize || selectedSize === '') {
+                alert('사이즈를 선택해주세요.');
                 return;
             }
+
+            if (!selectedColor || selectedColor === '') {
+                alert('색상을 선택해주세요.');
+                return;
+            }
+
+            const cartData = {
+                productId: productId,
+                quantity: parseInt(quantity),
+                size: selectedSize,
+                color: selectedColor
+            };
+            
+            console.log('Sending cart data:', cartData);
 
             fetch('/cart/add', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({
-                    productId: productId,
-                    quantity: quantity,
-                    size: selectedSize,
-                    color: selectedColor
-                })
+                body: JSON.stringify(cartData)
             })
             .then(response => {
+                console.log('Response status:', response.status);
                 if (response.ok) {
                     if (confirm('상품이 장바구니에 추가되었습니다.\n장바구니로 이동하시겠습니까?')) {
                         window.location.href = '/cart';
                     }
                 } else {
-                    response.text().then(errorMessage => {
+                    return response.text().then(errorMessage => {
+                        console.error('Error message:', errorMessage);
                         if (response.status === 401) {
                             if (confirm('로그인이 필요합니다. 로그인 페이지로 이동하시겠습니까?')) {
                                 window.location.href = '/login';
@@ -58,10 +76,12 @@ document.addEventListener('DOMContentLoaded', function() {
                 }
             })
             .catch(error => {
-                console.error('Error:', error);
+                console.error('Fetch error:', error);
                 alert('장바구니 추가 중 오류가 발생했습니다.');
             });
         });
+    } else {
+        console.error('Add to cart button not found');
     }
 
     // 하트 버튼
@@ -81,7 +101,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    const view3DBtn = document.querySelector('.3D-button');
+    const view3DBtn = document.querySelector('.view-3D-button');
     if (view3DBtn) {
         view3DBtn.addEventListener('click', function() {
             alert('3D View 기능 준비중입니다.');
