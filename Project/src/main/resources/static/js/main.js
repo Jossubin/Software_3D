@@ -36,8 +36,8 @@ if (slides.length > 0) {
     setInterval(nextSlide, slideInterval); // 슬라이드 자동 전환
 }
 
-// Avata 클릭 이벤트와 Lottie 애니메이션 로직
-document.getElementById("avata-icon")?.addEventListener("click", function () {
+// 피팅 기능을 함수로 분리
+function handleFitting() {
     const loader = document.getElementById("loader");
     const productImage = document.querySelector(".product-image img");
     const productTitle = document.querySelector(".product-title").textContent;
@@ -54,7 +54,7 @@ document.getElementById("avata-icon")?.addEventListener("click", function () {
     setTimeout(() => {
         loader.style.display = "none";
 
-        const resultSection = document.createElement("div"); // section 대신 div 사용
+        const resultSection = document.createElement("div");
         resultSection.classList.add("fitting-result");
         resultSection.innerHTML = `
             <div class="fitting-container">
@@ -67,10 +67,13 @@ document.getElementById("avata-icon")?.addEventListener("click", function () {
             </div>
         `;
 
-        // body에 직접 추가
         document.body.appendChild(resultSection);
     }, 3000);
-});
+}
+
+// 아바타 아이콘과 피팅 버튼에 이벤트 리스너 추가
+document.getElementById("avata-icon")?.addEventListener("click", handleFitting);
+document.getElementById("fitting-button")?.addEventListener("click", handleFitting);
 
 // 슬라이드 쇼 관련 코드는 홈페이지에서만 필요하다면 조건부로 실행
 if (document.querySelector('.slide')) {
