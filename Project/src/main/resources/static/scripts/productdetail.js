@@ -93,13 +93,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    // 3D 버튼들
-    const view3dBtn = document.querySelector('.view-3d-button');
-    if (view3dBtn) {
-        view3dBtn.addEventListener('click', function() {
-            alert('3D Fitting 기능 준비중입니다.');
-        });
-    }
+
 
     const view3DBtn = document.querySelector('.view-3D-button');
     if (view3DBtn) {
