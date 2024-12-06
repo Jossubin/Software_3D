@@ -41,7 +41,11 @@ function handleFitting() {
     const loader = document.getElementById("loader");
     const productImage = document.querySelector(".product-image img");
     const productTitle = document.querySelector(".product-title").textContent;
-
+    
+    // 원본 이미지 경로에서 피팅 이미지 경로 생성
+    const originalSrc = productImage.src;
+    const fitImageSrc = originalSrc.replace(/(\.[^.]+)$/, '_fit$1');
+    
     // 기존 fitting-result가 있다면 제거
     const existingResult = document.querySelector('.fitting-result');
     if (existingResult) {
@@ -51,24 +55,45 @@ function handleFitting() {
     // 로딩 애니메이션 표시
     loader.style.display = "flex";
 
+    // 3초 후에 이미지 확인 및 결과 표시 시작
     setTimeout(() => {
-        loader.style.display = "none";
-
-        const resultSection = document.createElement("div");
-        resultSection.classList.add("fitting-result");
-        resultSection.innerHTML = `
-            <div class="fitting-container">
-                <h1>Fitting Result</h1>
-                <div class="fitting-image-container">
-                    <img src="${productImage.src}" alt="${productTitle} Fitting Result">
+        const checkImage = new Image();
+        checkImage.onload = () => {
+            loader.style.display = "none";
+            const resultSection = document.createElement("div");
+            resultSection.classList.add("fitting-result");
+            resultSection.innerHTML = `
+                <div class="fitting-container">
+                    <h1>Fitting Result</h1>
+                    <div class="fitting-image-container">
+                        <img src="${fitImageSrc}" alt="${productTitle} Fitting Result">
+                    </div>
+                    <p>Here is the preview of your fitting result.</p>
+                    <button onclick="window.location.href='/product-detail/${document.getElementById('productId').value}'" class="back-button">Back to Product</button>
                 </div>
-                <p>Here is the preview of your fitting result.</p>
-                <button onclick="window.location.href='/product-detail/${document.getElementById('productId').value}'" class="back-button">Back to Product</button>
-            </div>
-        `;
+            `;
+            document.body.appendChild(resultSection);
+        };
 
-        document.body.appendChild(resultSection);
-    }, 3000);
+        checkImage.onerror = () => {
+            loader.style.display = "none";
+            const resultSection = document.createElement("div");
+            resultSection.classList.add("fitting-result");
+            resultSection.innerHTML = `
+                <div class="fitting-container">
+                    <h1>Fitting Result</h1>
+                    <div class="fitting-image-container">
+                        <img src="${originalSrc}" alt="${productTitle} Fitting Result">
+                    </div>
+                    <p>피팅 이미지를 찾을 수 없습니다.</p>
+                    <button onclick="window.location.href='/product-detail/${document.getElementById('productId').value}'" class="back-button">Back to Product</button>
+                </div>
+            `;
+            document.body.appendChild(resultSection);
+        };
+
+        checkImage.src = fitImageSrc;
+    }, 3000); // 3초 대기
 }
 
 // 아바타 아이콘과 피팅 버튼에 이벤트 리스너 추가
