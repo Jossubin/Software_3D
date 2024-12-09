@@ -95,13 +95,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
 
-    const view3DBtn = document.querySelector('.view-3D-button');
-    if (view3DBtn) {
-        view3DBtn.addEventListener('click', function() {
-            alert('3D View 기능 준비중입니다.');
-        });
-    }
-
     // 드롭다운 관련 요소들
     const colorSelect = document.querySelector('.color-select-btn');
     const colorOptions = document.querySelector('.color-options-dropdown');
