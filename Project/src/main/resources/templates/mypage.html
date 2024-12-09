@@ -67,7 +67,17 @@
     <div class="dashboard">
         <div class="user-summary">
             <div class="user-info">
-                <img src="/images/profile.svg" alt="프로필 이미지" class="user-photo">
+                <div id="profileImageContainer">
+                    <img th:if="${member.profileImagePath != null}" 
+                         th:src="@{${member.profileImagePath}(v=${#dates.createNow().time})}" 
+                         alt="프로필 이미지" 
+                         style="max-width: 200px;" 
+                         onerror="this.src='/images/default-profile.png'"/>
+                    <img th:unless="${member.profileImagePath != null}" 
+                         src="/images/default-profile.png" 
+                         alt="기본 프로필 이미지" 
+                         style="max-width: 200px;" />
+                </div>
                 <div class="user-details">
                     <h3>
                         <span th:text="${session.loginMember.name}">홍길동</span>
@@ -90,7 +100,7 @@
                     <p th:text="${session.loginMember.accumulatedAmount}">2,000</p>
                 </div>
                 <div>
-                    <h4>작성한 리뷰</h4>
+                    <h4>작은 리뷰</h4>
                     <p th:text="${session.loginMember.reviewCount}">3</p>
                 </div>
             </div>
@@ -155,5 +165,43 @@
         </div>
     </div>
 </section>
+
+<script th:inline="javascript">
+function reloadImage(img) {
+    const timestamp = new Date().getTime();
+    const baseUrl = img.src.split('?')[0];
+    img.src = baseUrl + '?t=' + timestamp;
+}
+
+// 페이지 로드 시 이미지 강제 새로고침
+window.onload = function() {
+    const profileImage = document.querySelector('img[alt="프로필 이미지"]');
+    if (profileImage) {
+        // 이미지 컨테이너의 내용을 새로 생성하여 교체
+        const container = document.getElementById('profileImageContainer');
+        const newImg = document.createElement('img');
+        const timestamp = new Date().getTime();
+        const baseUrl = profileImage.src.split('?')[0];
+        
+        newImg.src = baseUrl + '?v=' + timestamp;
+        newImg.alt = "프로필 이미지";
+        newImg.style.maxWidth = "200px";
+        newImg.onerror = function() { this.src='/images/default-profile.png'; };
+        
+        // 기존 이미지를 새 이미지로 교체
+        container.innerHTML = '';
+        container.appendChild(newImg);
+        
+        // 브라우저 캐시 강제 무시
+        fetch(newImg.src, { 
+            cache: 'no-cache',
+            headers: {
+                'Cache-Control': 'no-cache',
+                'Pragma': 'no-cache'
+            }
+        });
+    }
+}
+</script>
 </body>
 </html>

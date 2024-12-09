@@ -1,17 +1,25 @@
 package com.example.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.core.io.FileSystemResource;
+import org.springframework.core.io.Resource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import jakarta.servlet.http.HttpSession;
 import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.example.model.Member;
 import com.example.model.Order;
@@ -83,21 +91,19 @@ public class MemberController {
 
     @GetMapping("/mypage")
     public String mypage(Model model, HttpSession session) {
-        // 세션에서 로그인된 회원 정보 가져오기
         Member loginMember = (Member) session.getAttribute("loginMember");
-
-        // 로그인 체크
+        
         if (loginMember == null) {
             return "redirect:/login";
         }
-
-        // 모델에 회원 정보 추가
-        model.addAttribute("member", loginMember);
-
-        // 최근 주문 정보 조회 (예: 최근 5건)
-        List<Order> recentOrders = orderService.getRecentOrders(loginMember);
-        model.addAttribute("recentOrders", recentOrders);
-
+        
+        // 매번 최신 데이터를 DB에서 조회
+        Member updatedMember = memberService.findById(loginMember.getId());
+        model.addAttribute("member", updatedMember);
+        
+        // 세션도 최신 데이터로 업데이트
+        session.setAttribute("loginMember", updatedMember);
+        
         return "mypage";
     }
 
@@ -115,8 +121,9 @@ public class MemberController {
 
     @PostMapping("/member/update")
     public String editProfile(@ModelAttribute Member member,
-                              @RequestParam("profileImage") MultipartFile profileImage,
-                              RedirectAttributes redirectAttributes, HttpSession session) {
+                             @RequestParam("profileImage") MultipartFile profileImage,
+                             RedirectAttributes redirectAttributes, 
+                             HttpSession session) {
         Member loginMember = (Member) session.getAttribute("loginMember");
 
         if (loginMember == null) {
@@ -124,30 +131,38 @@ public class MemberController {
         }
 
         try {
-            member.setId(loginMember.getId()); // 기존 회원의 ID 설정
+            member.setId(loginMember.getId());
 
-            // 비밀번호가 비어 있으면 기존 비밀번호 유지
             if (member.getPassword() == null || member.getPassword().isEmpty()) {
                 member.setPassword(loginMember.getPassword());
             }
 
-            // 프로필 이미지 저장 로직 추가
-            if (!profileImage.isEmpty()) {
+            // 프로필 이미지 처리
+            if (profileImage != null && !profileImage.isEmpty()) {
                 try {
-                    String imagePath = memberService.saveProfileImage(profileImage, loginMember.getId());
+                    String imagePath = memberService.saveProfileImage(profileImage, member.getId());
                     member.setProfileImagePath(imagePath);
-                } catch (IOException e) {
-                    redirectAttributes.addFlashAttribute("error", "프로필 이미지 저장 중 오류가 발생했습니다.");
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    redirectAttributes.addFlashAttribute("error", "이미지 업로드 중 오류가 발생했습니다: " + e.getMessage());
                     return "redirect:/member/update";
                 }
+            } else {
+                member.setProfileImagePath(loginMember.getProfileImagePath());
             }
 
+            // 회원 정보 업데이트
             memberService.updateMember(member);
-            session.setAttribute("loginMember", member); // 세션 정보 업데이트
+            
+            // 업데이트 후 즉시 최신 데이터 조회하여 세션 갱신
+            Member updatedMember = memberService.findById(member.getId());
+            session.setAttribute("loginMember", updatedMember);
+            
             redirectAttributes.addFlashAttribute("message", "회원정보가 수정되었습니다.");
-            return "redirect:/mypage";
+            return "redirect:/mypage?t=" + System.currentTimeMillis(); // URL에 타임스탬프 추가
         } catch (Exception e) {
-            redirectAttributes.addFlashAttribute("error", "회원정보 수정 중 오류가 발생했습니다.");
+            e.printStackTrace();
+            redirectAttributes.addFlashAttribute("error", "회원정보 수정 중 오류가 발생했습니다: " + e.getMessage());
             return "redirect:/member/update";
         }
     }
@@ -237,6 +252,26 @@ public class MemberController {
             // 에러 메시지 설정
             redirectAttributes.addFlashAttribute("error", e.getMessage());
             return "redirect:/cart";
+        }
+    }
+
+    @GetMapping("/memberimg/{fileName}")
+    @ResponseBody
+    public ResponseEntity<Resource> serveFile(@PathVariable String fileName) {
+        try {
+            Path filePath = Paths.get("C:/Users/cjdeh/Documents/GitHub/Software_3D/Project/src/main/resources/static/memberimg/" + fileName);
+            Resource resource = new FileSystemResource(filePath.toFile());
+            
+            if (resource.exists()) {
+                return ResponseEntity.ok()
+                        .header(HttpHeaders.CONTENT_TYPE, "image/jpeg")
+                        .header(HttpHeaders.CACHE_CONTROL, "no-cache")
+                        .body(resource);
+            } else {
+                return ResponseEntity.notFound().build();
+            }
+        } catch (Exception e) {
+            return ResponseEntity.internalServerError().build();
         }
     }
 

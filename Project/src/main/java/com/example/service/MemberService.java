@@ -14,6 +14,8 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import org.springframework.web.multipart.MultipartFile;
+import java.io.File;
+import java.nio.file.StandardCopyOption;
 
 @Service
 @Transactional
@@ -48,19 +50,32 @@ public class MemberService {
         return member;
     }
 
+    @Transactional
     public void updateMember(Member member) {
-        // 기존 회원 검증
-        Member existingMember = memberRepository.findById(member.getId())
-                .orElseThrow(() -> new IllegalStateException("존재하지 않는 회원입니다."));
+        try {
+            Member existingMember = memberRepository.findById(member.getId())
+                    .orElseThrow(() -> new IllegalArgumentException("회원을 찾을 수 없습니다."));
 
-        // 이메일 중복 검사 (다른 회원과 중복되는지)
-        Optional<Member> emailCheck = memberRepository.findByEmail(member.getEmail());
-        if (emailCheck.isPresent() && !emailCheck.get().getId().equals(member.getId())) {
-            throw new IllegalStateException("이미 사용중인 이메일입니다.");
+            // 기존 회원 정보 업데이트
+            existingMember.setName(member.getName());
+            if (member.getPassword() != null && !member.getPassword().isEmpty()) {
+                existingMember.setPassword(member.getPassword());
+            }
+            existingMember.setPhone(member.getPhone());
+            
+            // 프로필 이미지 경로 업데이트
+            if (member.getProfileImagePath() != null && !member.getProfileImagePath().isEmpty()) {
+                existingMember.setProfileImagePath(member.getProfileImagePath());
+                System.out.println("프로필 이미지 경로 업데이트: " + member.getProfileImagePath()); // 디버깅용 로그
+            }
+
+            memberRepository.save(existingMember);
+            System.out.println("회원 정보 업데이트 완료"); // 디버깅용 로그
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.out.println("회원 정보 업데이트 실패: " + e.getMessage()); // 디버깅용 로그
+            throw new RuntimeException("회원 정보 업데이트 중 오류 발생: " + e.getMessage());
         }
-
-        // 회원 정보 업데이트
-        memberRepository.save(member);
     }
 
     @Transactional
@@ -89,37 +104,41 @@ public class MemberService {
     }
 
     public String saveProfileImage(MultipartFile file, Long memberId) throws IOException {
-        Member member = memberRepository.findById(memberId)
-                .orElseThrow(() -> new IllegalStateException("존재하지 않는 회원입니다."));
+        try {
+            String fileName = memberId + ".jpg";
+            String uploadDir = "C:/Users/cjdeh/Documents/GitHub/Software_3D/Project/src/main/resources/static/memberimg/";
+            String filePath = uploadDir + fileName;
 
-        // 기존 이미지 경로 가져오기
-        String existingImagePath = member.getProfileImagePath();
+            System.out.println("저장 경로: " + filePath);
 
-        // 파일 확장자 추출
-        String originalFilename = file.getOriginalFilename();
-        String fileExtension = originalFilename.substring(originalFilename.lastIndexOf("."));
+            // 디렉토리 생성
+            File directory = new File(uploadDir);
+            if (!directory.exists()) {
+                boolean created = directory.mkdirs();
+                System.out.println("디렉토리 생성 결과: " + created);
+            }
 
-        // 새 이미지 저장 경로 설정 (회원 ID로 파일 이름 설정)
-        String fileName = memberId + fileExtension;
-        Path directoryPath = Paths.get("Project/src/main/resources/static/memberimg");
-        
-        // 디렉토리가 존재하지 않으면 생성
-        if (!Files.exists(directoryPath)) {
-            Files.createDirectories(directoryPath);
+            // 기존 파일 삭제
+            File dest = new File(filePath);
+            if (dest.exists()) {
+                dest.delete();
+                // 파일 시스템 동기화를 위한 짧은 대기
+                Thread.sleep(100);
+            }
+            
+            // 새 파일 저장
+            Files.copy(file.getInputStream(), dest.toPath(), StandardCopyOption.REPLACE_EXISTING);
+            System.out.println("파일 저장 완료: " + filePath);
+
+            // 파일 시스템 동기화를 위한 짧은 대기
+            Thread.sleep(100);
+
+            return "/memberimg/" + fileName;
+        } catch (Exception e) {
+            System.out.println("파일 저장 중 오류: " + e.getMessage());
+            e.printStackTrace();
+            throw new IOException("이미지 저장 실패: " + e.getMessage());
         }
-        
-        Path path = directoryPath.resolve(fileName);
-
-        // 기존 파일 삭제
-        if (existingImagePath != null) {
-            Files.deleteIfExists(Paths.get(existingImagePath));
-        }
-
-        // 새 파일 저장
-        Files.write(path, file.getBytes());
-
-        // 새로운 이미지 경로 반환
-        return "/memberimg/" + fileName; // 웹 경로로 반환
     }
 
     public void updateMemberProfileImage(Long memberId, MultipartFile profileImage) throws IOException {
@@ -131,5 +150,10 @@ public class MemberService {
             member.setProfileImagePath(imagePath);
             memberRepository.save(member);
         }
+    }
+
+    public Member findById(Long id) {
+        return memberRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("회원을 찾을 수 없습니다."));
     }
 }
