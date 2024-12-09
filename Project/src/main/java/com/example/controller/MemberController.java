@@ -70,7 +70,7 @@ public class MemberController {
             session.setAttribute("loginMember", authenticatedMember);
             System.out.println("세션 저장됨: " + session.getId());  // 디버깅용
 
-            return "redirect:/";
+            return "redirect:/home";
         } catch (IllegalArgumentException e) {
             return "redirect:/login?error";
         }
