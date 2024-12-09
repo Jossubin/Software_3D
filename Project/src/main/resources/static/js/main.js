@@ -135,8 +135,8 @@ function handle3DView() {
         const fileName = matches[1];
         console.log("추출된 파일명:", fileName);
         
-        // OBJ 파일 경로 수정
-        const model3dSrc = `/obj/${fileName}_3d.obj`;
+        // OBJ 파일 경로를 PLY 파일 경로로 수정
+        const model3dSrc = `/ply/${fileName}_3d.ply`;
         console.log("생성된 3D 모델 경로:", model3dSrc);
         
         // 바로 3D 뷰어 초기화
@@ -189,6 +189,10 @@ if (document.querySelector('.slide')) {
     }
 }
 
+let mesh;
+let isDragging = false;
+let previousMousePosition = { x: 0, y: 0 };
+
 function initiate3DViewer(modelPath) {
     // 로딩 표시
     const loader = document.getElementById("loader");
@@ -220,49 +224,60 @@ function initiate3DViewer(modelPath) {
         scene.background = new THREE.Color(0xf0f0f0);
         
         const camera = new THREE.PerspectiveCamera(75, 800 / 600, 0.1, 1000);
-        camera.position.z = 5;
+        camera.position.set(0, 0, 5);
+        camera.lookAt(0, 0, 0);
 
         const renderer = new THREE.WebGLRenderer({ antialias: true });
         renderer.setSize(800, 600);
         document.getElementById('3d-canvas').appendChild(renderer.domElement);
 
-        // 조명 추가
-        const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
-        scene.add(ambientLight);
-        
-        const directionalLight = new THREE.DirectionalLight(0xffffff, 0.8);
-        directionalLight.position.set(1, 1, 1);
-        scene.add(directionalLight);
-
-        // OrbitControls 추가
+        // OrbitControls 설정
         const controls = new THREE.OrbitControls(camera, renderer.domElement);
         controls.enableDamping = true;
         controls.dampingFactor = 0.05;
+        controls.screenSpacePanning = true;
+        controls.minDistance = 1;
+        controls.maxDistance = 10;
+        controls.maxPolarAngle = Math.PI;
 
-        // OBJ 로더
-        const objLoader = new THREE.OBJLoader();
-        objLoader.load(
+        // 조명 설정 수정
+        const ambientLight = new THREE.AmbientLight(0xffffff, 0.7);
+        scene.add(ambientLight);
+        
+        const directionalLight = new THREE.DirectionalLight(0xffffff, 1.0);
+        directionalLight.position.set(5, 5, 5);
+        scene.add(directionalLight);
+
+        // PLY 로더
+        const plyLoader = new THREE.PLYLoader();
+        plyLoader.load(
             modelPath,
-            function (object) {
-                const box = new THREE.Box3().setFromObject(object);
+            function (geometry) {
+                const material = new THREE.MeshStandardMaterial({
+                    vertexColors: true,
+                    side: THREE.DoubleSide,
+                    metalness: 0.3,
+                    roughness: 0.6
+                });
+
+                mesh = new THREE.Mesh(geometry, material);
+
+                // 모델 크기 조정
+                const box = new THREE.Box3().setFromObject(mesh);
                 const size = box.getSize(new THREE.Vector3());
                 const maxSize = Math.max(size.x, size.y, size.z);
                 const scale = 3 / maxSize;
-                object.scale.set(scale, scale, scale);
+                mesh.scale.set(scale, scale, scale);
 
+                // 모델을 세우기 위한 회전
+                mesh.rotation.x = -Math.PI / 2;
+
+                // 중심점 조정
                 const center = box.getCenter(new THREE.Vector3());
-                object.position.sub(center.multiplyScalar(scale));
+                mesh.position.set(-center.x * scale, 0, -center.z * scale);
 
-                scene.add(object);
-                loader.style.display = "none";  // 로딩 숨기기
-            },
-            function (xhr) {
-                console.log((xhr.loaded / xhr.total * 100) + '% loaded');
-            },
-            function (error) {
-                console.error('An error happened:', error);
+                scene.add(mesh);
                 loader.style.display = "none";
-                alert('3D 모델을 불러오는 중 오류가 발생했습니다.');
             }
         );
 
@@ -272,13 +287,25 @@ function initiate3DViewer(modelPath) {
             controls.update();
             renderer.render(scene, camera);
         }
+
         animate();
 
-        // 돌아가기 버튼 이벤트
-        container.querySelector('.back-button').addEventListener('click', () => {
+        // 창 크기 조절 대응
+        window.addEventListener('resize', onWindowResize, false);
+
+        function onWindowResize() {
+            const width = 800;
+            const height = 600;
+            camera.aspect = width / height;
+            camera.updateProjectionMatrix();
+            renderer.setSize(width, height);
+        }
+
+        // 돌아가기 버튼 스타일 수정
+        const backButton = container.querySelector('.back-button');
+        backButton.addEventListener('click', () => {
             container.remove();
         });
-
     }, 3000); // 3초 대기
 }
 
