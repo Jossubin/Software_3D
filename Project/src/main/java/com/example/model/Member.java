@@ -28,6 +28,7 @@ public class Member {
     @Column(nullable = true)
     private String invoice;
 
+    @Column
     private String profileImagePath;
 
     private boolean isAdmin;
@@ -65,5 +66,13 @@ public class Member {
     // 기본 생성자
     public Member() {
         this.id = null;
+    }
+
+    public String getProfileImagePath() {
+        return profileImagePath;
+    }
+
+    public void setProfileImagePath(String profileImagePath) {
+        this.profileImagePath = profileImagePath;
     }
 }

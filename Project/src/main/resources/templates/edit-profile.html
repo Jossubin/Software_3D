@@ -87,7 +87,7 @@
                 <label for="profileImage">프로필 사진</label>
                 <input type="file" id="profileImage" name="profileImage" accept="image/*" onchange="previewImage(event)" />
                 <img id="imagePreview" class="image-preview" 
-                     th:src="${member.profileImagePath != null ? '/memberimg/' + member.id + '.jpg' : '/images/default-profile.png'}" 
+                     th:src="${member.profileImagePath != null ? member.profileImagePath + '?t=' + #dates.createNow().getTime() : '/images/default-profile.png'}" 
                      alt="이미지 미리보기" />
             </div>
 
@@ -106,13 +106,26 @@
 
     <script>
         function previewImage(event) {
-            const reader = new FileReader();
-            reader.onload = function() {
-                const output = document.getElementById('imagePreview');
-                output.src = reader.result;
-                output.style.display = 'block';
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const output = document.getElementById('imagePreview');
+                    output.src = e.target.result;
+                    output.style.display = 'block';
+                }
+                reader.readAsDataURL(file);
             }
-            reader.readAsDataURL(event.target.files[0]);
+        }
+
+        // 페이지 로드 시 현재 프로필 이미지 표시 및 캐시 방지
+        window.onload = function() {
+            const imagePreview = document.getElementById('imagePreview');
+            if (imagePreview.src && !imagePreview.src.includes('data:image')) {
+                // 기존 이미지 URL에 타임스탬프 추가
+                imagePreview.src = imagePreview.src.split('?')[0] + '?t=' + new Date().getTime();
+            }
+            imagePreview.style.display = 'block';
         }
     </script>
 </body>

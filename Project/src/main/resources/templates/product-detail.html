@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="/css/product-detail.css">
     <link rel="stylesheet" href="/css/nav.css">
     <script src="https://unpkg.com/@dotlottie/player-component@2.7.12/dist/dotlottie-player.mjs" type="module"></script>
+
 </head>
 <body>
 
@@ -119,7 +120,7 @@
             <button id="fitting-button" class="view-3d-button">
                 <span>FITTING</span>
             </button>
-            <button class="view-3D-button">
+            <button id="view-3d-button" class="view-3d-button">
                 <span>3D VIEW</span>
             </button>
         </div>
@@ -139,5 +140,9 @@
 
 <script src="/js/main.js"></script>
 <script src="/scripts/productdetail.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/OBJLoader.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/PLYLoader.js"></script>
 </body>
 </html>
